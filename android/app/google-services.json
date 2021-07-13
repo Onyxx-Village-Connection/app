@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "2538675762",
+    "project_id": "onyxxvillageconnectionapp",
+    "storage_bucket": "onyxxvillageconnectionapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2538675762:android:faec1a2690891dc8dc262b",
+        "android_client_info": {
+          "package_name": "org.OnyxxVillageConnection.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "2538675762-j3f1vgh09qki57o7fqgorkf5ua0dr68g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-jUBwWtR_neMcPAeZBYjy2-hLJ2Su5PA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2538675762-j3f1vgh09qki57o7fqgorkf5ua0dr68g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "2538675762-scq59pepup5uje8qp5kiu3bpjo8247ds.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.OnyxxVillageConnection.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
