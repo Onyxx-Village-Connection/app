@@ -8,13 +8,24 @@ class ClientSignup extends StatelessWidget{
   Widget _buildClientSignupWidgets(BuildContext context){
     return ListView(
       children: <Widget> [
-        Container(
-          child: Image.asset('assets/images/ovclogo.png'),
+        Image.asset(
+          'assets/images/ovclogo.png',
+          height: 165,
+          width: 165,
+          scale: 1.5,
         ),
         Text(
           'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
           textAlign: TextAlign.center,
+          style:
+          TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              height: 2.0,
+          ),
           overflow: TextOverflow.ellipsis,
+          softWrap: true,
+          maxLines: 8,
         ),
       ],
     );
