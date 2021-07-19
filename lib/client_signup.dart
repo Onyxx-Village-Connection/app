@@ -8,8 +8,9 @@ class ClientSignup extends StatelessWidget{
   Widget _buildClientSignupWidgets(BuildContext context){
     return ListView(
       children: <Widget> [
-
-
+        Container(
+          child: Image.asset('assets/images/ovclogo.png'),
+        ),
       ],
     );
   }
@@ -21,5 +22,13 @@ class ClientSignup extends StatelessWidget{
   @override
   Widget build(BuildContext context){
 
+    final signupForm = Container(
+      color: _backgroundColor,
+      child: _buildClientSignupWidgets(context),
+    );
+
+    return Scaffold(
+      body: signupForm,
+    );
   }
 }
