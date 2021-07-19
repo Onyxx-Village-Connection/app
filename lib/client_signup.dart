@@ -6,6 +6,12 @@ class ClientSignup extends StatelessWidget{
   const  ClientSignup();
 
   Widget _buildClientSignupWidgets(BuildContext context){
+    return ListView(
+      children: <Widget> [
+
+
+      ],
+    );
   }
 
   void _navigateToDonatingFood(BuildContext context){
