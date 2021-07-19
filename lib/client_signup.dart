@@ -11,6 +11,11 @@ class ClientSignup extends StatelessWidget{
         Container(
           child: Image.asset('assets/images/ovclogo.png'),
         ),
+        Text(
+          'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+        ),
       ],
     );
   }
