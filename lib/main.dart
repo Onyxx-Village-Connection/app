@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ovcapp/client_signup.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,14 +10,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'OVC App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(),
-        body: Text('OVC App Placeholder'),
-      ),
+      home: ClientSignup(),
     );
   }
 }
