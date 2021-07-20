@@ -37,7 +37,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Your Name',
         hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 5.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -52,7 +52,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Email Address',
         hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 5.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -67,7 +67,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Phone Number',
         hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 5.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -82,11 +82,26 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'City',
         hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 5.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
           return 'Please enter your city';
+        }
+      },
+    );
+
+    final howLongBox = TextFormField(
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'How long have you been with OVC?',
+        hintStyle: hintTextStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter the length of time you have been involved';
         }
       },
     );
@@ -135,6 +150,10 @@ class _ClientSignupState extends State<ClientSignup>{
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: cityBox,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: howLongBox,
                 ),
               ],
             ),
