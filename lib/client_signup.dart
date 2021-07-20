@@ -15,14 +15,14 @@ class _ClientSignupState extends State<ClientSignup>{
   TextStyle hintTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25.0),
+      borderRadius: BorderRadius.circular(32.0),
       borderSide: BorderSide(
         color: Colors.amberAccent,
       ),
   );
 
   OutlineInputBorder enabledField = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25.0),
+      borderRadius: BorderRadius.circular(32.0),
       borderSide: BorderSide(
         color: Colors.amber,
         width: 2.0,
@@ -37,6 +37,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Your Name',
         hintStyle: hintTextStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 10.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -51,6 +52,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Email Address',
         hintStyle: hintTextStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 10.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -65,6 +67,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Phone Number',
         hintStyle: hintTextStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 10.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -81,19 +84,22 @@ class _ClientSignupState extends State<ClientSignup>{
           width: 145,
           scale: 1.5,
         ),
-        Text(
-          'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
-          textAlign: TextAlign.center,
-          style:
-          TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontFamily: 'Montserrat',
-              height: 2.0,
-          ),
-          overflow: TextOverflow.ellipsis,
-          softWrap: true,
-          maxLines: 8,
+        Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Text(
+              'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
+              textAlign: TextAlign.center,
+              style:
+              TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontFamily: 'Montserrat',
+                height: 2.0,
+              ),
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              maxLines: 8,
+            ),
         ),
         Form(
             child: Column(
