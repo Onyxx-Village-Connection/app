@@ -6,6 +6,28 @@ class ClientSignup extends StatelessWidget{
   const  ClientSignup();
 
   Widget _buildClientSignupWidgets(BuildContext context){
+
+    final inputBox = TextFormField(
+      decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide(
+            color: Colors.amberAccent,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide(
+            color: Colors.amber,
+            width: 2.0,
+          ),
+        ),
+        hintStyle: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    );
+
     return ListView(
       children: <Widget> [
         Image.asset(
@@ -26,6 +48,11 @@ class ClientSignup extends StatelessWidget{
           overflow: TextOverflow.ellipsis,
           softWrap: true,
           maxLines: 8,
+        ),
+        Form(
+            child: Column(
+
+            ),
         ),
       ],
     );
