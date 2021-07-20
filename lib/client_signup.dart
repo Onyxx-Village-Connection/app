@@ -45,6 +45,34 @@ class _ClientSignupState extends State<ClientSignup>{
       },
     );
 
+    final emailBox = TextFormField(
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'Email Address',
+        hintStyle: hintTextStyle,
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your email address';
+        }
+      },
+    );
+
+    final phoneNumberBox = TextFormField(
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'Phone Number',
+        hintStyle: hintTextStyle,
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your phone number';
+        }
+      },
+    );
+
     return ListView(
       children: <Widget> [
         Image.asset(
@@ -69,10 +97,14 @@ class _ClientSignupState extends State<ClientSignup>{
         Form(
             child: Column(
               children: <Widget>[
-                SizedBox(height: 25.0,),
+                SizedBox(height: 15.0,),
                 Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(10.0),
                     child: nameBox,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: emailBox,
                 ),
               ],
             ),
