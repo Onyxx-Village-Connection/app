@@ -106,6 +106,10 @@ class _ClientSignupState extends State<ClientSignup>{
                   padding: EdgeInsets.all(10.0),
                   child: emailBox,
                 ),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: phoneNumberBox,
+                ),
               ],
             ),
         ),
