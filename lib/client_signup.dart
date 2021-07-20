@@ -12,7 +12,7 @@ class ClientSignup extends StatefulWidget{
 
 class _ClientSignupState extends State<ClientSignup>{
 
-  TextStyle hintTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
+  TextStyle hintTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 16.0, color: Colors.white);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
       borderRadius: BorderRadius.circular(32.0),
@@ -110,8 +110,8 @@ class _ClientSignupState extends State<ClientSignup>{
       children: <Widget> [
         Image.asset(
           'assets/images/ovclogo.png',
-          height: 145,
-          width: 145,
+          height: 115,
+          width: 115,
           scale: 1.5,
         ),
         Padding(
