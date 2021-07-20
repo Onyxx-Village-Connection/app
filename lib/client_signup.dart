@@ -134,7 +134,7 @@ class _ClientSignupState extends State<ClientSignup>{
         Form(
             child: Column(
               children: <Widget>[
-                SizedBox(height: 15.0,),
+                SizedBox(height: 10.0,),
                 Padding(
                     padding: EdgeInsets.all(10.0),
                     child: nameBox,
