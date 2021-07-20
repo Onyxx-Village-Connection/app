@@ -76,6 +76,21 @@ class _ClientSignupState extends State<ClientSignup>{
       },
     );
 
+    final cityBox = TextFormField(
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'City',
+        hintStyle: hintTextStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 10.0),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your city';
+        }
+      },
+    );
+
     return ListView(
       children: <Widget> [
         Image.asset(
@@ -116,6 +131,10 @@ class _ClientSignupState extends State<ClientSignup>{
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: phoneNumberBox,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: cityBox,
                 ),
               ],
             ),
