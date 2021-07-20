@@ -77,8 +77,8 @@ class _ClientSignupState extends State<ClientSignup>{
       children: <Widget> [
         Image.asset(
           'assets/images/ovclogo.png',
-          height: 165,
-          width: 165,
+          height: 145,
+          width: 145,
           scale: 1.5,
         ),
         Text(
@@ -88,6 +88,7 @@ class _ClientSignupState extends State<ClientSignup>{
           TextStyle(
               color: Colors.white,
               fontSize: 18,
+              fontFamily: 'Montserrat',
               height: 2.0,
           ),
           overflow: TextOverflow.ellipsis,
