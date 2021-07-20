@@ -37,7 +37,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Your Name',
         hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 10.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 5.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -52,7 +52,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Email Address',
         hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 10.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 5.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -67,7 +67,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Phone Number',
         hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 10.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 5.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -82,7 +82,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'City',
         hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 10.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 0, 5.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
