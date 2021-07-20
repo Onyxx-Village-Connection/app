@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 
 final _backgroundColor = Colors.black87;
 
-class ClientSignup extends StatelessWidget{
-  const  ClientSignup();
+class ClientSignup extends StatefulWidget{
+  ClientSignup({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+  @override
+  _ClientSignupState createState() => _ClientSignupState();
+}
+
+class _ClientSignupState extends State<ClientSignup>{
 
   Widget _buildClientSignupWidgets(BuildContext context){
 
