@@ -12,27 +12,37 @@ class ClientSignup extends StatefulWidget{
 
 class _ClientSignupState extends State<ClientSignup>{
 
+  TextStyle hintTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
+
+  OutlineInputBorder focusedField = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25.0),
+      borderSide: BorderSide(
+        color: Colors.amberAccent,
+      ),
+  );
+
+  OutlineInputBorder enabledField = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25.0),
+      borderSide: BorderSide(
+        color: Colors.amber,
+        width: 2.0,
+      ),
+  );
+
   Widget _buildClientSignupWidgets(BuildContext context){
 
-    final inputBox = TextFormField(
+    final nameBox = TextFormField(
       decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          borderSide: BorderSide(
-            color: Colors.amberAccent,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          borderSide: BorderSide(
-            color: Colors.amber,
-            width: 2.0,
-          ),
-        ),
-        hintStyle: TextStyle(
-          color: Colors.white,
-        ),
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'Your Name',
+        hintStyle: hintTextStyle,
       ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your name';
+        }
+      },
     );
 
     return ListView(
@@ -58,7 +68,13 @@ class _ClientSignupState extends State<ClientSignup>{
         ),
         Form(
             child: Column(
-
+              children: <Widget>[
+                SizedBox(height: 25.0,),
+                Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: nameBox,
+                ),
+              ],
             ),
         ),
       ],
