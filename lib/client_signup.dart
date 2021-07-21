@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 final _backgroundColor = Colors.black87;
@@ -111,8 +112,7 @@ class _ClientSignupState extends State<ClientSignup>{
       borderRadius: BorderRadius.circular(32.0),
       color: Colors.amber,
       child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+        padding: EdgeInsets.fromLTRB(30.0, 2.5, 30.0, 2.5),
         onPressed: (){},
         child: Text(
           'Sign up',
@@ -171,7 +171,10 @@ class _ClientSignupState extends State<ClientSignup>{
                   padding: EdgeInsets.all(10.0),
                   child: howLongBox,
                 ),
-                signupButton,
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: signupButton,
+                )
               ],
             ),
         ),
