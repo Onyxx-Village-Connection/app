@@ -13,7 +13,7 @@ class ClientSignup extends StatefulWidget{
 
 class _ClientSignupState extends State<ClientSignup>{
 
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 16.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
       borderRadius: BorderRadius.circular(32.0),
@@ -133,13 +133,13 @@ class _ClientSignupState extends State<ClientSignup>{
         children: <Widget> [
           Text(
             'Already have an account?',
-            style: textStyle.copyWith(fontSize: 14.0),
+            style: textStyle.copyWith(fontSize: 16.0),
           ),
           TextButton(
               onPressed: (){},
               child: Text(
                 'Login',
-                style: textStyle.copyWith(fontSize: 14.0, decoration: TextDecoration.underline,),
+                style: textStyle.copyWith(fontSize: 16.0, decoration: TextDecoration.underline,),
               ),
           ),
         ],
