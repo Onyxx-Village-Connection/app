@@ -152,7 +152,7 @@ class _ClientSignupState extends State<ClientSignup>{
           scale: 0.5,
         ),
         Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(2.5, 0, 2.5, 0),
             child: Text(
               'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
               textAlign: TextAlign.center,
