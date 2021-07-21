@@ -33,6 +33,7 @@ class _ClientSignupState extends State<ClientSignup>{
   Widget _buildClientSignupWidgets(BuildContext context){
 
     final nameBox = TextFormField(
+      style: textStyle,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
@@ -48,6 +49,7 @@ class _ClientSignupState extends State<ClientSignup>{
     );
 
     final emailBox = TextFormField(
+      style: textStyle,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
@@ -63,6 +65,7 @@ class _ClientSignupState extends State<ClientSignup>{
     );
 
     final phoneNumberBox = TextFormField(
+      style: textStyle,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
@@ -78,6 +81,7 @@ class _ClientSignupState extends State<ClientSignup>{
     );
 
     final cityBox = TextFormField(
+      style: textStyle,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
@@ -93,6 +97,7 @@ class _ClientSignupState extends State<ClientSignup>{
     );
 
     final howLongBox = TextFormField(
+      style: textStyle,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
