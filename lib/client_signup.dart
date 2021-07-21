@@ -122,7 +122,26 @@ class _ClientSignupState extends State<ClientSignup>{
       ),
     );
 
+    final haveAccountTextButton = Container(
+      child: Row(
+        children: <Widget> [
+          Text(
+            'Already have an account?',
+            style: textStyle.copyWith(fontSize: 10.0),
+          ),
+          TextButton(
+              onPressed: (){},
+              child: Text(
+                'Log in',
+                style: textStyle.copyWith(fontSize: 10.0, decoration: TextDecoration.underline,),
+              ),
+          ),
+        ],
+      ),
+    );
+
     return ListView(
+
       children: <Widget> [
         Image.asset(
           'assets/images/ovclogo.png',
@@ -174,7 +193,8 @@ class _ClientSignupState extends State<ClientSignup>{
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: signupButton,
-                )
+                ),
+                haveAccountTextButton,
               ],
             ),
         ),
