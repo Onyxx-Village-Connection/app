@@ -127,13 +127,13 @@ class _ClientSignupState extends State<ClientSignup>{
         children: <Widget> [
           Text(
             'Already have an account?',
-            style: textStyle.copyWith(fontSize: 10.0),
+            style: textStyle.copyWith(fontSize: 16.0),
           ),
           TextButton(
               onPressed: (){},
               child: Text(
                 'Login',
-                style: textStyle.copyWith(fontSize: 10.0, decoration: TextDecoration.underline,),
+                style: textStyle.copyWith(fontSize: 16.0, decoration: TextDecoration.underline,),
               ),
           ),
         ],
@@ -142,6 +142,7 @@ class _ClientSignupState extends State<ClientSignup>{
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget> [
         Image.asset(
           'assets/images/ovclogo.png',
