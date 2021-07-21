@@ -146,12 +146,12 @@ class _ClientSignupState extends State<ClientSignup>{
       children: <Widget> [
         Image.asset(
           'assets/images/ovclogo.png',
-          height: 115,
-          width: 115,
-          scale: 1.5,
+          height: 155,
+          width: 155,
+          scale: 0.5,
         ),
         Padding(
-            padding: EdgeInsets.all(5.0),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Text(
               'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
               textAlign: TextAlign.center,
