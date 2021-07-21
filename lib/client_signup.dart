@@ -132,7 +132,7 @@ class _ClientSignupState extends State<ClientSignup>{
           TextButton(
               onPressed: (){},
               child: Text(
-                'Log in',
+                'Login',
                 style: textStyle.copyWith(fontSize: 10.0, decoration: TextDecoration.underline,),
               ),
           ),
@@ -140,8 +140,8 @@ class _ClientSignupState extends State<ClientSignup>{
       ),
     );
 
-    return ListView(
-
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
         Image.asset(
           'assets/images/ovclogo.png',
