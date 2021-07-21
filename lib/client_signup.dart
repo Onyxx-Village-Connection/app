@@ -12,7 +12,7 @@ class ClientSignup extends StatefulWidget{
 
 class _ClientSignupState extends State<ClientSignup>{
 
-  TextStyle hintTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 16.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 16.0, color: Colors.white);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
       borderRadius: BorderRadius.circular(32.0),
@@ -36,7 +36,7 @@ class _ClientSignupState extends State<ClientSignup>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Your Name',
-        hintStyle: hintTextStyle,
+        hintStyle: textStyle,
         contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
@@ -51,7 +51,7 @@ class _ClientSignupState extends State<ClientSignup>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Email Address',
-        hintStyle: hintTextStyle,
+        hintStyle: textStyle,
         contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
@@ -66,7 +66,7 @@ class _ClientSignupState extends State<ClientSignup>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Phone Number',
-        hintStyle: hintTextStyle,
+        hintStyle: textStyle,
         contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
@@ -81,7 +81,7 @@ class _ClientSignupState extends State<ClientSignup>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'City',
-        hintStyle: hintTextStyle,
+        hintStyle: textStyle,
         contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
@@ -96,7 +96,7 @@ class _ClientSignupState extends State<ClientSignup>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'How long have you been with OVC?',
-        hintStyle: hintTextStyle,
+        hintStyle: textStyle,
         contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
       ),
       validator: (String? value){
@@ -104,6 +104,22 @@ class _ClientSignupState extends State<ClientSignup>{
           return 'Please enter the length of time you have been involved';
         }
       },
+    );
+
+    final signupButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(32.0),
+      color: Colors.amber,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+        onPressed: (){},
+        child: Text(
+          'Sign up',
+          textAlign: TextAlign.center,
+          style: textStyle.copyWith(fontWeight: FontWeight.bold,),
+        ),
+      ),
     );
 
     return ListView(
@@ -155,6 +171,7 @@ class _ClientSignupState extends State<ClientSignup>{
                   padding: EdgeInsets.all(10.0),
                   child: howLongBox,
                 ),
+                signupButton,
               ],
             ),
         ),
