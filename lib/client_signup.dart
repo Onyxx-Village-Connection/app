@@ -117,7 +117,7 @@ class _ClientSignupState extends State<ClientSignup>{
       borderRadius: BorderRadius.circular(32.0),
       color: Colors.amber,
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(30.0, 2.5, 30.0, 2.5),
+        padding: EdgeInsets.fromLTRB(30.0, 1.0, 30.0, 1.0),
         onPressed: (){},
         child: Text(
           'Sign up',
@@ -133,28 +133,26 @@ class _ClientSignupState extends State<ClientSignup>{
         children: <Widget> [
           Text(
             'Already have an account?',
-            style: textStyle.copyWith(fontSize: 16.0),
+            style: textStyle.copyWith(fontSize: 14.0),
           ),
           TextButton(
               onPressed: (){},
               child: Text(
                 'Login',
-                style: textStyle.copyWith(fontSize: 16.0, decoration: TextDecoration.underline,),
+                style: textStyle.copyWith(fontSize: 14.0, decoration: TextDecoration.underline,),
               ),
           ),
         ],
       ),
     );
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return ListView(
       children: <Widget> [
         Image.asset(
           'assets/images/ovclogo.png',
           height: 155,
           width: 155,
-          scale: 0.5,
+          scale: 1.2,
         ),
         Padding(
             padding: EdgeInsets.fromLTRB(2.5, 0, 2.5, 0),
@@ -198,7 +196,7 @@ class _ClientSignupState extends State<ClientSignup>{
                   child: howLongBox,
                 ),
                 Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(5.0),
                   child: signupButton,
                 ),
                 haveAccountTextButton,
