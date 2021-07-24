@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ClientSignup(title: 'Client Login',),
+      home: ClientSignup(title: 'Client Signup',),
     );
   }
 }
