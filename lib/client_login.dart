@@ -47,6 +47,22 @@ class _ClientLoginState extends State<ClientLogin>{
       },
     );
 
+    final passwordBox = TextFormField(
+      style: textStyle,
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'Password',
+        hintStyle: textStyle,
+        contentPadding: EdgeInsets.all(20.0),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your password';
+        }
+      },
+    );
+
     return ListView(
         children: <Widget>[
           Image.asset(
@@ -58,6 +74,10 @@ class _ClientLoginState extends State<ClientLogin>{
           Padding(
             padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 15.0),
             child: emailBox,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+            child: passwordBox,
           ),
         ],
       );
