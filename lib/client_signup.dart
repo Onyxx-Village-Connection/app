@@ -211,9 +211,7 @@ class _ClientSignupState extends State<ClientSignup>{
   void _navigateToClientLogin(BuildContext context){
     Navigator.of(context).push(MaterialPageRoute<void>(
       builder: (BuildContext context){
-        return Scaffold(
-          body: ClientLogin(title: 'client login',),
-        );
+        return ClientLogin(title: 'Client Login');
       },
     ));
   }

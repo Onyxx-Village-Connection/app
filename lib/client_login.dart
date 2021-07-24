@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ovcapp/client_signup.dart';
 
 final _backgroundColor = Colors.black87;
 
@@ -122,6 +123,13 @@ class _ClientLoginState extends State<ClientLogin>{
     );
   }
 
+  void _navigateToClientLogin(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (BuildContext context){
+        return ClientSignup(title: 'Client Signup');
+      },
+    ));
+  }
 
   @override
   Widget build(BuildContext context){
