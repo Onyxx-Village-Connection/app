@@ -16,6 +16,16 @@ class _ClientLoginState extends State<ClientLogin>{
 
   Widget _buildClientLoginWidgets(BuildContext context){
 
+    return ListView(
+      children: <Widget>[
+        Image.asset(
+          'assets/images/ovclogo.png',
+          height: 155,
+          width: 155,
+          scale: 1.2,
+        ),
+      ],
+    );
   }
 
 
