@@ -88,7 +88,7 @@ class _ClientLoginState extends State<ClientLogin>{
             style: textStyle.copyWith(fontSize: 18.0),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () => _navigateToClientSignup(context),
             child: Text(
               'Sign up',
               style: textStyle.copyWith(fontSize: 18.0, decoration: TextDecoration.underline,),
@@ -123,7 +123,7 @@ class _ClientLoginState extends State<ClientLogin>{
     );
   }
 
-  void _navigateToClientLogin(BuildContext context){
+  void _navigateToClientSignup(BuildContext context){
     Navigator.of(context).push(MaterialPageRoute<void>(
       builder: (BuildContext context){
         return ClientSignup(title: 'Client Signup');
