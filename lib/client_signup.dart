@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ovcapp/client_login.dart';
 
 final _backgroundColor = Colors.black87;
 
@@ -207,8 +208,14 @@ class _ClientSignupState extends State<ClientSignup>{
     );
   }
 
-  void _navigateToDonatingFood(BuildContext context){
-
+  void _navigateToClientLogin(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (BuildContext context){
+        return Scaffold(
+          body: ClientLogin(title: 'client login',),
+        );
+      },
+    ));
   }
 
   @override
