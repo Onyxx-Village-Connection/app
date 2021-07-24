@@ -78,6 +78,25 @@ class _ClientLoginState extends State<ClientLogin>{
       ),
     );
 
+    final notHaveAccountTextButton = Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget> [
+          Text(
+            'Do not have an account?',
+            style: textStyle.copyWith(fontSize: 18.0),
+          ),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'Sign up',
+              style: textStyle.copyWith(fontSize: 18.0, decoration: TextDecoration.underline,),
+            ),
+          ),
+        ],
+      ),
+    );
+
     return ListView(
         children: <Widget>[
           Image.asset(
@@ -98,6 +117,7 @@ class _ClientLoginState extends State<ClientLogin>{
             padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
             child: loginButton,
           ),
+          notHaveAccountTextButton,
         ],
     );
   }
