@@ -63,6 +63,21 @@ class _ClientLoginState extends State<ClientLogin>{
       },
     );
 
+    final loginButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(32.0),
+      color: Colors.amber,
+      child: MaterialButton(
+        padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
+        onPressed: (){},
+        child: Text(
+          'Login',
+          textAlign: TextAlign.center,
+          style: textStyle.copyWith(fontSize: 24.0, fontWeight: FontWeight.bold,),
+        ),
+      ),
+    );
+
     return ListView(
         children: <Widget>[
           Image.asset(
@@ -79,8 +94,12 @@ class _ClientLoginState extends State<ClientLogin>{
             padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
             child: passwordBox,
           ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+            child: loginButton,
+          ),
         ],
-      );
+    );
   }
 
 

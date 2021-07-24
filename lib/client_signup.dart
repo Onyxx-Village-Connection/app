@@ -118,7 +118,7 @@ class _ClientSignupState extends State<ClientSignup>{
       borderRadius: BorderRadius.circular(32.0),
       color: Colors.amber,
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(30.0, 1.0, 30.0, 1.0),
+        padding: EdgeInsets.fromLTRB(150.0, 0, 150.0, 0),
         onPressed: (){},
         child: Text(
           'Sign up',
