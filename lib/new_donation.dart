@@ -33,7 +33,9 @@ class _NewDonationFormState extends State<NewDonationForm> {
   final _weightController = TextEditingController();
   final _numBoxesController = TextEditingController();
   final _numMealsController = TextEditingController();
-  final _dimensionController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _depthController = TextEditingController();
+  final _heightController = TextEditingController();
 
   var donation = new Donation();
 
@@ -51,8 +53,21 @@ class _NewDonationFormState extends State<NewDonationForm> {
                 _numBoxesController, 'Number of boxes', 'Number of boxes'),
             _newDonationField(
                 _numMealsController, 'Number of meals', 'Number of meals'),
-            _newDonationField(
-                _dimensionController, 'Appx. dimension', 'Appx. dimension'),
+            const Text('Dimension (inch)'),
+            Row(
+              children: [
+                Expanded(
+                  child: _newDonationField(_widthController, 'Width', 'Width'),
+                ),
+                Expanded(
+                  child: _newDonationField(_depthController, 'Depth', 'Depth'),
+                ),
+                Expanded(
+                  child:
+                      _newDonationField(_heightController, 'Height', 'Height'),
+                ),
+              ],
+            ),
             const Text('Indicate Possible Allergens:'),
             Row(
               children: [
@@ -177,6 +192,15 @@ class _NewDonationFormState extends State<NewDonationForm> {
       return;
     }
 
+    // gather all the inputs
+    donation.name = _nameController.text;
+    donation.weight = double.parse(_weightController.text);
+    donation.numBoxes = int.parse(_numBoxesController.text);
+    donation.numMeals = int.parse(_numMealsController.text);
+    donation.width = double.parse(_widthController.text);
+    donation.depth = double.parse(_depthController.text);
+    donation.height = double.parse(_heightController.text);
+
     // show pop up
     showDialog(
       context: context,
@@ -199,7 +223,6 @@ class Donation {
   double weight = 0.0;
   int numBoxes = 0;
   int numMeals = 0;
-  String dimension = "";
   double width = 0.0;
   double height = 0.0;
   double depth = 0.0;
@@ -209,4 +232,5 @@ class Donation {
   bool reqFrige = false;
   bool isGrocery = false;
   DateTime pickupDateTime = DateTime.now();
+  DateTime submitDateTime = DateTime.now();
 }
