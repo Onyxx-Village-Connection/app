@@ -94,6 +94,56 @@ class _NewDonationFormState extends State<NewDonationForm> {
                 ),
               ],
             ),
+            const Text('Does this require refrigeration?'),
+            Row(
+              children: [
+                Expanded(
+                    child: RadioListTile(
+                        title: const Text('Yes'),
+                        value: true,
+                        groupValue: donation.reqFrige,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            donation.reqFrige = true;
+                          });
+                        })),
+                Expanded(
+                    child: RadioListTile(
+                        title: const Text('No'),
+                        value: false,
+                        groupValue: donation.reqFrige,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            donation.reqFrige = false;
+                          });
+                        })),
+              ],
+            ),
+            const Text('Is this a grocery donation?'),
+            Row(
+              children: [
+                Expanded(
+                    child: RadioListTile(
+                        title: const Text('Yes'),
+                        value: true,
+                        groupValue: donation.isGrocery,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            donation.isGrocery = true;
+                          });
+                        })),
+                Expanded(
+                    child: RadioListTile(
+                        title: const Text('No'),
+                        value: false,
+                        groupValue: donation.isGrocery,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            donation.isGrocery = false;
+                          });
+                        })),
+              ],
+            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _submitNewDonation,
