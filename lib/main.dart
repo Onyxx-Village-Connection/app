@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ovcapp/landing_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,13 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'OVC App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(),
-        body: Text('OVC App Placeholder'),
-      ),
+      theme: ThemeData.dark(),
+      home: LandingPage(),
     );
   }
 }
