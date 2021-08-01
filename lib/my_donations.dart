@@ -1,5 +1,7 @@
+// 'My Donations' screen for donor
 import 'package:flutter/material.dart';
 import 'package:ovcapp/new_donation.dart';
+import 'package:ovcapp/donations.dart';
 
 class MyDonations extends StatefulWidget {
   const MyDonations({Key? key, required this.title}) : super(key: key);
@@ -11,7 +13,7 @@ class MyDonations extends StatefulWidget {
 }
 
 class _MyDonationsState extends State<MyDonations> {
-  List<Donation> myDonations = [];
+  final myDonations = Donations();
 
   @override
   Widget build(BuildContext context) {

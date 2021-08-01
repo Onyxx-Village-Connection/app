@@ -1,4 +1,6 @@
+// 'New Donation' screen for donor
 import 'package:flutter/material.dart';
+import 'package:ovcapp/donation.dart';
 
 class NewDonation extends StatelessWidget {
   const NewDonation({Key? key, required this.title}) : super(key: key);
@@ -44,6 +46,7 @@ class _NewDonationFormState extends State<NewDonationForm> {
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
+        // avoid overflow when keyboard is shown
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -63,8 +66,8 @@ class _NewDonationFormState extends State<NewDonationForm> {
                   child: _newDonationField(_depthController, 'Depth', 'Depth'),
                 ),
                 Expanded(
-                  child:
-                      _newDonationField(_heightController, 'Height', 'Height'),
+                  child: _newDonationField(
+                      _heightController, 'Height', 'Height', false),
                 ),
               ],
             ),
@@ -171,7 +174,8 @@ class _NewDonationFormState extends State<NewDonationForm> {
   }
 
   Widget _newDonationField(
-      TextEditingController controller, String label, String hint) {
+      TextEditingController controller, String label, String hint,
+      [bool nextFocus = true]) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextFormField(
@@ -181,6 +185,9 @@ class _NewDonationFormState extends State<NewDonationForm> {
           hintText: hint,
           border: OutlineInputBorder(),
         ),
+        onEditingComplete: () => nextFocus
+            ? FocusScope.of(context).nextFocus()
+            : FocusScope.of(context).unfocus(),
         validator: (text) => (text != null && text.isEmpty) ? hint : null,
       ),
     );
@@ -216,21 +223,4 @@ class _NewDonationFormState extends State<NewDonationForm> {
       ),
     );
   }
-}
-
-class Donation {
-  String name = "unknown";
-  double weight = 0.0;
-  int numBoxes = 0;
-  int numMeals = 0;
-  double width = 0.0;
-  double height = 0.0;
-  double depth = 0.0;
-  bool hasDairy = false;
-  bool hasNuts = false;
-  bool hasEggs = false;
-  bool reqFrige = false;
-  bool isGrocery = false;
-  DateTime pickupDateTime = DateTime.now();
-  DateTime submitDateTime = DateTime.now();
 }
