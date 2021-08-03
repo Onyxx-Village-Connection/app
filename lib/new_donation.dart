@@ -1,6 +1,8 @@
 // 'New Donation' screen for donor
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ovcapp/donation.dart';
+import 'package:ovcapp/donations_provider.dart';
 
 class NewDonation extends StatelessWidget {
   const NewDonation({Key? key, required this.title}) : super(key: key);
@@ -162,9 +164,79 @@ class _NewDonationFormState extends State<NewDonationForm> {
                         })),
               ],
             ),
+            Row(
+              children: [
+                Expanded(
+                  child: const Text('Pick up Date: '),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    child: Text(DateFormat.yMd().format(donation.pickupDate)),
+                    onTap: () async {
+                      var pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: donation.pickupDate,
+                        firstDate: donation.pickupDate,
+                        lastDate: DateTime(2100),
+                      );
+                      if (pickedDate != null) {
+                        setState(() {
+                          donation.pickupDate = pickedDate;
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: const Text('Pick up Time: '),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    child: Text(donation.pickupFromTime.format(context)),
+                    onTap: () async {
+                      var pickedTime = await showTimePicker(
+                          context: context,
+                          initialTime: donation.pickupFromTime);
+                      if (pickedTime != null) {
+                        setState(() {
+                          donation.pickupFromTime = pickedTime;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: const Text('To'),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    child: Text(donation.pickupToTime.format(context)),
+                    onTap: () async {
+                      var pickedTime = await showTimePicker(
+                          context: context, initialTime: donation.pickupToTime);
+                      if (pickedTime != null) {
+                        if ((pickedTime.hour * 60 + pickedTime.minute) >
+                            (donation.pickupFromTime.hour * 60 +
+                                donation.pickupFromTime.minute)) {
+                          setState(() {
+                            donation.pickupToTime = pickedTime;
+                          });
+                        }
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _submitNewDonation,
+              onPressed: () {
+                _submitNewDonation(context);
+              },
               child: Text('Submit'),
             ),
           ],
@@ -193,7 +265,7 @@ class _NewDonationFormState extends State<NewDonationForm> {
     );
   }
 
-  void _submitNewDonation() {
+  void _submitNewDonation(BuildContext context) {
     final form = _formKey.currentState;
     if (form != null && !form.validate()) {
       return;
@@ -208,6 +280,23 @@ class _NewDonationFormState extends State<NewDonationForm> {
     donation.depth = double.parse(_depthController.text);
     donation.height = double.parse(_heightController.text);
 
+    var donations = DonationsProvider.of(context);
+    print("Before adding new donation, num of donations: " +
+        donations.length().toString());
+    print("Add new donation: " + donation.name);
+    donations.add(donation);
+    print("After adding new donation, num of donations: " +
+        donations.length().toString());
+
+    // donation = new Donation();
+    // _nameController.clear();
+    // _weightController.clear();
+    // _numBoxesController.clear();
+    // _numMealsController.clear();
+    // _widthController.clear();
+    // _heightController.clear();
+    // _depthController.clear();
+
     // show pop up
     showDialog(
       context: context,
@@ -216,7 +305,10 @@ class _NewDonationFormState extends State<NewDonationForm> {
         content: const Text('Your Donation has been submitted to OVC.'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
+            onPressed: () {
+              Navigator.pop(context, 'OK');
+              Navigator.pop(context, donation);
+            },
             child: const Text('OK'),
           ),
         ],

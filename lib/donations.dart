@@ -2,5 +2,13 @@
 import 'package:ovcapp/donation.dart';
 
 class Donations {
-  List<Donation> donations = [];
+  List<Donation> donations;
+
+  Donations(this.donations);
+
+  int length() => donations.length;
+
+  void add(Donation donation) {
+    donations.add(donation);
+  }
 }

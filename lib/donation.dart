@@ -1,4 +1,6 @@
 // model for one donation
+import 'package:flutter/material.dart';
+
 class Donation {
   String name = "unknown";
   double weight = 0.0;
@@ -12,6 +14,8 @@ class Donation {
   bool hasEggs = false;
   bool reqFrige = false;
   bool isGrocery = false;
-  DateTime pickupDateTime = DateTime.now();
+  DateTime pickupDate = DateTime.now();
+  TimeOfDay pickupFromTime = TimeOfDay.now();
+  TimeOfDay pickupToTime = TimeOfDay.now();
   DateTime submitDateTime = DateTime.now();
 }

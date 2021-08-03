@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ovcapp/donations_provider.dart';
 import 'package:ovcapp/my_donations.dart';
 
 class LandingPage extends StatelessWidget {
