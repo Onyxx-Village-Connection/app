@@ -166,69 +166,56 @@ class _NewDonationFormState extends State<NewDonationForm> {
             ),
             Row(
               children: [
-                Expanded(
-                  child: const Text('Pick up Date: '),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    child: Text(DateFormat.yMd().format(donation.pickupDate)),
-                    onTap: () async {
-                      var pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: donation.pickupDate,
-                        firstDate: donation.pickupDate,
-                        lastDate: DateTime(2100),
-                      );
-                      if (pickedDate != null) {
-                        setState(() {
-                          donation.pickupDate = pickedDate;
-                        });
-                      }
-                    },
-                  ),
+                const Text('Pick up Date: '),
+                OutlinedButton(
+                  child: Text(DateFormat.yMd().format(donation.pickupDate)),
+                  onPressed: () async {
+                    var pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: donation.pickupDate,
+                      firstDate: donation.pickupDate,
+                      lastDate: DateTime(2100),
+                    );
+                    if (pickedDate != null) {
+                      setState(() {
+                        donation.pickupDate = pickedDate;
+                      });
+                    }
+                  },
                 ),
               ],
             ),
             Row(
               children: [
-                Expanded(
-                  child: const Text('Pick up Time: '),
+                const Text('Pick up Time: '),
+                OutlinedButton(
+                  child: Text(donation.pickupFromTime.format(context)),
+                  onPressed: () async {
+                    var pickedTime = await showTimePicker(
+                        context: context, initialTime: donation.pickupFromTime);
+                    if (pickedTime != null) {
+                      setState(() {
+                        donation.pickupFromTime = pickedTime;
+                      });
+                    }
+                  },
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    child: Text(donation.pickupFromTime.format(context)),
-                    onTap: () async {
-                      var pickedTime = await showTimePicker(
-                          context: context,
-                          initialTime: donation.pickupFromTime);
-                      if (pickedTime != null) {
+                const Text(' To '),
+                OutlinedButton(
+                  child: Text(donation.pickupToTime.format(context)),
+                  onPressed: () async {
+                    var pickedTime = await showTimePicker(
+                        context: context, initialTime: donation.pickupToTime);
+                    if (pickedTime != null) {
+                      if ((pickedTime.hour * 60 + pickedTime.minute) >
+                          (donation.pickupFromTime.hour * 60 +
+                              donation.pickupFromTime.minute)) {
                         setState(() {
-                          donation.pickupFromTime = pickedTime;
+                          donation.pickupToTime = pickedTime;
                         });
                       }
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: const Text('To'),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    child: Text(donation.pickupToTime.format(context)),
-                    onTap: () async {
-                      var pickedTime = await showTimePicker(
-                          context: context, initialTime: donation.pickupToTime);
-                      if (pickedTime != null) {
-                        if ((pickedTime.hour * 60 + pickedTime.minute) >
-                            (donation.pickupFromTime.hour * 60 +
-                                donation.pickupFromTime.minute)) {
-                          setState(() {
-                            donation.pickupToTime = pickedTime;
-                          });
-                        }
-                      }
-                    },
-                  ),
+                    }
+                  },
                 ),
               ],
             ),
