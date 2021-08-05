@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
+import 'package:ovcapp/more_signup_info.dart';
 
 final _backgroundColor = Colors.black87;
 
@@ -208,13 +209,22 @@ class _ClientSignupState extends State<ClientSignup>{
     );
   }
 
-  void _navigateToClientLogin(BuildContext context){
+  void _navigateToClientLogin(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return ClientLogin(title: 'Client Login');
       },
     ));
   }
+
+  void _navigateToMoreSignupInfoPage(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (BuildContext context) {
+        return MoreSignupInfo(title: 'More Signup Info');
+      },
+    ));
+  }
+
 
   @override
   Widget build(BuildContext context){
