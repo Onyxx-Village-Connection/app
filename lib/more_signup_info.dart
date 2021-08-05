@@ -63,6 +63,38 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
       },
     );
 
+    final cityBox = TextFormField(
+      style: textStyle,
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'City',
+        hintStyle: textStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your city';
+        }
+      },
+    );
+
+    final howLongBox = TextFormField(
+      style: textStyle,
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'How long have you been with OVC?',
+        hintStyle: textStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter the length of time you have been involved';
+        }
+      },
+    );
+
     return ListView(
       children: <Widget>[
         Padding(
@@ -80,6 +112,14 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         Padding(
           padding: EdgeInsets.all(10.0),
           child: phoneNumberBox,
+        ),
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: cityBox,
+        ),
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: howLongBox,
         ),
       ],
     );
