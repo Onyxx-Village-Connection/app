@@ -31,15 +31,33 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
 
   Widget _buildMoreSignupInfoWidgets (BuildContext context){
 
+    final nameBox = TextFormField(
+      style: textStyle,
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'Your Name',
+        hintStyle: textStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your name';
+        }
+      },
+    );
+
     return ListView(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(20.0),
           child: Text(
             'We need some more information from you...',
-            style : textStyle.copyWith(height: 2.0),
+            textAlign: TextAlign.center,
+            style : textStyle.copyWith(fontSize: 20.0, height: 2.0, fontWeight: FontWeight.bold),
           ) ,
         ),
+        nameBox,
       ],
     );
   }
