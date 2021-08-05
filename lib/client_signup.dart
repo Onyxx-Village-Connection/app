@@ -34,21 +34,7 @@ class _ClientSignupState extends State<ClientSignup>{
 
   Widget _buildClientSignupWidgets(BuildContext context){
 
-    final nameBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'Your Name',
-        hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
-      ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
-          return 'Please enter your name';
-        }
-      },
-    );
+
 
     final emailBox = TextFormField(
       style: textStyle,
@@ -177,10 +163,6 @@ class _ClientSignupState extends State<ClientSignup>{
             child: Column(
               children: <Widget>[
                 SizedBox(height: 10.0,),
-                Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: nameBox,
-                ),
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: emailBox,
