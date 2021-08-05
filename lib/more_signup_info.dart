@@ -29,7 +29,20 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
     ),
   );
 
+  Widget _buildMoreSignupInfoWidgets (BuildContext context){
 
+    return ListView(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text(
+            'We need some more information from you...',
+            style : textStyle.copyWith(height: 2.0),
+          ) ,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context){
