@@ -50,6 +50,22 @@ class _ClientSignupState extends State<ClientSignup>{
       },
     );
 
+    final passwordBox = TextFormField(
+      style: textStyle,
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'Password',
+        hintStyle: textStyle,
+        contentPadding: EdgeInsets.all(20.0),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your password';
+        }
+      },
+    );
+
     final nextButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(32.0),
@@ -112,6 +128,10 @@ class _ClientSignupState extends State<ClientSignup>{
         Padding(
           padding: EdgeInsets.all(10.0),
           child: emailBox,
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+          child: passwordBox,
         ),
         Padding(
           padding: EdgeInsets.all(5.0),
