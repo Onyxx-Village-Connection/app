@@ -34,8 +34,6 @@ class _ClientSignupState extends State<ClientSignup>{
 
   Widget _buildClientSignupWidgets(BuildContext context){
 
-
-
     final emailBox = TextFormField(
       style: textStyle,
       decoration: InputDecoration(
@@ -48,22 +46,6 @@ class _ClientSignupState extends State<ClientSignup>{
       validator: (String? value){
         if (value == null || value.isEmpty){
           return 'Please enter your email address';
-        }
-      },
-    );
-
-    final phoneNumberBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'Phone Number',
-        hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
-      ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
-          return 'Please enter your phone number';
         }
       },
     );
@@ -166,10 +148,6 @@ class _ClientSignupState extends State<ClientSignup>{
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: emailBox,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: phoneNumberBox,
                 ),
                 Padding(
                   padding: EdgeInsets.all(10.0),
