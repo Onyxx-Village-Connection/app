@@ -109,22 +109,15 @@ class _ClientSignupState extends State<ClientSignup>{
               maxLines: 8,
             ),
         ),
-        Form(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 10.0,),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: emailBox,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: nextButton,
-                ),
-                haveAccountTextButton,
-              ],
-            ),
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: emailBox,
         ),
+        Padding(
+          padding: EdgeInsets.all(5.0),
+          child: nextButton,
+        ),
+        haveAccountTextButton,
       ],
     );
   }
