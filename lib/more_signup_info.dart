@@ -57,7 +57,10 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
             style : textStyle.copyWith(fontSize: 20.0, height: 2.0, fontWeight: FontWeight.bold),
           ) ,
         ),
-        nameBox,
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: nameBox,
+        ),
       ],
     );
   }
