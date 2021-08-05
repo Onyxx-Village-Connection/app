@@ -47,6 +47,22 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
       },
     );
 
+    final phoneNumberBox = TextFormField(
+      style: textStyle,
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'Phone Number',
+        hintStyle: textStyle,
+        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter your phone number';
+        }
+      },
+    );
+
     return ListView(
       children: <Widget>[
         Padding(
@@ -60,6 +76,10 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         Padding(
           padding: EdgeInsets.all(10.0),
           child: nameBox,
+        ),
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: phoneNumberBox,
         ),
       ],
     );
