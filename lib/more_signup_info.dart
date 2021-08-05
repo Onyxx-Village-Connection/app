@@ -134,6 +134,14 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
     );
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1.0,
+        iconTheme: IconThemeData(
+          color: Colors.amber,
+        ),
+        backgroundColor: _backgroundColor,
+      ),
+
       body: moreSignupInfoForm,
     );
   }
