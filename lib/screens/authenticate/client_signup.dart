@@ -113,7 +113,7 @@ class _ClientSignupState extends State<ClientSignup>{
       },
     );
 
-    final signupButton = Material(
+    final nextButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(32.0),
       color: Colors.amber,
@@ -121,7 +121,7 @@ class _ClientSignupState extends State<ClientSignup>{
         padding: EdgeInsets.fromLTRB(150.0, 0, 150.0, 0),
         onPressed: (){},
         child: Text(
-          'Sign up',
+          'Next',
           textAlign: TextAlign.center,
           style: textStyle.copyWith(fontWeight: FontWeight.bold,),
         ),
@@ -198,7 +198,7 @@ class _ClientSignupState extends State<ClientSignup>{
                 ),
                 Padding(
                   padding: EdgeInsets.all(5.0),
-                  child: signupButton,
+                  child: nextButton,
                 ),
                 haveAccountTextButton,
               ],
