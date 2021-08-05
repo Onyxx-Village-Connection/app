@@ -95,6 +95,21 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
       },
     );
 
+    final signupButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(32.0),
+      color: Colors.amber,
+      child: MaterialButton(
+        padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
+        onPressed: (){},
+        child: Text(
+          'Sign up',
+          textAlign: TextAlign.center,
+          style: textStyle.copyWith(fontSize: 24.0, fontWeight: FontWeight.bold,),
+        ),
+      ),
+    );
+
     return ListView(
       children: <Widget>[
         Padding(
@@ -106,20 +121,24 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
           ) ,
         ),
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
           child: nameBox,
         ),
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
           child: phoneNumberBox,
         ),
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
           child: cityBox,
         ),
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
           child: howLongBox,
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+          child: signupButton,
         ),
       ],
     );
