@@ -120,7 +120,7 @@ class _ClientSignupState extends State<ClientSignup>{
       color: Colors.amber,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(150.0, 0, 150.0, 0),
-        onPressed: (){},
+        onPressed: () => _navigateToMoreSignupInfoPage(context),
         child: Text(
           'Next',
           textAlign: TextAlign.center,
