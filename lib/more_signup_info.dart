@@ -38,7 +38,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         enabledBorder: enabledField,
         hintText: 'Your Name',
         hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+        contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -54,7 +54,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         enabledBorder: enabledField,
         hintText: 'Phone Number',
         hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+        contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -70,7 +70,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         enabledBorder: enabledField,
         hintText: 'City',
         hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+        contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -86,7 +86,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         enabledBorder: enabledField,
         hintText: 'How long have you been with OVC?',
         hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+        contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
