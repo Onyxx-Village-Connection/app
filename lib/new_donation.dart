@@ -1,6 +1,8 @@
 // 'New Donation' screen for donor
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'package:ovcapp/donation.dart';
 import 'package:ovcapp/donations_provider.dart';
 
@@ -43,6 +45,8 @@ class _NewDonationFormState extends State<NewDonationForm> {
 
   var donation = new Donation();
 
+  Image _picture = Image(image: AssetImage('images/placeholder.jpg'));
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -52,6 +56,14 @@ class _NewDonationFormState extends State<NewDonationForm> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            GestureDetector(
+              onTap: _takePicture,
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: _picture,
+              ),
+            ),
             _newDonationField(_nameController, 'Item name', 'Item name'),
             _newDonationField(_weightController, 'Item weight', 'Item weight'),
             _newDonationField(
@@ -250,6 +262,19 @@ class _NewDonationFormState extends State<NewDonationForm> {
         validator: (text) => (text != null && text.isEmpty) ? hint : null,
       ),
     );
+  }
+
+  void _takePicture() async {
+    XFile? picFile = await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 50);
+    if (picFile != null) {
+      setState(() {
+        _picture = Image.file(
+          File(picFile.path),
+          fit: BoxFit.fitWidth,
+        );
+      });
+    }
   }
 
   void _submitNewDonation(BuildContext context) {
