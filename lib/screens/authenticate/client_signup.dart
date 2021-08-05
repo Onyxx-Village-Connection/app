@@ -50,38 +50,6 @@ class _ClientSignupState extends State<ClientSignup>{
       },
     );
 
-    final cityBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'City',
-        hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
-      ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
-          return 'Please enter your city';
-        }
-      },
-    );
-
-    final howLongBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'How long have you been with OVC?',
-        hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
-      ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
-          return 'Please enter the length of time you have been involved';
-        }
-      },
-    );
-
     final nextButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(32.0),
@@ -148,14 +116,6 @@ class _ClientSignupState extends State<ClientSignup>{
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: emailBox,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: cityBox,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: howLongBox,
                 ),
                 Padding(
                   padding: EdgeInsets.all(5.0),
