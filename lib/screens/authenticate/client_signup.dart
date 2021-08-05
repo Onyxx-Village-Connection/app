@@ -15,7 +15,7 @@ class ClientSignup extends StatefulWidget{
 
 class _ClientSignupState extends State<ClientSignup>{
 
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
       borderRadius: BorderRadius.circular(32.0),
@@ -41,7 +41,7 @@ class _ClientSignupState extends State<ClientSignup>{
         enabledBorder: enabledField,
         hintText: 'Email Address',
         hintStyle: textStyle,
-        contentPadding: EdgeInsets.fromLTRB(10.0, 2.5, 10.0, 2.5),
+        contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -71,12 +71,12 @@ class _ClientSignupState extends State<ClientSignup>{
       borderRadius: BorderRadius.circular(32.0),
       color: Colors.amber,
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(150.0, 0, 150.0, 0),
+        padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
         onPressed: () => _navigateToMoreSignupInfoPage(context),
         child: Text(
           'Next',
           textAlign: TextAlign.center,
-          style: textStyle.copyWith(fontWeight: FontWeight.bold,),
+          style: textStyle.copyWith(fontSize: 24.0,fontWeight: FontWeight.bold,),
         ),
       ),
     );
@@ -87,13 +87,13 @@ class _ClientSignupState extends State<ClientSignup>{
         children: <Widget> [
           Text(
             'Already have an account?',
-            style: textStyle.copyWith(fontSize: 16.0),
+            style: textStyle.copyWith(fontSize: 18.0),
           ),
           TextButton(
               onPressed: () => _navigateToClientLogin(context),
               child: Text(
                 'Login',
-                style: textStyle.copyWith(fontSize: 16.0, decoration: TextDecoration.underline,),
+                style: textStyle.copyWith(fontSize: 18.0, decoration: TextDecoration.underline,),
               ),
           ),
         ],
@@ -109,7 +109,7 @@ class _ClientSignupState extends State<ClientSignup>{
           scale: 1.2,
         ),
         Padding(
-            padding: EdgeInsets.fromLTRB(2.5, 0, 2.5, 0),
+            padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
             child: Text(
               'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
               textAlign: TextAlign.center,
@@ -126,7 +126,7 @@ class _ClientSignupState extends State<ClientSignup>{
             ),
         ),
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 15.0),
           child: emailBox,
         ),
         Padding(
@@ -134,7 +134,7 @@ class _ClientSignupState extends State<ClientSignup>{
           child: passwordBox,
         ),
         Padding(
-          padding: EdgeInsets.all(5.0),
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
           child: nextButton,
         ),
         haveAccountTextButton,
