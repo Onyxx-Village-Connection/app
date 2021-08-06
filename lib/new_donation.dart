@@ -1,4 +1,10 @@
+// 'New Donation' screen for donor
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:ovcapp/donation.dart';
+import 'package:ovcapp/donations_provider.dart';
 
 class NewDonation extends StatelessWidget {
   const NewDonation({Key? key, required this.title}) : super(key: key);
@@ -39,14 +45,25 @@ class _NewDonationFormState extends State<NewDonationForm> {
 
   var donation = new Donation();
 
+  Image _picture = Image(image: AssetImage('images/placeholder.jpg'));
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
+        // avoid overflow when keyboard is shown
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            GestureDetector(
+              onTap: _takePicture,
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: _picture,
+              ),
+            ),
             _newDonationField(_nameController, 'Item name', 'Item name'),
             _newDonationField(_weightController, 'Item weight', 'Item weight'),
             _newDonationField(
@@ -63,8 +80,8 @@ class _NewDonationFormState extends State<NewDonationForm> {
                   child: _newDonationField(_depthController, 'Depth', 'Depth'),
                 ),
                 Expanded(
-                  child:
-                      _newDonationField(_heightController, 'Height', 'Height'),
+                  child: _newDonationField(
+                      _heightController, 'Height', 'Height', false),
                 ),
               ],
             ),
@@ -159,9 +176,66 @@ class _NewDonationFormState extends State<NewDonationForm> {
                         })),
               ],
             ),
+            Row(
+              children: [
+                const Text('Pick up Date: '),
+                OutlinedButton(
+                  child: Text(DateFormat.yMd().format(donation.pickupDate)),
+                  onPressed: () async {
+                    var pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: donation.pickupDate,
+                      firstDate: donation.pickupDate,
+                      lastDate: DateTime(2100),
+                    );
+                    if (pickedDate != null) {
+                      setState(() {
+                        donation.pickupDate = pickedDate;
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Text('Pick up Time: '),
+                OutlinedButton(
+                  child: Text(donation.pickupFromTime.format(context)),
+                  onPressed: () async {
+                    var pickedTime = await showTimePicker(
+                        context: context, initialTime: donation.pickupFromTime);
+                    if (pickedTime != null) {
+                      setState(() {
+                        donation.pickupFromTime = pickedTime;
+                      });
+                    }
+                  },
+                ),
+                const Text(' To '),
+                OutlinedButton(
+                  child: Text(donation.pickupToTime.format(context)),
+                  onPressed: () async {
+                    var pickedTime = await showTimePicker(
+                        context: context, initialTime: donation.pickupToTime);
+                    if (pickedTime != null) {
+                      if ((pickedTime.hour * 60 + pickedTime.minute) >
+                          (donation.pickupFromTime.hour * 60 +
+                              donation.pickupFromTime.minute)) {
+                        setState(() {
+                          donation.pickupToTime = pickedTime;
+                        });
+                      }
+                    }
+                  },
+                ),
+              ],
+            ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _submitNewDonation,
+              onPressed: () {
+                _submitNewDonation(context);
+              },
               child: Text('Submit'),
             ),
           ],
@@ -171,7 +245,8 @@ class _NewDonationFormState extends State<NewDonationForm> {
   }
 
   Widget _newDonationField(
-      TextEditingController controller, String label, String hint) {
+      TextEditingController controller, String label, String hint,
+      [bool nextFocus = true]) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextFormField(
@@ -181,12 +256,28 @@ class _NewDonationFormState extends State<NewDonationForm> {
           hintText: hint,
           border: OutlineInputBorder(),
         ),
+        onEditingComplete: () => nextFocus
+            ? FocusScope.of(context).nextFocus()
+            : FocusScope.of(context).unfocus(),
         validator: (text) => (text != null && text.isEmpty) ? hint : null,
       ),
     );
   }
 
-  void _submitNewDonation() {
+  void _takePicture() async {
+    XFile? picFile = await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 50);
+    if (picFile != null) {
+      setState(() {
+        _picture = Image.file(
+          File(picFile.path),
+          fit: BoxFit.fitWidth,
+        );
+      });
+    }
+  }
+
+  void _submitNewDonation(BuildContext context) {
     final form = _formKey.currentState;
     if (form != null && !form.validate()) {
       return;
@@ -201,6 +292,23 @@ class _NewDonationFormState extends State<NewDonationForm> {
     donation.depth = double.parse(_depthController.text);
     donation.height = double.parse(_heightController.text);
 
+    var donations = DonationsProvider.of(context);
+    print("Before adding new donation, num of donations: " +
+        donations.length().toString());
+    print("Add new donation: " + donation.name);
+    donations.add(donation);
+    print("After adding new donation, num of donations: " +
+        donations.length().toString());
+
+    // donation = new Donation();
+    // _nameController.clear();
+    // _weightController.clear();
+    // _numBoxesController.clear();
+    // _numMealsController.clear();
+    // _widthController.clear();
+    // _heightController.clear();
+    // _depthController.clear();
+
     // show pop up
     showDialog(
       context: context,
@@ -209,7 +317,10 @@ class _NewDonationFormState extends State<NewDonationForm> {
         content: const Text('Your Donation has been submitted to OVC.'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
+            onPressed: () {
+              Navigator.pop(context, 'OK');
+              Navigator.pop(context, donation);
+            },
             child: const Text('OK'),
           ),
         ],
@@ -218,19 +329,3 @@ class _NewDonationFormState extends State<NewDonationForm> {
   }
 }
 
-class Donation {
-  String name = "unknown";
-  double weight = 0.0;
-  int numBoxes = 0;
-  int numMeals = 0;
-  double width = 0.0;
-  double height = 0.0;
-  double depth = 0.0;
-  bool hasDairy = false;
-  bool hasNuts = false;
-  bool hasEggs = false;
-  bool reqFrige = false;
-  bool isGrocery = false;
-  DateTime pickupDateTime = DateTime.now();
-  DateTime submitDateTime = DateTime.now();
-}
