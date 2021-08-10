@@ -52,6 +52,7 @@ class _ClientSignupState extends State<ClientSignup>{
 
     final passwordBox = TextFormField(
       style: textStyle,
+      obscureText: true,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,

@@ -50,6 +50,7 @@ class _ClientLoginState extends State<ClientLogin>{
 
     final passwordBox = TextFormField(
       style: textStyle,
+      obscureText: true,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,

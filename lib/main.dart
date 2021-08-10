@@ -12,9 +12,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'OVC App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: ClientSignup(title: 'Client Signup',),
     );
   }
