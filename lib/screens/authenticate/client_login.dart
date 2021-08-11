@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
+import 'package:ovcapp/services/client_auth.dart';
 
 final _backgroundColor = Colors.black87;
 
-class ClientLogin extends StatefulWidget{
+class ClientLogin extends StatefulWidget {
   ClientLogin({Key? key, required this.title}) : super(key: key);
 
   final String title;
@@ -11,9 +12,14 @@ class ClientLogin extends StatefulWidget{
   _ClientLoginState createState() => _ClientLoginState();
 }
 
-class _ClientLoginState extends State<ClientLogin>{
+class _ClientLoginState extends State<ClientLogin> {
+  final AuthService _auth = AuthService();
 
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
+  String email = '';
+  String password = '';
+
+  TextStyle textStyle =
+      TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
     borderRadius: BorderRadius.circular(32.0),
@@ -30,8 +36,7 @@ class _ClientLoginState extends State<ClientLogin>{
     ),
   );
 
-  Widget _buildClientLoginWidgets(BuildContext context){
-
+  Widget _buildClientLoginWidgets(BuildContext context) {
     final emailBox = TextFormField(
       style: textStyle,
       decoration: InputDecoration(
@@ -41,10 +46,13 @@ class _ClientLoginState extends State<ClientLogin>{
         hintStyle: textStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your email address';
         }
+      },
+      onChanged: (val) {
+        setState(() => email = val);
       },
     );
 
@@ -59,10 +67,13 @@ class _ClientLoginState extends State<ClientLogin>{
         contentPadding: EdgeInsets.all(20.0),
       ),
       obscureText: true,
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your password';
         }
+      },
+      onChanged: (val) {
+        setState(() => password = val);
       },
     );
 
@@ -72,11 +83,17 @@ class _ClientLoginState extends State<ClientLogin>{
       color: Colors.amber,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-        onPressed: (){},
+        onPressed: () async {
+          print(email);
+          print(password);
+        },
         child: Text(
           'Login',
           textAlign: TextAlign.center,
-          style: textStyle.copyWith(fontSize: 24.0, fontWeight: FontWeight.bold,),
+          style: textStyle.copyWith(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
@@ -84,7 +101,7 @@ class _ClientLoginState extends State<ClientLogin>{
     final notHaveAccountTextButton = Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget> [
+        children: <Widget>[
           Text(
             'Do not have an account?',
             style: textStyle.copyWith(fontSize: 18.0),
@@ -93,7 +110,10 @@ class _ClientLoginState extends State<ClientLogin>{
             onPressed: () => _navigateToClientSignup(context),
             child: Text(
               'Sign up',
-              style: textStyle.copyWith(fontSize: 18.0, decoration: TextDecoration.underline,),
+              style: textStyle.copyWith(
+                fontSize: 18.0,
+                decoration: TextDecoration.underline,
+              ),
             ),
           ),
         ],
@@ -101,41 +121,40 @@ class _ClientLoginState extends State<ClientLogin>{
     );
 
     return ListView(
-        children: <Widget>[
-          Image.asset(
-            'images/ovclogo.png',
-            height: 250,
-            width: 250,
-            scale: 1.0,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 15.0),
-            child: emailBox,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
-            child: passwordBox,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
-            child: loginButton,
-          ),
-          notHaveAccountTextButton,
-        ],
+      children: <Widget>[
+        Image.asset(
+          'images/ovclogo.png',
+          height: 250,
+          width: 250,
+          scale: 1.0,
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 15.0),
+          child: emailBox,
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+          child: passwordBox,
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+          child: loginButton,
+        ),
+        notHaveAccountTextButton,
+      ],
     );
   }
 
-  void _navigateToClientSignup(BuildContext context){
+  void _navigateToClientSignup(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return ClientSignup(title: 'Client Signup');
       },
     ));
   }
 
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     final loginForm = Container(
       color: _backgroundColor,
       child: _buildClientLoginWidgets(context),
@@ -146,4 +165,3 @@ class _ClientLoginState extends State<ClientLogin>{
     );
   }
 }
-

@@ -11,6 +11,9 @@ import 'package:ovcapp/profile_page.dart';
 import 'package:ovcapp/volunteer_pickup.dart';
 import 'package:ovcapp/volunteer_sign_in.dart';
 import 'package:ovcapp/volunteer_sign_up.dart';
+import 'package:ovcapp/client_login.dart';
+import 'package:ovcapp/client_signup.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +22,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
       home: LandingPage(),
       // home: SignIn(),
       // home: ClientSignup(title: 'Client Signup',),
+      // home: ClientLogin(title: 'Client Login',),
     );
   }
 }
