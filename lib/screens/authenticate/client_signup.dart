@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
 import 'package:ovcapp/more_signup_info.dart';
+import 'package:ovcapp/services/client_auth.dart';
 
 final _backgroundColor = Colors.black87;
 
@@ -14,6 +15,11 @@ class ClientSignup extends StatefulWidget{
 }
 
 class _ClientSignupState extends State<ClientSignup>{
+
+  final AuthService _auth = AuthService();
+
+  String email = '';
+  String password = '';
 
   TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
 
@@ -48,6 +54,9 @@ class _ClientSignupState extends State<ClientSignup>{
           return 'Please enter your email address';
         }
       },
+      onChanged: (val){
+        setState(() => email = val);
+      },
     );
 
     final passwordBox = TextFormField(
@@ -65,6 +74,9 @@ class _ClientSignupState extends State<ClientSignup>{
           return 'Please enter your password';
         }
       },
+      onChanged: (val){
+        setState(() => password = val);
+      },
     );
 
     final nextButton = Material(
@@ -73,7 +85,11 @@ class _ClientSignupState extends State<ClientSignup>{
       color: Colors.amber,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-        onPressed: () => _navigateToMoreSignupInfoPage(context),
+        onPressed: () async {
+          print(email);
+          print(password);
+          _navigateToMoreSignupInfoPage(context);
+        },
         child: Text(
           'Next',
           textAlign: TextAlign.center,
