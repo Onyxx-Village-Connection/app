@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/landing_page.dart';
 
 void main() {
@@ -10,7 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'OVC App',
+      //theme: ThemeData(
+        //primarySwatch: Colors.blue,
+      //),
+      //home: ClientSignup(title: 'Client Signup',),
       theme: ThemeData.dark(),
       home: LandingPage(),
     );
