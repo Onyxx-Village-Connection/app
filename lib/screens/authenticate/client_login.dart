@@ -57,6 +57,7 @@ class _ClientLoginState extends State<ClientLogin>{
         hintStyle: textStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
+      obscureText: true,
       validator: (String? value){
         if (value == null || value.isEmpty){
           return 'Please enter your password';
