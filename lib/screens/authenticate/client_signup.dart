@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:ovcapp/client_login.dart';
+import 'package:ovcapp/screens/authenticate/client_login.dart';
 
 final _backgroundColor = Colors.black87;
 

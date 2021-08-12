@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/client_signup.dart';
+import 'package:ovcapp/screens/authenticate/client_signup.dart';
 
 void main() {
   runApp(MyApp());
