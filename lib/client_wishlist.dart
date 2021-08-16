@@ -15,18 +15,25 @@ class _ClientWishlistState extends State<ClientWishlist>{
   TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
 
   Widget _buildClientWishlistWidgets(BuildContext context){
-    
-    final starButton = IconButton(onPressed: onPressed, icon: icon)
+
+    bool _selected = true;
+    final starButton = IconButton(
+        icon: Icon(_selected? Icons.star: Icons.star_outline),
+        color: Colors.white,
+        onPressed: () {
+          setState(() {
+            _selected = !_selected;
+            });
+        },
+    );
 
     final itemCard = Row(
-      
+      children: <Widget> [
+        starButton,
+      ],
     );
 
-    return ListView.builder(
-        itemBuilder: (BuildContext context, index){
-          return itemCard();
-        }
-    );
+    return starButton;
 
   }
 

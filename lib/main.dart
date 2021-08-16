@@ -14,6 +14,7 @@ import 'package:ovcapp/volunteer_sign_up.dart';
 import 'package:ovcapp/client_login.dart';
 import 'package:ovcapp/client_signup.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ovcapp/client_wishlist.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
       home: LandingPage(),
       // home: SignIn(),
       // home: ClientSignup(title: 'Client Signup',),
-      // home: ClientLogin(title: 'Client Login',),
+      // home: ClientWishlist(title: 'Client Wishlist',),
+      //home: ClientLogin(title: 'Client Login',),
     );
   }
 }
