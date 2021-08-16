@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ovcapp/client_login.dart';
 import 'package:ovcapp/client_signup.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ovcapp/client_wishlist.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'OVC app',
-      home: ClientLogin(title: 'Client Login',),
+      home: ClientWishlist(title: 'Client Wishlist',),
+      //home: ClientLogin(title: 'Client Login',),
     );
   }
 }
