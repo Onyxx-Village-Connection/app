@@ -16,34 +16,16 @@ class _ClientWishlistState extends State<ClientWishlist>{
 
   Widget _buildClientWishlistWidgets(BuildContext context){
 
-    bool _selected = false;
-    final starButton = GestureDetector(
-      child: IconButton(
-        icon: _selected? Icon(
-          Icons.star,
-          color: Colors.white,
-          size: 30,
-        ):
-        Icon(
-          Icons.star_outline,
-          color: Colors.white,
-          size: 30,
-        ),
-        onPressed: () {
-          setState(() {
-            _selected = !_selected;
-          });
-        },
-      ),
-    );
+    //final itemCard = Row(
+      //children: <Widget> [
+        //starButton,
+      //],
+    //);
 
-    final itemCard = Row(
-      children: <Widget> [
-        starButton,
+    return ListView(
+      children: <Widget>[
       ],
     );
-
-    return starButton;
 
   }
 
