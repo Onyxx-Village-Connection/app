@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'OVC app',
-      home: ClientResources(title: 'Client Resources',),
+      home: ClientWishlist(title: 'Client Wishlist',),
+      //ClientResources(title: 'Client Resources',),
       //home: ClientLogin(title: 'Client Login',),
     );
   }
