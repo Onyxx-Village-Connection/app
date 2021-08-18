@@ -15,8 +15,10 @@ import 'package:ovcapp/landing.dart';
 import 'package:ovcapp/profile_page.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/services.dart';
+// import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/landing_page.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:ovcapp/screens/map/map_screen.dart';
 import 'package:ovcapp/splash.dart';
 import 'package:ovcapp/volunteer_pickup.dart';
@@ -25,6 +27,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(OnyxxApp());
+  // runApp(MyApp());
 }
 
 class OnyxxApp extends StatelessWidget {
