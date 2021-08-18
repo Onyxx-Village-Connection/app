@@ -14,16 +14,33 @@ class _ClientWishlistState extends State<ClientWishlist>{
 
   TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
 
+  bool _isSelected = false;
+
   Widget _buildClientWishlistWidgets(BuildContext context){
 
-    //final itemCard = Row(
-      //children: <Widget> [
-        //starButton,
-      //],
-    //);
+    final itemCardButton = GestureDetector(
+      onTap: (){
+        setState(() {
+          _isSelected = !_isSelected;
+        });
+      },
+      child: Icon(
+        Icons.star,
+        color: _isSelected? Colors.amber: Colors.grey,
+        size: 30.0,
+      ),
+    );
+
+    final itemCard = Row(
+      children: <Widget> [
+        itemCardButton,
+        TextFormField()
+      ],
+    );
 
     return ListView(
       children: <Widget>[
+        itemCardButton,
       ],
     );
 
