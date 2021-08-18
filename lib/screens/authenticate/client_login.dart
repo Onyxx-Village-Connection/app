@@ -102,7 +102,7 @@ class _ClientLoginState extends State<ClientLogin>{
     return ListView(
         children: <Widget>[
           Image.asset(
-            'assets/images/ovclogo.png',
+            'images/ovclogo.png',
             height: 250,
             width: 250,
             scale: 1.0,
