@@ -32,7 +32,7 @@ class _ClientWishlistState extends State<ClientWishlist>{
   @override
   Widget build(BuildContext context){
 
-    final clientWishlist = Container(
+    final clientResources = Container(
       color: _backgroundColor,
       child: _buildClientWishlistWidgets(context),
     );
@@ -40,13 +40,15 @@ class _ClientWishlistState extends State<ClientWishlist>{
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
+        title: Text('My Wishlist'),
+        centerTitle: true,
         iconTheme: IconThemeData(
           color: Colors.amber,
         ),
         backgroundColor: _backgroundColor,
       ),
 
-      body: clientWishlist,
+      body: clientResources,
     );
 
   }

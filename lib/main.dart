@@ -12,6 +12,7 @@ import 'package:ovcapp/volunteer_pickup.dart';
 import 'package:ovcapp/volunteer_sign_in.dart';
 import 'package:ovcapp/volunteer_sign_up.dart';
 import 'package:ovcapp/client_login.dart';
+import 'package:ovcapp/client_resources.dart';
 import 'package:ovcapp/client_signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ovcapp/client_wishlist.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       // home: SignIn(),
       // home: ClientSignup(title: 'Client Signup',),
       // home: ClientWishlist(title: 'Client Wishlist',),
+      // home: ClientResources(title: 'Client Resources',),
       //home: ClientLogin(title: 'Client Login',),
     );
   }
