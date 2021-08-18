@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/my_donations.dart';
+import 'package:ovcapp/screens/donors/my_donations.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
 
 class LandingPage extends StatelessWidget {
