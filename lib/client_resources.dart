@@ -16,7 +16,6 @@ class _ClientResourcesState extends State<ClientResources>{
 
   Widget _buildClientResourcesWidgets(BuildContext context){
 
-
     return ListView(
       children: <Widget>[
 
@@ -29,22 +28,47 @@ class _ClientResourcesState extends State<ClientResources>{
   Widget build(BuildContext context){
 
     final pageRoutingButtons = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
+          color: Colors.amber,
           child: TextButton(
-            child: Text('Deliveries'),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.all(20.0),
+            ),
+            child: Text(
+                'Deliveries',
+              textAlign: TextAlign.center,
+              style: textStyle,
+            ),
             onPressed: (){},
           ),
         ),
         Container(
+          color: Colors.amber,
           child: TextButton(
-            child: Text('Wishlist'),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.all(20.0),
+            ),
+            child: Text(
+                'Wishlist',
+              textAlign: TextAlign.center,
+              style: textStyle,
+            ),
             onPressed: (){},
           ),
         ),
         Container(
+          color: Colors.amber,
           child: TextButton(
-            child: Text('Resources'),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.all(20.0),
+            ),
+            child: Text(
+                'Resources',
+              textAlign: TextAlign.center,
+              style: textStyle,
+            ),
             onPressed: (){},
           ),
         ),
@@ -69,7 +93,11 @@ class _ClientResourcesState extends State<ClientResources>{
       ),
 
       body: clientWishlist,
-      bottomSheet: pageRoutingButtons,
+      bottomSheet: Container(
+        color: _backgroundColor,
+        padding: EdgeInsets.fromLTRB(5.0, 0, 5.0, 10.0),
+        child: pageRoutingButtons,
+      ),
     );
 
   }
