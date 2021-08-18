@@ -16,14 +16,10 @@ class _ClientResourcesState extends State<ClientResources>{
 
   Widget _buildClientResourcesWidgets(BuildContext context){
 
-    //final itemCard = Row(
-    //children: <Widget> [
-    //starButton,
-    //],
-    //);
 
     return ListView(
       children: <Widget>[
+
       ],
     );
 
@@ -31,6 +27,30 @@ class _ClientResourcesState extends State<ClientResources>{
 
   @override
   Widget build(BuildContext context){
+
+    final pageRoutingButtons = Row(
+      children: <Widget>[
+        Container(
+          child: TextButton(
+            child: Text('Deliveries'),
+            onPressed: (){},
+          ),
+        ),
+        Container(
+          child: TextButton(
+            child: Text('Wishlist'),
+            onPressed: (){},
+          ),
+        ),
+        Container(
+          child: TextButton(
+            child: Text('Resources'),
+            onPressed: (){},
+          ),
+        ),
+      ],
+    );
+
 
     final clientWishlist = Container(
       color: _backgroundColor,
@@ -49,6 +69,7 @@ class _ClientResourcesState extends State<ClientResources>{
       ),
 
       body: clientWishlist,
+      bottomSheet: pageRoutingButtons,
     );
 
   }
