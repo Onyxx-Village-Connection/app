@@ -1,5 +1,5 @@
 // model for a list of donations
-import 'package:ovcapp/donation.dart';
+import 'package:ovcapp/screens/donors/donation.dart';
 
 class Donations {
   List<Donation> donations;

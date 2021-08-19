@@ -150,7 +150,7 @@ class _ClientSignupState extends State<ClientSignup>{
     return ListView(
       children: <Widget> [
         Image.asset(
-          'assets/images/ovclogo.png',
+          'images/ovclogo.png',
           height: 155,
           width: 155,
           scale: 1.2,

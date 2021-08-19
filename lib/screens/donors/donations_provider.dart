@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/donations.dart';
+import 'package:ovcapp/screens/donors/donations.dart';
 
 class DonationsProvider extends InheritedWidget {
   final Donations donations;
