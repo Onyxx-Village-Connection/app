@@ -34,7 +34,13 @@ class _ClientWishlistState extends State<ClientWishlist>{
     final itemCard = Row(
       children: <Widget> [
         itemCardButton,
-        TextFormField()
+        TextFormField(
+          style: textStyle,
+          decoration: InputDecoration(
+            hintText: 'Enter item name',
+
+          ),
+        ),
       ],
     );
 
