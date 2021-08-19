@@ -1,6 +1,6 @@
 // 'Donor Profile' screen
 import 'package:flutter/material.dart';
-import 'package:ovcapp/donor.dart';
+import 'package:ovcapp/screens/donors/donor.dart';
 
 class DonorProfile extends StatefulWidget {
   const DonorProfile({Key? key, required this.title}) : super(key: key);

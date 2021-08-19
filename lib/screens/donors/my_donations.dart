@@ -1,8 +1,8 @@
 // 'My Donations' screen for donor
 import 'package:flutter/material.dart';
-import 'package:ovcapp/new_donation.dart';
-import 'package:ovcapp/donation.dart';
-import 'package:ovcapp/donor_profile.dart';
+import 'package:ovcapp/screens/donors/new_donation.dart';
+import 'package:ovcapp/screens/donors/donation.dart';
+import 'package:ovcapp/screens/donors/donor_profile.dart';
 
 class MyDonations extends StatefulWidget {
   const MyDonations({Key? key, required this.title}) : super(key: key);
@@ -77,8 +77,4 @@ class _MyDonationsState extends State<MyDonations> {
       },
     );
   }
-
-  // FutureOr onGoBack(dynamic value) {
-  //   setState(() {});
-  // }
 }
