@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:ovcapp/client_login.dart';
+import 'package:ovcapp/screens/authenticate/client_login.dart';
 import 'package:ovcapp/more_signup_info.dart';
 import 'package:ovcapp/services/client_auth.dart';
+
 
 final _backgroundColor = Colors.black87;
 
