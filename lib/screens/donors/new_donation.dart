@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:ovcapp/donation.dart';
-import 'package:ovcapp/donations_provider.dart';
+import 'package:ovcapp/screens/donors/donation.dart';
+import 'package:ovcapp/screens/donors/donations_provider.dart';
 
 class NewDonation extends StatelessWidget {
   const NewDonation({Key? key, required this.title}) : super(key: key);

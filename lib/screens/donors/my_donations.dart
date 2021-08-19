@@ -1,7 +1,7 @@
 // 'My Donations' screen for donor
 import 'package:flutter/material.dart';
-import 'package:ovcapp/new_donation.dart';
-import 'package:ovcapp/donation.dart';
+import 'package:ovcapp/screens/donors/new_donation.dart';
+import 'package:ovcapp/screens/donors/donation.dart';
 
 
 class MyDonations extends StatefulWidget {
