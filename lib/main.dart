@@ -17,18 +17,20 @@ import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
 import 'package:ovcapp/landing_page.dart';
 import 'themes.dart';
+import 'package:untitled/splash.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(OnyxxApp());
 }
 
-class MyApp extends StatelessWidget {
+class OnyxxApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+<<<<<<< HEAD
       title: 'OVC App',
       //theme: ThemeData(
       //primarySwatch: Colors.blue,
@@ -41,6 +43,14 @@ class MyApp extends StatelessWidget {
       // home: ClientWishlist(title: 'Client Wishlist',),
       // home: ClientResources(title: 'Client Resources',),
       //home: ClientLogin(title: 'Client Login',),
+=======
+      title: 'Onyxx Village Connection',
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.black,
+      ),
+      home: Splash(),
+>>>>>>> Added my main, landing, and splash screen pages
     );
   }
 }
