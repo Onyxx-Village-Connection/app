@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ovcapp/client_resources.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:ovcapp/client_wishlist.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,18 +14,14 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'OVC App',
-      //theme: ThemeData(
-        //primarySwatch: Colors.blue,
-      //),
-      //home: ClientSignup(title: 'Client Signup',),
-      theme: ThemeData.dark(),
-      home: LandingPage(),
+      title: 'OVC app',
+      home: ClientWishlist(title: 'Client Wishlist',),
+      //ClientResources(title: 'Client Resources',),
+      //home: ClientLogin(title: 'Client Login',),
     );
   }
 }
