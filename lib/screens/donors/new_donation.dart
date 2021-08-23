@@ -6,31 +6,38 @@ import 'dart:io';
 import 'package:ovcapp/screens/donors/donation.dart';
 import 'package:ovcapp/screens/donors/donations_provider.dart';
 
-class NewDonation extends StatelessWidget {
-  const NewDonation({Key? key, required this.title}) : super(key: key);
+// class NewDonation extends StatelessWidget {
+//   final String title; // title of page
+//   final Donation donation;
 
-  final String title; // title of page
+//   const NewDonation({Key? key, required this.title, required this.donation})
+//       : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(this.title),
-      ),
-      body: NewDonationForm(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(this.title),
+//       ),
+//       body: NewDonationForm(),
+//     );
+//   }
+// }
 
 // new donation form widget
-class NewDonationForm extends StatefulWidget {
-  const NewDonationForm({Key? key}) : super(key: key);
+class NewDonation extends StatefulWidget {
+  final Donation donation;
+
+  const NewDonation({Key? key, required this.donation}) : super(key: key);
 
   @override
-  _NewDonationFormState createState() => _NewDonationFormState();
+  _NewDonationState createState() => _NewDonationState(donation);
 }
 
-class _NewDonationFormState extends State<NewDonationForm> {
+class _NewDonationState extends State<NewDonation> {
+  Donation donation;
+  _NewDonationState(this.donation);
+
   // global form key
   final _formKey = GlobalKey<FormState>();
 
@@ -43,202 +50,213 @@ class _NewDonationFormState extends State<NewDonationForm> {
   final _depthController = TextEditingController();
   final _heightController = TextEditingController();
 
-  var donation = new Donation();
+  // var donation = new Donation();
 
   Image _picture = Image(image: AssetImage('images/placeholder.jpg'));
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-        // avoid overflow when keyboard is shown
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            GestureDetector(
-              onTap: _takePicture,
-              child: SizedBox(
-                width: 200,
-                height: 200,
-                child: _picture,
+    return Scaffold(
+      appBar: AppBar(
+        title: (donation.docId.isEmpty
+            ? Text('New Donation')
+            : Text('Update Donation')),
+      ),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          // avoid overflow when keyboard is shown
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              GestureDetector(
+                onTap: _takePicture,
+                child: SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: _picture,
+                ),
               ),
-            ),
-            _newDonationField(_nameController, 'Item name', 'Item name'),
-            _newDonationField(_weightController, 'Item weight', 'Item weight'),
-            _newDonationField(
-                _numBoxesController, 'Number of boxes', 'Number of boxes'),
-            _newDonationField(
-                _numMealsController, 'Number of meals', 'Number of meals'),
-            const Text('Dimension (inch)'),
-            Row(
-              children: [
-                Expanded(
-                  child: _newDonationField(_widthController, 'Width', 'Width'),
-                ),
-                Expanded(
-                  child: _newDonationField(_depthController, 'Depth', 'Depth'),
-                ),
-                Expanded(
-                  child: _newDonationField(
-                      _heightController, 'Height', 'Height', false),
-                ),
-              ],
-            ),
-            const Text('Indicate Possible Allergens:'),
-            Row(
-              children: [
-                Expanded(
-                  child: CheckboxListTile(
-                      title: const Text('Dairy'),
-                      value: donation.hasDairy,
-                      controlAffinity: ListTileControlAffinity.leading,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          donation.hasDairy =
-                              (value != null && value) ? true : false;
-                        });
-                      }),
-                ),
-                Expanded(
-                  child: CheckboxListTile(
-                      title: const Text('Nuts'),
-                      value: donation.hasNuts,
-                      controlAffinity: ListTileControlAffinity.leading,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          donation.hasNuts =
-                              (value != null && value) ? true : false;
-                        });
-                      }),
-                ),
-                Expanded(
-                  child: CheckboxListTile(
-                      title: const Text('Eggs'),
-                      value: donation.hasEggs,
-                      controlAffinity: ListTileControlAffinity.leading,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          donation.hasEggs =
-                              (value != null && value) ? true : false;
-                        });
-                      }),
-                ),
-              ],
-            ),
-            const Text('Does this require refrigeration?'),
-            Row(
-              children: [
-                Expanded(
-                    child: RadioListTile(
-                        title: const Text('Yes'),
-                        value: true,
-                        groupValue: donation.reqFrige,
+              _newDonationField(_nameController, 'Item name', 'Item name'),
+              _newDonationField(
+                  _weightController, 'Item weight', 'Item weight'),
+              _newDonationField(
+                  _numBoxesController, 'Number of boxes', 'Number of boxes'),
+              _newDonationField(
+                  _numMealsController, 'Number of meals', 'Number of meals'),
+              const Text('Dimension (inch)'),
+              Row(
+                children: [
+                  Expanded(
+                    child:
+                        _newDonationField(_widthController, 'Width', 'Width'),
+                  ),
+                  Expanded(
+                    child:
+                        _newDonationField(_depthController, 'Depth', 'Depth'),
+                  ),
+                  Expanded(
+                    child: _newDonationField(
+                        _heightController, 'Height', 'Height', false),
+                  ),
+                ],
+              ),
+              const Text('Indicate Possible Allergens:'),
+              Row(
+                children: [
+                  Expanded(
+                    child: CheckboxListTile(
+                        title: const Text('Dairy'),
+                        value: donation.hasDairy,
+                        controlAffinity: ListTileControlAffinity.leading,
                         onChanged: (bool? value) {
                           setState(() {
-                            donation.reqFrige = true;
+                            donation.hasDairy =
+                                (value != null && value) ? true : false;
                           });
-                        })),
-                Expanded(
-                    child: RadioListTile(
-                        title: const Text('No'),
-                        value: false,
-                        groupValue: donation.reqFrige,
+                        }),
+                  ),
+                  Expanded(
+                    child: CheckboxListTile(
+                        title: const Text('Nuts'),
+                        value: donation.hasNuts,
+                        controlAffinity: ListTileControlAffinity.leading,
                         onChanged: (bool? value) {
                           setState(() {
-                            donation.reqFrige = false;
+                            donation.hasNuts =
+                                (value != null && value) ? true : false;
                           });
-                        })),
-              ],
-            ),
-            const Text('Is this a grocery donation?'),
-            Row(
-              children: [
-                Expanded(
-                    child: RadioListTile(
-                        title: const Text('Yes'),
-                        value: true,
-                        groupValue: donation.isGrocery,
+                        }),
+                  ),
+                  Expanded(
+                    child: CheckboxListTile(
+                        title: const Text('Eggs'),
+                        value: donation.hasEggs,
+                        controlAffinity: ListTileControlAffinity.leading,
                         onChanged: (bool? value) {
                           setState(() {
-                            donation.isGrocery = true;
+                            donation.hasEggs =
+                                (value != null && value) ? true : false;
                           });
-                        })),
-                Expanded(
-                    child: RadioListTile(
-                        title: const Text('No'),
-                        value: false,
-                        groupValue: donation.isGrocery,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            donation.isGrocery = false;
-                          });
-                        })),
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Pick up Date: '),
-                OutlinedButton(
-                  child: Text(DateFormat.yMd().format(donation.pickupDate)),
-                  onPressed: () async {
-                    var pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: donation.pickupDate,
-                      firstDate: donation.pickupDate,
-                      lastDate: DateTime(2100),
-                    );
-                    if (pickedDate != null) {
-                      setState(() {
-                        donation.pickupDate = pickedDate;
-                      });
-                    }
-                  },
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Pick up Time: '),
-                OutlinedButton(
-                  child: Text(donation.pickupFromTime.format(context)),
-                  onPressed: () async {
-                    var pickedTime = await showTimePicker(
-                        context: context, initialTime: donation.pickupFromTime);
-                    if (pickedTime != null) {
-                      setState(() {
-                        donation.pickupFromTime = pickedTime;
-                      });
-                    }
-                  },
-                ),
-                const Text(' To '),
-                OutlinedButton(
-                  child: Text(donation.pickupToTime.format(context)),
-                  onPressed: () async {
-                    var pickedTime = await showTimePicker(
-                        context: context, initialTime: donation.pickupToTime);
-                    if (pickedTime != null) {
-                      if ((pickedTime.hour * 60 + pickedTime.minute) >
-                          (donation.pickupFromTime.hour * 60 +
-                              donation.pickupFromTime.minute)) {
+                        }),
+                  ),
+                ],
+              ),
+              const Text('Does this require refrigeration?'),
+              Row(
+                children: [
+                  Expanded(
+                      child: RadioListTile(
+                          title: const Text('Yes'),
+                          value: true,
+                          groupValue: donation.reqFrige,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              donation.reqFrige = true;
+                            });
+                          })),
+                  Expanded(
+                      child: RadioListTile(
+                          title: const Text('No'),
+                          value: false,
+                          groupValue: donation.reqFrige,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              donation.reqFrige = false;
+                            });
+                          })),
+                ],
+              ),
+              const Text('Is this a grocery donation?'),
+              Row(
+                children: [
+                  Expanded(
+                      child: RadioListTile(
+                          title: const Text('Yes'),
+                          value: true,
+                          groupValue: donation.isGrocery,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              donation.isGrocery = true;
+                            });
+                          })),
+                  Expanded(
+                      child: RadioListTile(
+                          title: const Text('No'),
+                          value: false,
+                          groupValue: donation.isGrocery,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              donation.isGrocery = false;
+                            });
+                          })),
+                ],
+              ),
+              Row(
+                children: [
+                  const Text('Pick up Date: '),
+                  OutlinedButton(
+                    child: Text(DateFormat.yMd().format(donation.pickupDate)),
+                    onPressed: () async {
+                      var pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: donation.pickupDate,
+                        firstDate: donation.pickupDate,
+                        lastDate: DateTime(2100),
+                      );
+                      if (pickedDate != null) {
                         setState(() {
-                          donation.pickupToTime = pickedTime;
+                          donation.pickupDate = pickedDate;
                         });
                       }
-                    }
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _submitNewDonation(context);
-              },
-              child: Text('Submit'),
-            ),
-          ],
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Text('Pick up Time: '),
+                  OutlinedButton(
+                    child: Text(donation.pickupFromTime.format(context)),
+                    onPressed: () async {
+                      var pickedTime = await showTimePicker(
+                          context: context,
+                          initialTime: donation.pickupFromTime);
+                      if (pickedTime != null) {
+                        setState(() {
+                          donation.pickupFromTime = pickedTime;
+                        });
+                      }
+                    },
+                  ),
+                  const Text(' To '),
+                  OutlinedButton(
+                    child: Text(donation.pickupToTime.format(context)),
+                    onPressed: () async {
+                      var pickedTime = await showTimePicker(
+                          context: context, initialTime: donation.pickupToTime);
+                      if (pickedTime != null) {
+                        if ((pickedTime.hour * 60 + pickedTime.minute) >
+                            (donation.pickupFromTime.hour * 60 +
+                                donation.pickupFromTime.minute)) {
+                          setState(() {
+                            donation.pickupToTime = pickedTime;
+                          });
+                        }
+                      }
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _submitNewDonation(context);
+                },
+                child: Text('Submit'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -300,15 +318,6 @@ class _NewDonationFormState extends State<NewDonationForm> {
     print("After adding new donation, num of donations: " +
         donations.length().toString());
 
-    // donation = new Donation();
-    // _nameController.clear();
-    // _weightController.clear();
-    // _numBoxesController.clear();
-    // _numMealsController.clear();
-    // _widthController.clear();
-    // _heightController.clear();
-    // _depthController.clear();
-
     // show pop up
     showDialog(
       context: context,
@@ -328,4 +337,3 @@ class _NewDonationFormState extends State<NewDonationForm> {
     );
   }
 }
-
