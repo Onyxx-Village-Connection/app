@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:ovcapp/client_wishlist.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/landing_page.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 
 void main() async {
