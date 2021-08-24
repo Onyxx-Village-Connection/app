@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/client_resources.dart';
+import 'package:ovcapp/itemcard_form.dart';
 
 final _backgroundColor = Colors.black87;
 
@@ -65,7 +65,7 @@ class _ClientWishlistState extends State<ClientWishlist>{
   void _navigateToItemCardForm(BuildContext context){
     Navigator.of(context).push(MaterialPageRoute<void>(
       builder: (BuildContext context){
-        return ClientSignup(title: 'Client Signup');
+        return ItemCardForm(title: 'ItemCardForm');
       },
     ));
   }
