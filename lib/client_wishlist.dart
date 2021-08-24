@@ -62,6 +62,14 @@ class _ClientWishlistState extends State<ClientWishlist>{
 
   }
 
+  void _navigateToItemCardForm(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (BuildContext context){
+        return ClientSignup(title: 'Client Signup');
+      },
+    ));
+  }
+
   @override
   Widget build(BuildContext context){
 
