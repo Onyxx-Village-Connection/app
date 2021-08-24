@@ -13,9 +13,9 @@ import 'package:ovcapp/volunteer_sign_in.dart';
 import 'package:ovcapp/volunteer_sign_up.dart';
 import 'package:ovcapp/client_login.dart';
 import 'package:ovcapp/client_resources.dart';
-import 'package:ovcapp/client_signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ovcapp/client_wishlist.dart';
+import 'package:ovcapp/screens/authenticate/client_signup.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
