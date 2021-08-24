@@ -14,10 +14,42 @@ class _ItemCardFormState extends State<ItemCardForm>{
 
   TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
 
+  OutlineInputBorder focusedField = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(32.0),
+    borderSide: BorderSide(
+      color: Colors.amberAccent,
+    ),
+  );
+
+  OutlineInputBorder enabledField = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(32.0),
+    borderSide: BorderSide(
+      color: Colors.amber,
+      width: 2.0,
+    ),
+  );
+
   Widget _buildItemCardFormWidgets(BuildContext context){
+
+    final itemNameBox = TextFormField(
+      style: textStyle,
+      decoration: InputDecoration(
+        focusedBorder: focusedField,
+        enabledBorder: enabledField,
+        hintText: 'Item name',
+        hintStyle: textStyle,
+        contentPadding: EdgeInsets.all(20.0),
+      ),
+      validator: (String? value){
+        if (value == null || value.isEmpty){
+          return 'Please enter the name of your item';
+        }
+      },
+    );
 
     return ListView(
       children: <Widget>[
+        itemNameBox,
 
       ],
     );

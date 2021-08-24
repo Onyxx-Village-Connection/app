@@ -139,7 +139,7 @@ class _ClientWishlistState extends State<ClientWishlist>{
           Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () => _navigateToItemCardForm(context),
                 child: Icon(
                   Icons.add,
                   size: 26.0,
