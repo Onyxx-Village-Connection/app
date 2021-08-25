@@ -13,7 +13,7 @@ class ClientWishlist extends StatefulWidget{
 
 class _ClientWishlistState extends State<ClientWishlist>{
 
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontSize: 18.0, color: Colors.white);
 
   bool _isSelected = false;
 

@@ -22,19 +22,19 @@ class _ClientSignupState extends State<ClientSignup>{
   String email = '';
   String password = '';
 
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
+  TextStyle textStyle = TextStyle( fontSize: 20.0, color: Colors.white);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(32.0),
+      borderRadius: BorderRadius.circular(5.0),
       borderSide: BorderSide(
-        color: Colors.amberAccent,
+        color: Colors.grey,
       ),
   );
 
   OutlineInputBorder enabledField = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(32.0),
+      borderRadius: BorderRadius.circular(5.0),
       borderSide: BorderSide(
-        color: Colors.amber,
+        color: Colors.white10,
         width: 2.0,
       ),
   );

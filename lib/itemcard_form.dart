@@ -12,7 +12,7 @@ class ItemCardForm extends StatefulWidget{
 
 class _ItemCardFormState extends State<ItemCardForm>{
 
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontSize: 18.0, color: Colors.white);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
     borderRadius: BorderRadius.circular(32.0),
