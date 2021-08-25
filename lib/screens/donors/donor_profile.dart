@@ -1,11 +1,15 @@
 // 'Donor Profile' screen
+
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:ovcapp/screens/donors/donor.dart';
 
 class DonorProfile extends StatefulWidget {
-  const DonorProfile({Key? key, required this.title}) : super(key: key);
+  const DonorProfile({Key? key, required this.userId}) : super(key: key);
 
-  final String title;
+  final String userId;
 
   @override
   _DonorProfileState createState() => _DonorProfileState();
@@ -21,10 +25,54 @@ class _DonorProfileState extends State<DonorProfile> {
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
 
-  var donor = new Donor();
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  final firestoreInstance = FirebaseFirestore.instance;
+
+  void getDonor() async {
+    await firestoreInstance
+        .collection('donors')
+        .where("userId", isEqualTo: userId)
+        .get()
+        .then((value) {
+      if (value.docs.isEmpty) {
+        // new donor profile
+      } else {
+        // existing donor profile
+        var donorProfile = value.docs[0].data();
+        _nameController.text = donorProfile["name"];
+        _addressController.text = donorProfile["address"];
+        _phoneController.text = donorProfile["phone"];
+        _emailController.text = donorProfile["email"];
+      }
+    });
+    return;
+  }
+
+  void updateDonor(Donor donor) async {
+    await firestoreInstance
+        .collection('donors')
+        .where("userId", isEqualTo: userId)
+        .get()
+        .then((value) {
+      if (value.docs.isEmpty) {
+        // add new donor
+        firestoreInstance.collection("donors").add(donor.toJson());
+      } else {
+        // update existing donor
+        value.docs.forEach((element) {
+          firestoreInstance
+              .collection("donors")
+              .doc(element.id)
+              .update(donor.toJson());
+        });
+      }
+    });
+    return;
+  }
 
   @override
   Widget build(BuildContext context) {
+    getDonor();
     return Scaffold(
       appBar: AppBar(
         title: Text('Donor Profile'),
@@ -83,11 +131,14 @@ class _DonorProfileState extends State<DonorProfile> {
       return;
     }
 
+    var donor = Donor();
     donor.name = _nameController.text;
     donor.address = _addressController.text;
     donor.phone = _phoneController.text;
-    donor.address = _addressController.text;
+    donor.email = _emailController.text;
+    donor.userId = userId;
 
-    Navigator.pop(context, donor);
+    updateDonor(donor);
+    Navigator.pop(context);
   }
 }

@@ -127,7 +127,7 @@ class _UserLoginState extends State<UserLogin> {
             }
             Navigator.of(context)
                 .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-              return MyDonations(title: 'My Donations');
+              return MyDonations(userId: userId);
             }));
           });
         },

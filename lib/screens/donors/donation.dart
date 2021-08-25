@@ -19,6 +19,7 @@ class Donation {
   TimeOfDay pickupFromTime = TimeOfDay.now();
   TimeOfDay pickupToTime = TimeOfDay.now();
   DateTime submitDateTime = DateTime.now();
+  String userId = "";
 
   Donation()
       : docId = "",
@@ -37,30 +38,31 @@ class Donation {
         pickupDate = DateTime.now(),
         pickupFromTime = TimeOfDay.now(),
         pickupToTime = TimeOfDay.now(),
-        submitDateTime = DateTime.now();
+        submitDateTime = DateTime.now(),
+        userId = "";
 
   Donation.fromJson(Map<String, dynamic> json)
-      : docId = json['docId'],
-        name = json['name'],
-        weight = (json['weight'].runtimeType == String)
+      : docId = json['docId'] ?? "",
+        name = json['name'] ?? "unknown",
+        weight = (json['weight']?.runtimeType == String)
             ? double.parse(json['weight'])
             : json['weight'].toDouble(),
-        numBoxes = json['numBoxes'],
-        numMeals = json['numMeals'],
-        width = (json['width'].runtimeType == String)
+        numBoxes = json['numBoxes'] ?? 0,
+        numMeals = json['numMeals'] ?? 0,
+        width = (json['width']?.runtimeType == String)
             ? double.parse(json['width'])
             : json['width'].toDouble(),
-        height = (json['height'].runtimeType == String)
+        height = (json['height']?.runtimeType == String)
             ? double.parse(json['height'])
             : json['height'].toDouble(),
-        depth = (json['depth'].runtimeType == String)
+        depth = (json['depth']?.runtimeType == String)
             ? double.parse(json['depth'])
             : json['depth'].toDouble(),
-        hasDairy = json['hasDairy'],
-        hasNuts = json['hasNuts'],
-        hasEggs = json['hasEggs'],
-        reqFrige = json['reqFrige'],
-        isGrocery = json['isGrocery'],
+        hasDairy = json['hasDairy'] ?? false,
+        hasNuts = json['hasNuts'] ?? false,
+        hasEggs = json['hasEggs'] ?? false,
+        reqFrige = json['reqFrige'] ?? false,
+        isGrocery = json['isGrocery'] ?? false,
         pickupDate = DateTime.fromMillisecondsSinceEpoch(json['pickupDate']),
         pickupFromTime = TimeOfDay(
             hour: json['pickupFromTime'] ~/ 60,
@@ -69,7 +71,8 @@ class Donation {
             hour: json['pickupToTime'] ~/ 60,
             minute: json['pickupToTime'] % 60),
         submitDateTime =
-            DateTime.fromMillisecondsSinceEpoch(json['submitDateTime']);
+            DateTime.fromMillisecondsSinceEpoch(json['submitDateTime']),
+        userId = json['userId'] ?? "";
 
   Map<String, dynamic> toJson() => {
         'docId': docId,
@@ -89,5 +92,6 @@ class Donation {
         'pickupFromTime': pickupFromTime.hour * 60 + pickupFromTime.minute,
         'pickupToTime': pickupToTime.hour * 60 + pickupToTime.minute,
         'submitDateTime': submitDateTime.millisecondsSinceEpoch,
+        'userId': userId,
       };
 }
