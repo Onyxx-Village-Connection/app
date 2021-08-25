@@ -3,7 +3,7 @@ import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/services/client_auth.dart';
 
 
-final _backgroundColor = Colors.black87;
+final _backgroundColor = Colors.black;
 
 class ClientLogin extends StatefulWidget{
   ClientLogin({Key? key, required this.title}) : super(key: key);
@@ -40,12 +40,11 @@ class _ClientLoginState extends State<ClientLogin>{
   Widget _buildClientLoginWidgets(BuildContext context){
 
     final emailBox = TextFormField(
-      style: textStyle,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Email Address',
-        hintStyle: textStyle,
+        //hintStyle: textStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -59,13 +58,12 @@ class _ClientLoginState extends State<ClientLogin>{
     );
 
     final passwordBox = TextFormField(
-      style: textStyle,
       obscureText: true,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Password',
-        hintStyle: textStyle,
+        //hintStyle: textStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -91,7 +89,7 @@ class _ClientLoginState extends State<ClientLogin>{
         child: Text(
           'Login',
           textAlign: TextAlign.center,
-          style: textStyle.copyWith(fontSize: 24.0, fontWeight: FontWeight.bold,),
+          //style: textStyle.copyWith(fontSize: 24.0, fontWeight: FontWeight.bold,),
         ),
       ),
     );
@@ -102,13 +100,13 @@ class _ClientLoginState extends State<ClientLogin>{
         children: <Widget> [
           Text(
             'Do not have an account?',
-            style: textStyle.copyWith(fontSize: 18.0),
+            style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: Colors.white),
           ),
           TextButton(
             onPressed: () => _navigateToClientSignup(context),
             child: Text(
               'Sign up',
-              style: textStyle.copyWith(fontSize: 18.0, decoration: TextDecoration.underline,),
+              style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: Color(0xFFE0CB8F)),
             ),
           ),
         ],
