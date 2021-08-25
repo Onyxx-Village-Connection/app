@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ovcapp/landing.dart';
-import 'package:google_fonts/google_fonts.dart';
 //Splash page - will focus on this for 2 seconds then redirect to landing.dart
 //So, combine whatever you need from landing_page.dart to landing.dart and all will work
 class Splash extends StatefulWidget {
