@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/landing.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ovcapp/landing.dart';
 //Splash page - will focus on this for 2 seconds then redirect to landing.dart
 //So, combine whatever you need from landing_page.dart to landing.dart and all will work
 class Splash extends StatefulWidget {
@@ -30,16 +29,29 @@ class _SplashState extends State<Splash> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Image.asset(
-            "lib/assets/onyxx.jpg",
+            "lib/assets/onyxx cropped.jpg",
             width: 500,
-            height: 400,
-            fit: BoxFit.contain,
+            height: 250,
+            //fit: BoxFit.contain,
           ),
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: 'Making the Connection to Food, Resources, and Compassion',
-              style: GoogleFonts.satisfy(textStyle: TextStyle(fontSize: 25)),
+              text: 'Making the Connection to Food, Resources,',
+              style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 18, color: Color(0xFFFAEFC5)),
+            ),
+          ),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'and Compassion',
+              style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 18, color: Color(0xFFFAEFC5)),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(50.0),
+            child: CircularProgressIndicator(
+              color: Color(0xFFFAEFC5),
             ),
           ),
         ],
