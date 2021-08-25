@@ -12,8 +12,7 @@ class ClientWishlist extends StatefulWidget {
 }
 
 class _ClientWishlistState extends State<ClientWishlist> {
-  TextStyle textStyle =
-      TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontSize: 18.0, color: Colors.white);
 
   bool _isSelected = false;
 
@@ -60,9 +59,9 @@ class _ClientWishlistState extends State<ClientWishlist> {
     );
   }
 
-  void _navigateToItemCardForm(BuildContext context){
+  void _navigateToItemCardForm(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return ItemCardForm(title: 'ItemCardForm');
       },
     ));

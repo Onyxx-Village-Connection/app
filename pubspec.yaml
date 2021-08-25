@@ -68,25 +68,21 @@ flutter:
      - images/ovclogo.png
 
   fonts:
-#    - family: Montserrat
-#      fonts:
-#        - asset: fonts/Montserrat-Regular.ttf
-#        - asset: fonts/Montserrat-SemiBold.ttf
      - family: BigShouldersDisplay
        fonts:
-        - asset: ios/fonts/Big_Shoulders_Display/BigShouldersDisplay-Medium.ttf
+        - asset: assets/fonts/Big_Shoulders_Display/BigShouldersDisplay-Medium.ttf
           weight: 500
-        - asset: ios/fonts/Big_Shoulders_Display/BigShouldersDisplay-Regular.ttf
+        - asset: assets/fonts/Big_Shoulders_Display/BigShouldersDisplay-Regular.ttf
           weight: 400
-        - asset: ios/fonts/Big_Shoulders_Display/BigShouldersDisplay-SemiBold.ttf
+        - asset: assets/fonts/Big_Shoulders_Display/BigShouldersDisplay-SemiBold.ttf
           weight: 600
-        - asset: ios/fonts/Big_Shoulders_Display/BigShouldersDisplay-Bold.ttf
+        - asset: assets/fonts/Big_Shoulders_Display/BigShouldersDisplay-Bold.ttf
           weight: 700
-        - asset: ios/fonts/Big_Shoulders_Display/BigShouldersDisplay-ExtraBold.ttf
+        - asset: assets/fonts/Big_Shoulders_Display/BigShouldersDisplay-ExtraBold.ttf
           weight: 800
      - family: BarlowSemiCondensed
        fonts:
-         - asset: ios/fonts/Barlow_Semi_Condensed/BarlowSemiCondensed-Medium.ttf
+        - asset: assets/fonts/Barlow_Semi_Condensed/BarlowSemiCondensed-Medium.ttf
     #- family: OVCIcons
       #fonts:
         #- asset: ios/icons/OVCIcons.ttf
