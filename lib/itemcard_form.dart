@@ -49,7 +49,10 @@ class _ItemCardFormState extends State<ItemCardForm>{
 
     return ListView(
       children: <Widget>[
-        itemNameBox,
+        Padding(
+          padding: EdgeInsets.all(20.0),
+          child: itemNameBox,
+        ),
 
       ],
     );
