@@ -5,7 +5,8 @@ import 'package:ovcapp/more_signup_info.dart';
 import 'package:ovcapp/services/client_auth.dart';
 
 
-final _backgroundColor = Colors.black87;
+final _backgroundColor = Colors.black;
+final _widgetColor = Color(0xFFE0CB8F);
 
 class ClientSignup extends StatefulWidget{
   ClientSignup({Key? key, required this.title}) : super(key: key);
@@ -22,7 +23,8 @@ class _ClientSignupState extends State<ClientSignup>{
   String email = '';
   String password = '';
 
-  TextStyle textStyle = TextStyle( fontSize: 20.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontSize: 20.0, color: Colors.white);
+  TextStyle hintTextStyle = TextStyle(fontSize: 20.0, color: Colors.grey);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
       borderRadius: BorderRadius.circular(5.0),
@@ -47,7 +49,7 @@ class _ClientSignupState extends State<ClientSignup>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Email Address',
-        hintStyle: textStyle,
+        hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -67,7 +69,7 @@ class _ClientSignupState extends State<ClientSignup>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Password',
-        hintStyle: textStyle,
+        hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -83,7 +85,7 @@ class _ClientSignupState extends State<ClientSignup>{
     final nextButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(32.0),
-      color: Colors.amber,
+      color: _widgetColor,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
         onPressed: () async {
@@ -94,7 +96,7 @@ class _ClientSignupState extends State<ClientSignup>{
         child: Text(
           'Next',
           textAlign: TextAlign.center,
-          style: textStyle.copyWith(fontSize: 24.0,fontWeight: FontWeight.bold,),
+          style: TextStyle(fontFamily: 'BigShouldersDisplay', fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -105,13 +107,13 @@ class _ClientSignupState extends State<ClientSignup>{
         children: <Widget> [
           Text(
             'Already have an account?',
-            style: textStyle.copyWith(fontSize: 18.0),
+            style: TextStyle(fontFamily: 'BarlowSemiCondensed', fontSize: 18.0, color: Colors.white),
           ),
           TextButton(
               onPressed: () => _navigateToClientLogin(context),
               child: Text(
                 'Login',
-                style: textStyle.copyWith(fontSize: 18.0, decoration: TextDecoration.underline,),
+                style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: _widgetColor),
               ),
           ),
         ],
@@ -131,13 +133,7 @@ class _ClientSignupState extends State<ClientSignup>{
             child: Text(
               'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
               textAlign: TextAlign.center,
-              style:
-              TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontFamily: 'Montserrat',
-                height: 2.0,
-              ),
+              style: textStyle.copyWith(height: 2.0),
               overflow: TextOverflow.ellipsis,
               softWrap: true,
               maxLines: 8,
@@ -152,7 +148,7 @@ class _ClientSignupState extends State<ClientSignup>{
           child: passwordBox,
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+          padding: EdgeInsets.fromLTRB(145.0, 20.0, 145.0, 15.0),
           child: nextButton,
         ),
         haveAccountTextButton,

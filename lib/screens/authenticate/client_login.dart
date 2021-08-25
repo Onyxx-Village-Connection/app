@@ -110,7 +110,7 @@ class _ClientLoginState extends State<ClientLogin>{
             onPressed: () => _navigateToClientSignup(context),
             child: Text(
               'Sign up',
-              style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: Color(0xFFE0CB8F)),
+              style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: _widgetColor),
             ),
           ),
         ],
