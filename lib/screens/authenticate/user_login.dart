@@ -124,11 +124,11 @@ class _UserLoginState extends State<UserLogin> {
               setState(() {
                 _msg = "You have logged in successfully";
               });
+              Navigator.of(context).push(
+                  MaterialPageRoute<void>(builder: (BuildContext context) {
+                return MyDonations(userId: userId);
+              }));
             }
-            Navigator.of(context)
-                .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-              return MyDonations(userId: userId);
-            }));
           });
         },
         child: Text(
@@ -167,8 +167,9 @@ class _UserLoginState extends State<UserLogin> {
     Widget msg() {
       return Text(
         _msg,
+        textAlign: TextAlign.center,
         style: textStyle.copyWith(
-          fontSize: 16,
+          fontSize: 16.0,
         ),
       );
     }

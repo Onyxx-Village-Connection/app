@@ -73,32 +73,36 @@ class _MyDonationsState extends State<MyDonations> {
           print("At donationsList widget, num of donations: " +
               streamSnapShot.data!.docs.length.toString());
           return ListView.builder(
-            itemCount: streamSnapShot.data!.docs.length + 1,
+            itemCount: streamSnapShot.data!.docs.length,
             itemBuilder: (context, index) {
-              if (index < streamSnapShot.data!.docs.length) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapShot.data!.docs[index];
-                Donation donation = Donation.fromJson(
-                    documentSnapshot.data() as Map<String, dynamic>);
-                return ListTile(
-                  title: Text(donation.name),
-                );
-              } else {
-                return ListTile(
-                  leading: IconButton(
-                    onPressed: () {
-                      print("Before refresh, num of donations: " +
-                          donations.length.toString());
-                      setState(() {});
-                      print("After refresh, num of donations: " +
-                          donations.length.toString());
-                    },
-                    icon: const Icon(Icons.refresh),
-                  ),
-                  title: Text('refresh'),
-                );
-              }
+              final DocumentSnapshot documentSnapshot =
+                  streamSnapShot.data!.docs[index];
+              Donation donation = Donation.fromJson(
+                  documentSnapshot.data() as Map<String, dynamic>);
+              return ListTile(
+                leading: Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                ),
+                title: Text(
+                  donation.name,
+                  style: TextStyle(fontSize: 24, color: Colors.yellow),
+                ),
+              );
             },
+            // return ListTile(
+            //   leading: IconButton(
+            //     onPressed: () {
+            //       print("Before refresh, num of donations: " +
+            //           donations.length.toString());
+            //       setState(() {});
+            //       print("After refresh, num of donations: " +
+            //           donations.length.toString());
+            //     },
+            //     icon: const Icon(Icons.refresh),
+            //   ),
+            //   title: Text('refresh'),
+            // );
           );
         } else {
           return ListTile(
