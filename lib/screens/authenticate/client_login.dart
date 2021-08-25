@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/services/client_auth.dart';
 
-
 final _backgroundColor = Colors.black;
 final _widgetColor = Color(0xFFE0CB8F);
 
@@ -68,7 +67,6 @@ class _ClientLoginState extends State<ClientLogin> {
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      obscureText: true,
       validator: (String? value) {
         if (value == null || value.isEmpty) {
           return 'Please enter your password';
@@ -92,18 +90,10 @@ class _ClientLoginState extends State<ClientLogin> {
         child: Text(
           'Login',
           textAlign: TextAlign.center,
-<<<<<<< HEAD
-<<<<<<< HEAD
-          style: textStyle.copyWith(
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
-=======
-          //style: textStyle.copyWith(fontSize: 24.0, fontWeight: FontWeight.bold,),
->>>>>>> changing the do not have an account in the login screen according to the styling sheet
-=======
-          style: TextStyle(fontFamily: 'BigShouldersDisplay', fontSize: 25.0, fontWeight: FontWeight.bold),
->>>>>>> delete monserret fronts from file and all of the screen + the complete client login page with the standard style
+          style: TextStyle(
+              fontFamily: 'BigShouldersDisplay',
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -114,20 +104,19 @@ class _ClientLoginState extends State<ClientLogin> {
         children: <Widget>[
           Text(
             'Do not have an account?',
-            style: TextStyle(fontFamily: 'BarlowSemiCondensed', fontSize: 18.0, color: Colors.white),
+            style: TextStyle(
+                fontFamily: 'BarlowSemiCondensed',
+                fontSize: 18.0,
+                color: Colors.white),
           ),
           TextButton(
             onPressed: () => _navigateToClientSignup(context),
             child: Text(
               'Sign up',
-<<<<<<< HEAD
-              style: textStyle.copyWith(
-                fontSize: 18.0,
-                decoration: TextDecoration.underline,
-              ),
-=======
-              style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: Color(0xFFE0CB8F)),
->>>>>>> changing the do not have an account in the login screen according to the styling sheet
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: 'BarlowSemiCondensed',
+                  color: _widgetColor),
             ),
           ),
         ],
@@ -135,7 +124,6 @@ class _ClientLoginState extends State<ClientLogin> {
     );
 
     return ListView(
-<<<<<<< HEAD
       children: <Widget>[
         Image.asset(
           'images/ovclogo.png',
@@ -152,34 +140,11 @@ class _ClientLoginState extends State<ClientLogin> {
           child: passwordBox,
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+          padding: EdgeInsets.fromLTRB(150.0, 20.0, 150.0, 15.0),
           child: loginButton,
         ),
         notHaveAccountTextButton,
       ],
-=======
-        children: <Widget>[
-          Image.asset(
-            'images/ovclogo.png',
-            height: 250,
-            width: 250,
-            scale: 1.0,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 15.0),
-            child: emailBox,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
-            child: passwordBox,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(150.0, 20.0, 150.0, 15.0),
-            child: loginButton,
-          ),
-          notHaveAccountTextButton,
-        ],
->>>>>>> delete monserret fronts from file and all of the screen + the complete client login page with the standard style
     );
   }
 
