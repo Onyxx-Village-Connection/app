@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'profile_page.dart';
-import 'volunteer_sign_in.dart';
-import 'volunter_sign_up.dart';
+import 'package:ovcapp/profile_page.dart';
+import 'package:ovcapp/volunteer_pickup.dart';
+import 'package:ovcapp/volunteer_sign_in.dart';
+import 'package:ovcapp/volunteer_sign_up.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,10 +16,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'OVC App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: SignIn());
+        title: 'OVC App', theme: ThemeData.dark(), home: SignIn());
   }
 }
