@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
       title: 'OVC app',
       //home: ClientWishlist(title: 'Client Wishlist',),
       //ClientResources(title: 'Client Resources',),
-      home: ClientLogin(title: 'Client Login',),
+      //home: ClientLogin(title: 'Client Login',),
+      home: LandingPage(),
     );
   }
 }
