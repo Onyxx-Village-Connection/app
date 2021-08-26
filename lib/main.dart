@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:ovcapp/client_resources.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:ovcapp/client_wishlist.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/landing_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:untitled/splash.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(OnyxxApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class OnyxxApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'OVC App',
-      //theme: ThemeData(
-        //primarySwatch: Colors.blue,
-      //),
-      //home: ClientSignup(title: 'Client Signup',),
-      theme: ThemeData.dark(),
-      home: LandingPage(),
+      title: 'Onyxx Village Connection',
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.black,
+      ),
+      home: Splash(),
     );
   }
 }

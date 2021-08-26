@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/my_donations.dart';
+import 'package:ovcapp/screens/donors/my_donations.dart';
+import 'package:ovcapp/screens/authenticate/client_login.dart';
 
 class LandingPage extends StatelessWidget {
   // This widget is the landing page
@@ -15,12 +16,12 @@ class LandingPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Image.asset(
-                'images/OVC-logo-cropped.jpg',
+                'images/ovclogo.png',
               ),
             ),
             roleButton(context, 'Donor'),
             roleButton(context, 'Volunteer'),
-            roleButton(context, 'client'),
+            roleButton(context, 'Client'),
           ],
         ),
       ),
@@ -56,6 +57,14 @@ class LandingPage extends StatelessWidget {
           Navigator.of(context)
               .push(MaterialPageRoute<void>(builder: (BuildContext context) {
             return MyDonations(title: 'Donor');
+          }));
+        }
+        break;
+      case 'Client':
+        {
+          Navigator.of(context)
+              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+            return ClientLogin(title: 'Client');
           }));
         }
         break;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
+import 'package:ovcapp/services/client_auth.dart';
+
 
 final _backgroundColor = Colors.black87;
 
@@ -12,6 +14,11 @@ class ClientLogin extends StatefulWidget{
 }
 
 class _ClientLoginState extends State<ClientLogin>{
+
+  final AuthService _auth = AuthService();
+
+  String email = '';
+  String password = '';
 
   TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
 
@@ -46,10 +53,14 @@ class _ClientLoginState extends State<ClientLogin>{
           return 'Please enter your email address';
         }
       },
+      onChanged: (val){
+        setState(() => email = val);
+      },
     );
 
     final passwordBox = TextFormField(
       style: textStyle,
+      obscureText: true,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
@@ -57,11 +68,13 @@ class _ClientLoginState extends State<ClientLogin>{
         hintStyle: textStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      obscureText: true,
       validator: (String? value){
         if (value == null || value.isEmpty){
           return 'Please enter your password';
         }
+      },
+      onChanged: (val){
+        setState(() => password = val);
       },
     );
 
@@ -71,7 +84,10 @@ class _ClientLoginState extends State<ClientLogin>{
       color: Colors.amber,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-        onPressed: (){},
+        onPressed: () async {
+          print(email);
+          print(password);
+        },
         child: Text(
           'Login',
           textAlign: TextAlign.center,
@@ -102,7 +118,7 @@ class _ClientLoginState extends State<ClientLogin>{
     return ListView(
         children: <Widget>[
           Image.asset(
-            'assets/images/ovclogo.png',
+            'images/ovclogo.png',
             height: 250,
             width: 250,
             scale: 1.0,
