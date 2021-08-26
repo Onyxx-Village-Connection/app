@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-final _backgroundColor = Colors.black87;
+final _backgroundColor = Colors.black;
+final _widgetColor = Color(0xFFE0CB8F);
 
 class MoreSignupInfo extends StatefulWidget{
   MoreSignupInfo({Key? key, required this.title}) : super(key: key);
@@ -12,19 +13,20 @@ class MoreSignupInfo extends StatefulWidget{
 
 class _MoreSignupInfoState extends State<MoreSignupInfo>{
 
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontSize: 20.0, color: Colors.white);
+  TextStyle hintTextStyle = TextStyle(fontSize: 20.0, color: Colors.grey);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(32.0),
+    borderRadius: BorderRadius.circular(5.0),
     borderSide: BorderSide(
-      color: Colors.amberAccent,
+      color: Colors.grey,
     ),
   );
 
   OutlineInputBorder enabledField = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(32.0),
+    borderRadius: BorderRadius.circular(5.0),
     borderSide: BorderSide(
-      color: Colors.amber,
+      color: Colors.white10,
       width: 2.0,
     ),
   );
@@ -37,7 +39,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Your Name',
-        hintStyle: textStyle,
+        hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -53,7 +55,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Phone Number',
-        hintStyle: textStyle,
+        hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -69,7 +71,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'City',
-        hintStyle: textStyle,
+        hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -85,8 +87,8 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'How long have you been with OVC?',
-        hintStyle: textStyle,
-        contentPadding: EdgeInsets.all(20.0),
+        hintStyle: hintTextStyle,
+        contentPadding: EdgeInsets.fromLTRB(15.0, 20.0, 20.0, 30.0),
       ),
       validator: (String? value){
         if (value == null || value.isEmpty){
@@ -98,14 +100,14 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
     final signupButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(32.0),
-      color: Colors.amber,
+      color: _widgetColor,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
         onPressed: (){},
         child: Text(
           'Sign up',
           textAlign: TextAlign.center,
-          style: textStyle.copyWith(fontSize: 24.0, fontWeight: FontWeight.bold,),
+          style: TextStyle(fontFamily: 'BigShouldersDisplay', fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -115,9 +117,9 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         Padding(
           padding: EdgeInsets.all(20.0),
           child: Text(
-            'We need some more information from you...',
+            'We need more information from you...',
             textAlign: TextAlign.center,
-            style : textStyle.copyWith(fontSize: 20.0, height: 2.0, fontWeight: FontWeight.bold),
+            style : textStyle.copyWith(fontSize: 20.0),
           ) ,
         ),
         Padding(
@@ -137,7 +139,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
           child: howLongBox,
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+          padding: EdgeInsets.fromLTRB(130.0, 20.0, 130.0, 15.0),
           child: signupButton,
         ),
       ],
@@ -156,7 +158,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
       appBar: AppBar(
         elevation: 1.0,
         iconTheme: IconThemeData(
-          color: Colors.amber,
+          color: _widgetColor,
         ),
         backgroundColor: _backgroundColor,
       ),
