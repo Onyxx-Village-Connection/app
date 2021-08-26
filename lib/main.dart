@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'package:ovcapp/client_resources.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ovcapp/client_wishlist.dart';
