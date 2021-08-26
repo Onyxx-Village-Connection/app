@@ -7,6 +7,10 @@ import 'package:ovcapp/landing_page.dart';
 import 'profile_page.dart';
 import 'volunteer_sign_in.dart';
 import 'volunter_sign_up.dart';
+import 'package:ovcapp/profile_page.dart';
+import 'package:ovcapp/volunteer_pickup.dart';
+import 'package:ovcapp/volunteer_sign_in.dart';
+import 'package:ovcapp/volunteer_sign_up.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

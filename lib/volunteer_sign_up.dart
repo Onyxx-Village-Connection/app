@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'profile_page.dart';
-import 'volunteer_sign_in.dart';
+import 'package:ovcapp/profile_page.dart';
+import 'package:ovcapp/volunteer_sign_in.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'constants.dart';
@@ -26,7 +25,8 @@ class _SignUpState extends State<SignUp> {
   String passwordConfirm = "";
   String error = "";
   var color = Colors.red;
-  PermissionStatus _status = PermissionStatus.denied;
+  PermissionStatus _permissionStatus = PermissionStatus.denied;
+  final Permission _permission = Permission.camera;
   final _auth = FirebaseAuth.instance;
   String downloadUrl = '';
   var _image;
@@ -56,6 +56,12 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _listenForPermissionStatus();
+  }
+
   Future<void> _takePicture() async {
     final imageFile = await _picker.getImage(
       source: ImageSource.camera,
@@ -74,12 +80,11 @@ class _SignUpState extends State<SignUp> {
   // }
   //
   // void _onStatusRequested(Map<PermissionGroup, PermissionStatus> value) {
-  //   // final status = value[PermissionGroup.camera];
-  //   final status = PermissionStatus.granted;
+  //   final status = value[PermissionGroup.camera];
   //   if (status == PermissionStatus.granted) {
   //     _takePicture();
   //   } else {
-  //     _updateStatus(status);
+  //     _updateStatus(status!);
   //   }
   // }
   //
@@ -90,6 +95,34 @@ class _SignUpState extends State<SignUp> {
   //     });
   //   }
   // }
+
+  void _listenForPermissionStatus() async {
+    final status = await _permission.status;
+    setState(() => _permissionStatus = status);
+  }
+
+  Color getPermissionColor() {
+    switch (_permissionStatus) {
+      case PermissionStatus.denied:
+        return Colors.red;
+      case PermissionStatus.granted:
+        return Colors.green;
+      case PermissionStatus.limited:
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  Future<void> requestPermission(Permission permission) async {
+    final status = await permission.request();
+
+    setState(() {
+      print(status);
+      _permissionStatus = status;
+      print(_permissionStatus);
+    });
+  }
 
   Widget showErrorBanner() {
     if (error != "") {
@@ -165,12 +198,16 @@ class _SignUpState extends State<SignUp> {
                       ),
                       onPressed: () {
                         // _askPermission();
+                        getPermissionColor();
+                        requestPermission(_permission);
                         _takePicture();
                       },
                     ),
                     GestureDetector(
                       onTap: () {
                         // _askPermission();
+                        getPermissionColor();
+                        requestPermission(_permission);
                         _takePicture();
                       },
                       child: Text(
