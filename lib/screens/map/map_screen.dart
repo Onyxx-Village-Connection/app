@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:ovcapp/screens/map/services/geolocator_service.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +52,22 @@ class _MapState extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Icon(OVCIcons.backicon),
+            color: Color(0xFFE0CB8F)),
+        title: Text(
+          'Volunteer Map',
+          style: TextStyle(
+              fontFamily: 'BigShouldersDisplay',
+              fontSize: 25.0,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFE0CB8F)),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.black,
+      ),
       body: Center(
         child: GoogleMap(
           initialCameraPosition: CameraPosition(
@@ -55,9 +75,6 @@ class _MapState extends State {
           mapType: MapType.normal,
           myLocationEnabled: true,
           zoomControlsEnabled: false,
-          padding: EdgeInsets.only(
-            top: 40.0,
-          ),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },

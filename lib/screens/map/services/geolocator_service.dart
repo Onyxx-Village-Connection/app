@@ -1,12 +1,14 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ovcapp/screens/map/map_screen.dart';
 
 class GeolocatorService {
   final Geolocator geo = Geolocator();
 
   Stream<Position> getCurrentLocation() {
-    var locationOptions =
-        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
-
     return Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.high, distanceFilter: 10);
   }
@@ -16,3 +18,8 @@ class GeolocatorService {
         desiredAccuracy: LocationAccuracy.high);
   }
 }
+
+//purpose is to upload volunteer's geolocation to firestore database
+//still waiting on volunteer side to be complete before fully implementing
+//idea: if volunteer document property "isOnline:true", then stream location
+// when "isOnline:false", cancel subscription + clear database idk
