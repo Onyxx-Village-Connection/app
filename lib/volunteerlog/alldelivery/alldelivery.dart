@@ -16,61 +16,44 @@ class _AllDeliveryState extends State<AllDelivery> {
   @override
   Widget build(BuildContext context)
   {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-          appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(
-                OVCIcons.backicon,
-                size: 20,
-                color: Colors.white,
-              ),
-              onPressed: () {Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => VolunteerLog()),);
-              },
-            ),
-            title: const Text('My Past Deliveries', style: TextStyle(fontFamily: "BigShouldersDisplay", fontSize: 25), ),
-            centerTitle: true,
-            elevation: 0.0,
-          ),
+    return Scaffold(
+      backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFE0CB8F),
+        title: const Text('My Past Deliveries', style: TextStyle(color: Colors.black, fontFamily: "BigShouldersDisplay", fontSize: 25), ),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
 
-          body: SingleChildScrollView(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ListView.builder(
-                itemCount: widget.volunteer.getVolunteerDeliveries().length,
-                  physics: NeverScrollableScrollPhysics(),
-                  reverse: true,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index){
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                      child: Card(
-                        shadowColor: Color(0xFFE0CB8F),
-                        child: ListTile(
-                          onTap: () {Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => NamesDates().whichWidg(widget.volunteer.getVolunteerDeliveries().length-index, "delivery", widget.volunteer)),);},
-                          title: Text(widget.volunteer.getVolunteerDeliveries().elementAt(index).getName(), style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 21),),
-                          subtitle: Text("Delivered on "+widget.volunteer.getVolunteerDeliveries().elementAt(index).getDate(), style: TextStyle(color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)),),
-                          tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-                          leading: Icon(
-                                Icons.airport_shuttle_rounded,
-                              color: Color(0xFFE0CB8F),
-                            size: 32,
-                            ),
-                        ),
+      body: SingleChildScrollView(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ListView.builder(
+              itemCount: widget.volunteer.getVolunteerDeliveries().length,
+              physics: NeverScrollableScrollPhysics(),
+              reverse: true,
+              shrinkWrap: true,
+              itemBuilder: (context, index){
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                  child: Card(
+                    shadowColor: Color(0xFFE0CB8F),
+                    child: ListTile(
+                      onTap: () {Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NamesDates().whichWidg(widget.volunteer.getVolunteerDeliveries().length-index, "delivery", widget.volunteer)),);},
+                      title: Text(widget.volunteer.getVolunteerDeliveries().elementAt(index).getName(), style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 21),),
+                      subtitle: Text("Delivered on "+widget.volunteer.getVolunteerDeliveries().elementAt(index).getDate(), style: TextStyle(color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)),),
+                      tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+                      leading: Icon(
+                        Icons.airport_shuttle_rounded,
+                        color: Color(0xFFE0CB8F),
+                        size: 32,
                       ),
-                    );
-                  }
-              ),
-            ),
+                    ),
+                  ),
+                );
+              }
           ),
         ),
       ),
