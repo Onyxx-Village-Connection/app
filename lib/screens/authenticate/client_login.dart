@@ -3,7 +3,8 @@ import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/services/client_auth.dart';
 
 
-final _backgroundColor = Colors.black87;
+final _backgroundColor = Colors.black;
+final _widgetColor = Color(0xFFE0CB8F);
 
 class ClientLogin extends StatefulWidget{
   ClientLogin({Key? key, required this.title}) : super(key: key);
@@ -20,19 +21,20 @@ class _ClientLoginState extends State<ClientLogin>{
   String email = '';
   String password = '';
 
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
+  TextStyle textStyle = TextStyle(fontSize: 20.0, color: Colors.white);
+  TextStyle hintTextStyle = TextStyle(fontSize: 20.0, color: Colors.grey);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(32.0),
+    borderRadius: BorderRadius.circular(5.0),
     borderSide: BorderSide(
-      color: Colors.amberAccent,
+      color: Colors.grey,
     ),
   );
 
   OutlineInputBorder enabledField = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(32.0),
+    borderRadius: BorderRadius.circular(5.0),
     borderSide: BorderSide(
-      color: Colors.amber,
+      color: Colors.white10,
       width: 2.0,
     ),
   );
@@ -45,7 +47,7 @@ class _ClientLoginState extends State<ClientLogin>{
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Email Address',
-        hintStyle: textStyle,
+        hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -59,13 +61,13 @@ class _ClientLoginState extends State<ClientLogin>{
     );
 
     final passwordBox = TextFormField(
-      style: textStyle,
       obscureText: true,
+      style: textStyle,
       decoration: InputDecoration(
         focusedBorder: focusedField,
         enabledBorder: enabledField,
         hintText: 'Password',
-        hintStyle: textStyle,
+        hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
       validator: (String? value){
@@ -81,9 +83,9 @@ class _ClientLoginState extends State<ClientLogin>{
     final loginButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(32.0),
-      color: Colors.amber,
+      color: _widgetColor,
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
+        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
         onPressed: () async {
           print(email);
           print(password);
@@ -91,7 +93,7 @@ class _ClientLoginState extends State<ClientLogin>{
         child: Text(
           'Login',
           textAlign: TextAlign.center,
-          style: textStyle.copyWith(fontSize: 24.0, fontWeight: FontWeight.bold,),
+          style: TextStyle(fontFamily: 'BigShouldersDisplay', fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -102,13 +104,13 @@ class _ClientLoginState extends State<ClientLogin>{
         children: <Widget> [
           Text(
             'Do not have an account?',
-            style: textStyle.copyWith(fontSize: 18.0),
+            style: TextStyle(fontFamily: 'BarlowSemiCondensed', fontSize: 18.0, color: Colors.white),
           ),
           TextButton(
             onPressed: () => _navigateToClientSignup(context),
             child: Text(
               'Sign up',
-              style: textStyle.copyWith(fontSize: 18.0, decoration: TextDecoration.underline,),
+              style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: _widgetColor),
             ),
           ),
         ],
@@ -132,7 +134,7 @@ class _ClientLoginState extends State<ClientLogin>{
             child: passwordBox,
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+            padding: EdgeInsets.fromLTRB(150.0, 20.0, 150.0, 15.0),
             child: loginButton,
           ),
           notHaveAccountTextButton,
