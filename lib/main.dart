@@ -1,14 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'package:ovcapp/client_resources.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:ovcapp/client_wishlist.dart';
-import 'package:ovcapp/screens/authenticate/client_signup.dart';
-import 'package:ovcapp/screens/authenticate/client_login.dart';
 import 'package:ovcapp/landing_page.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:untitled/splash.dart';
+//import 'package:untitled/splash.dart';
+
+//import 'package:ovcapp/client_resources.dart';
+//import 'package:ovcapp/client_wishlist.dart';
+//import 'package:ovcapp/screens/authenticate/client_signup.dart';
+//import 'package:ovcapp/screens/authenticate/client_login.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +24,7 @@ class OnyxxApp extends StatelessWidget {
       //home: ClientWishlist(title: 'Client Wishlist',),
       //ClientResources(title: 'Client Resources',),
       //home: ClientLogin(title: 'Client Login',),
+      theme: ThemeData.dark(),
       home: LandingPage(),
     );
   }
