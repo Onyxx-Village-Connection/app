@@ -31,11 +31,18 @@ class OnyxxApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 <<<<<<< HEAD
+<<<<<<< HEAD
       title: 'OVC App',
       //theme: ThemeData(
       //primarySwatch: Colors.blue,
       //),
       //home: ClientSignup(title: 'Client Signup',),
+=======
+      title: 'OVC app',
+      //home: ClientWishlist(title: 'Client Wishlist',),
+      //ClientResources(title: 'Client Resources',),
+      //home: ClientLogin(title: 'Client Login',),
+>>>>>>> resolving conflicts
       theme: ThemeData.dark(),
       home: LandingPage(),
       // home: SignIn(),
