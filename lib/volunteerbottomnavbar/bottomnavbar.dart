@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ovcapp/profile_page.dart';
 import 'package:ovcapp/themes.dart';
+import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 import 'package:ovcapp/volunteerlog/volunteerlog.dart';
+import 'package:ovcapp/volunteer_pickup.dart';
 
 class VolunteerBttmNavBar extends StatefulWidget {
-  const VolunteerBttmNavBar({Key? key}) : super(key: key);
+  const VolunteerBttmNavBar({Key? key, required this.volunteer}) : super(key: key);
+  final Volunteer volunteer;
   @override
   _VolunteerBttmNavBarState createState() => _VolunteerBttmNavBarState();
 }
 
 class _VolunteerBttmNavBarState extends State<VolunteerBttmNavBar> {
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    AppBar appbar(){
+    AppBar withoutMap(){
       return AppBar(
         leading: GestureDetector(
-          onTap: () {},//profile should be here
+          onTap: () { Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfilePage()),
+          );},
           child: Icon(
-            OVCIcons.profileicon, size: 30.0,
+            OVCIcons.profileicon, size: 30.0, // add custom icons also
           ),
         ),
         title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
@@ -26,80 +34,61 @@ class _VolunteerBttmNavBarState extends State<VolunteerBttmNavBar> {
         elevation: 0.0,
       );
     }
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        inactiveColor: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F),
-        activeColor: Colors.white,
-        backgroundColor: CustomTheme.getLight() ? Color(0xFFE0CB8F) : Colors.black,
-        iconSize: 28.0,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(OVCIcons.pickupicon),//
-            title: Text('Available Pickups', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w600, fontSize: 17)),
+
+    final tabs = [
+      Pickups(),
+      MaterialApp( //replace with deliveries page
+        theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
+        debugShowCheckedModeBanner: false,
+        home: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: withoutMap(),
+            body: Container(
+              color: Colors.white,
+                child: Center(
+                    child: Text('Deliveries'))
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.airport_shuttle_rounded),
-            title: Text('Deliveries', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w600, fontSize: 17)),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet_rounded),
-            title: Text('My Log', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w600, fontSize: 17) ),
-          ),
-        ],
+        ),
       ),
-      tabBuilder: (context, index) {
-        switch (index) {
-          case 0:
-            return CupertinoTabView(builder: (context) {
-              return CupertinoPageScaffold(
-                child: MaterialApp( //replace with available pickups page
-                  theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
-                  debugShowCheckedModeBanner: false,
-                  home: DefaultTabController(
-                    length: 2,
-                    child: Scaffold(
-                      appBar: appbar(),
-                      body: Container(
-                          child: Center(
-                              child: Text('Available Pickups'))
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            });
-          case 1:
-            return CupertinoTabView(builder: (context) {
-              return CupertinoPageScaffold( //replace with deliveries page
-                child: MaterialApp(
-                  theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
-                  debugShowCheckedModeBanner: false,
-                  home: DefaultTabController(
-                    length: 2,
-                    child: Scaffold(
-                      appBar: appbar(),
-                      body: Container(
-                          child: Center(
-                              child: Text('Deliveries'))
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            });
-          case 2:
-            return CupertinoTabView(builder: (context) {
-              return CupertinoPageScaffold(
-                child: VolunteerLog(),
-              );
-            });
-          default: return CupertinoTabView(builder: (context) {
-            return CupertinoPageScaffold(
-              child: VolunteerLog(),
-            );
-          });
-        }
-      },
+      VolunteerLog(volunteer: widget.volunteer,)
+    ];
+    return MaterialApp(
+      theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          body: tabs[_currentIndex],
+
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            type: BottomNavigationBarType.fixed,
+            iconSize: 30.0,
+            selectedLabelStyle: TextStyle(fontSize: 12.0),
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(OVCIcons.pickupicon),//
+                title: Text('Available Pickups', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w600, fontSize: 19)),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.airport_shuttle_rounded),
+                title: Text('Deliveries', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w600, fontSize: 19)),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_balance_wallet_rounded),
+                title: Text('My Log', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w600, fontSize: 19) ),
+              ),
+            ],
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          ),
+        ),
+      ),
     );
   }
 }
