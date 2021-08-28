@@ -11,6 +11,7 @@ import 'package:ovcapp/volunteerlog/pickups/pickups.dart';
 import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:ovcapp/volunteerlog/food/food.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
+import 'package:ovcapp/profile_page.dart';
 
 int count = 0;
 
@@ -19,56 +20,142 @@ volunteerLogTester(BuildContext context, Volunteer person) //add pickup and deli
   if(count == 0) //counter is used so objects don't duplicate
     {
       //initialize these objects to view pickups, deliveries on screen, they are dummy objects, send actual pickups/deliveries for a volunteer here.
-      Food bread = new Food("Bread", "Juan Mora", "123 My House Ct.", 2.0, true, 2);
+      /*Food bread = new Food("Bread", "user", "123 My House Ct.", 2.0, true, 2);
       Deliveries bread1 = new Deliveries(bread, "03-12-2021", person, context);
-      Food bread2 = new Food("Bread", "Juan Mora", "123 My House Ct.", 2.0, false, 2);
+      Food bread2 = new Food("Bread", "user", "123 My House Ct.", 2.0, false, 2);
       Pickups bread3 = new Pickups(bread2, "03-12-2021", person);
-      Food lasagna = new Food("Lasagna", "Juan Mora", "123 My House Ct.", 2.0, false, 2);
+      Food lasagna = new Food("Lasagna", "user", "123 My House Ct.", 2.0, false, 2);
       Pickups lasagna1 = new Pickups(lasagna, "03-13-2021", person);
-      Food salad = new Food("Salad", "Juan Mora", "123 My House Ct.", 2.0, true, 2);
+      Food salad = new Food("Salad", "user", "123 My House Ct.", 2.0, true, 2);
       Deliveries salad1 = new Deliveries(salad, "03-10-2021", person, context);
-      Food pasta = new Food("Pasta", "Juan Mora", "123 My House Ct.", 2.0, true, 2);
+      Food pasta = new Food("Pasta", "user", "123 My House Ct.", 2.0, true, 2);
       Pickups pasta1 = new Pickups(pasta, "03-15-2021", person);
-      Food lasagna2 = new Food("Lasagna", "Juan Mora", "123 My House Ct.", 2.0, false, 2);
+      Food lasagna2 = new Food("Lasagna", "user", "123 My House Ct.", 2.0, false, 2);
       Deliveries lasagna3 = new Deliveries(lasagna2, "03-14-2021", person, context);
-      Food pasta2 = new Food("Pasta", "Juan Mora", "123 My House Ct.", 2.0, true, 2);
+      Food pasta2 = new Food("Pasta", "user", "123 My House Ct.", 2.0, true, 2);
       Deliveries pasta3 = new Deliveries(pasta2, "03-11-2021", person, context);
-      count++;
+      count++;*/
     }
 
 }
 
 class VolunteerLog extends StatefulWidget {
-  const VolunteerLog({Key? key}) : super(key: key);
+  const VolunteerLog({Key? key, required this.volunteer}) : super(key: key);
+  final Volunteer volunteer;
   @override
   _VolunteerLogState createState() => _VolunteerLogState();
 }
 
 class _VolunteerLogState extends State<VolunteerLog> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-          appBar: AppBar(
-            leading: GestureDetector(
-              onTap: () {}, //place profile page here
-              child: Icon(
-                OVCIcons.profileicon, size: 30.0,
+  Column body(BuildContext context){
+    volunteerLogTester(context, widget.volunteer);
+    return Column(
+      children: [
+        Container(
+          child: Row(
+            children: [
+              Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 10.0, 2.0, 10.0),
+                  child: Text("  My Past Pickups:", style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w700, fontSize: 22),)
               ),
-            ),
-            title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
-            centerTitle: true,
-            elevation: 0.0,
-          ),
-          body: Container(
-            child: body(context),
+              Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 0.0),
+                  child: IconButton(icon: Icon(OVCIcons.forwardicon, size: 20,), onPressed: () {Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AllPickup(volunteer: widget.volunteer,)));}, color: Color(0xFFE0CB8F),)
+              ),
+            ],
           ),
         ),
+        listItems(context, "pickup", widget.volunteer),
+        Container(
+          child: Row(
+            children: [
+              Text("  My Past Deliveries:", style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w700, fontSize: 22),),
+              Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 0.0),
+                  child: IconButton(icon: Icon(OVCIcons.forwardicon, size: 20,), onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AllDelivery(volunteer: widget.volunteer,)),);},
+                    color: Color(0xFFE0CB8F),)
+              ),
+            ],
+          ),
+        ),
+        listItems(context, "delivery", widget.volunteer),
+        Container(
+          child: Row(
+            children: [
+              Text("  Total Volunteer Hours:", style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w700, fontSize: 22),),
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+              ),
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Icon(Icons.account_balance_wallet_rounded, color: Color(0xFFE0CB8F), size: 34,), ),
+            Expanded(
+              child: Container(padding: EdgeInsets.fromLTRB(5.0, 5.0, 10.0, 5.0),
+                  child: TextButton(onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogHours(volunteer: widget.volunteer,)),);},
+                    style: ButtonStyle(overlayColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.hovered))
+                            return Color(0xFFE0CB8F);
+                          return Color(0xFFE0CB8F); // Defer to the widget's default.
+                        }), shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: Color(0xFFE0CB8F), width: 2)), ),
+                      padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),),
+                    child: ListBody(children: [
+                      Text(widget.volunteer.totalVolunteerHours(widget.volunteer).toString() + hourOrHours(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white)),],//_LogHoursState._total.toString()
+                    ),
+                  )
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  String hourOrHours() {
+    String returning = "";
+    if(LogHours.getTotal() == 1){
+      returning = " hour";
+    }
+    if(LogHours.getTotal() != 1){
+      returning = " hours";
+    }
+    return returning;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          }, //place profile page here
+          child: Icon(
+            OVCIcons.profileicon, size: 30.0,
+          ),
+        ),
+        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: Container(
+        child: body(context),
       ),
     );
   }
@@ -274,94 +361,6 @@ Widget organize(BuildContext context, int number, String which, String widg, Vol
         ],
       );
     }
-  return returning;
-}
-Volunteer person = new Volunteer("Johnny Appleseed", "johnnyappleseed@gmail.com", "0000000000"); //pass/update volunteer info here
-Column body(BuildContext context){
-  volunteerLogTester(context, person);
-  return Column(
-    children: [
-      Container(
-        child: Row(
-          children: [
-            Container(
-                padding: EdgeInsets.fromLTRB(0.0, 10.0, 2.0, 10.0),
-                child: Text("  My Past Pickups:", style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w700, fontSize: 22),)
-            ),
-            Container(
-                padding: EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 0.0),
-                child: IconButton(icon: Icon(OVCIcons.forwardicon, size: 20,), onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AllPickup(volunteer: person,)));}, color: Color(0xFFE0CB8F),)
-            ),
-          ],
-        ),
-      ),
-      listItems(context, "pickup", person),
-      Container(
-        child: Row(
-          children: [
-            Text("  My Past Deliveries:", style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w700, fontSize: 22),),
-            Container(
-                padding: EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 0.0),
-                child: IconButton(icon: Icon(OVCIcons.forwardicon, size: 20,), onPressed: () {Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AllDelivery(volunteer: person,)),);},
-                  color: Color(0xFFE0CB8F),)
-            ),
-          ],
-        ),
-      ),
-      listItems(context, "delivery", person),
-      Container(
-        child: Row(
-          children: [
-            Text("  Total Volunteer Hours:", style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w700, fontSize: 22),),
-            Container(
-                padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-            ),
-          ],
-        ),
-      ),
-      Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(10.0),
-            child: Icon(Icons.account_balance_wallet_rounded, color: Color(0xFFE0CB8F), size: 34,), ),
-          Expanded(
-            child: Container(padding: EdgeInsets.fromLTRB(5.0, 5.0, 10.0, 5.0),
-                child: TextButton(onPressed: () {Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LogHours(volunteer: person,)),);},
-                  style: ButtonStyle(overlayColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.hovered))
-                        return Color(0xFFE0CB8F);
-                      return Color(0xFFE0CB8F); // Defer to the widget's default.
-                    }), shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(color: Color(0xFFE0CB8F), width: 2)), ),
-                  padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),),
-                  child: ListBody(children: [
-                    Text(LogHours.getTotal().toString() + hourOrHours(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white)),],//_LogHoursState._total.toString()
-                  ),
-                )
-            ),
-          ),
-        ],
-      )
-    ],
-  );
-}
-
-String hourOrHours() {
-  String returning = "";
-  if(LogHours.getTotal() == 1){
-    returning = " hour";
-  }
-  if(LogHours.getTotal() != 1){
-    returning = " hours";
-  }
   return returning;
 }
 
