@@ -7,6 +7,7 @@ import 'package:ovcapp/screens/map/map_screen.dart';
 
 class GeolocatorService {
   final Geolocator geo = Geolocator();
+  Geoflutterfire gff = Geoflutterfire();
 
   Stream<Position> getCurrentLocation() {
     return Geolocator.getPositionStream(
@@ -19,7 +20,6 @@ class GeolocatorService {
   }
 }
 
-//purpose is to upload volunteer's geolocation to firestore database
-//still waiting on volunteer side to be complete before fully implementing
+//store each geohash/location of user or just replace the previous one with newest?
 //idea: if volunteer document property "isOnline:true", then stream location
-// when "isOnline:false", cancel subscription + clear database idk
+// when "isOnline:false", cancel subscription + clear document
