@@ -61,10 +61,11 @@ flutter:
   assets:
     - images/
     - lib/assets/onyxx cropped.jpg
+    - lib/assets/onyxx.jpg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # assets:
-     - images/ovclogo.png
+    - images/ovclogo.png
 
   fonts:
      - family: BigShouldersDisplay
@@ -82,9 +83,9 @@ flutter:
      - family: BarlowSemiCondensed
        fonts:
         - asset: assets/fonts/Barlow_Semi_Condensed/BarlowSemiCondensed-Medium.ttf
-    #- family: OVCIcons
-      #fonts:
-        #- asset: ios/icons/OVCIcons.ttf
+     - family: OVCIcons
+       fonts:
+        - asset: ios/icons/OVCIcons.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ovcapp/profile_page.dart';
 import 'package:ovcapp/volunteer_pickup.dart';
 import 'package:ovcapp/volunteer_sign_up.dart';
+import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 import 'constants.dart';
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
@@ -132,7 +133,7 @@ class _SignInState extends State<SignIn> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TabBuilder()),
+                                  builder: (context) => TabBuilder(volunteer: Volunteer.matchingCredentials(userEmail))),
                             );
                           }
                         } catch (e) {
