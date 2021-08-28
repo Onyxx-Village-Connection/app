@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ovcapp/screens/authenticate/user_login.dart';
 // import 'package:ovcapp/screens/donors/my_donations.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
+import 'package:ovcapp/volunteer_sign_up.dart';
 
 class LandingPage extends StatelessWidget {
   // This widget is the landing page
@@ -59,6 +60,14 @@ class LandingPage extends StatelessWidget {
               .push(MaterialPageRoute<void>(builder: (BuildContext context) {
             // return MyDonations(title: 'Donor');
             return UserLogin(role: role);
+          }));
+        }
+        break;
+        case 'Volunteer':
+        {
+          Navigator.of(context)
+              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+            return SignUp();
           }));
         }
         break;
