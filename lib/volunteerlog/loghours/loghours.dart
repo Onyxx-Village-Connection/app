@@ -20,6 +20,13 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
   static int _counter = 0;
   static int _starter = 0;
   static int _total = _counter + _starter;
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _total = widget.volunteer.totalVolunteerHours(widget.volunteer);
+  }
 
   String hourOrHours() {
     String returning = "";
@@ -68,11 +75,11 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
 
   int itemCount(){
     int returning = 0;
-    if(widget.volunteer.getVolunteerLog().length > 3)
+    if(widget.volunteer.getVolunteerLog(widget.volunteer).length > 3)
       {
-        returning = widget.volunteer.getVolunteerLog().length;
+        returning = widget.volunteer.getVolunteerLog(widget.volunteer).length;
       }
-    if(widget.volunteer.getVolunteerLog().length <= 3)
+    if(widget.volunteer.getVolunteerLog(widget.volunteer).length <= 3)
       {
         returning = 3;
       }
@@ -81,146 +88,127 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-          appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(
-                OVCIcons.backicon,
-                size: 20,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VolunteerLog()),
-                );
-              },
+    return Scaffold(
+      backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+      appBar: AppBar(
+        backgroundColor: CustomTheme.getLight() ? Color(0xFFE0CB8F) : Colors.black,
+        title: const Text('Log Hours', style: TextStyle(
+          color: Colors.black,
+            fontFamily: "BigShouldersDisplay",
+            fontWeight: FontWeight.w500,
+            fontSize: 25)),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: Text(
+                'Log the amount of hours in which you spent',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 23, fontFamily: "BarlowSemiCondensed")
             ),
-            backgroundColor: CustomTheme.getLight() ? Color(0xFFE0CB8F) : Colors.black,
-            title: const Text('Log Hours', style: TextStyle(
-                fontFamily: "BigShouldersDisplay",
-                fontWeight: FontWeight.w500,
-                fontSize: 25)),
-            centerTitle: true,
-            elevation: 0.0,
           ),
-          body: Column(
+          Container(
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30.0),
+            child: Text(
+              'volunteering:',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 23, fontFamily: "BarlowSemiCondensed"),
+            ),
+          ),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+            children: [
+              FloatingActionButton(
+                backgroundColor: Color(0xFFE0CB8F),
+                onPressed: _decrementStarter,
+                tooltip: 'Decrement',
+                child: Icon(Icons.arrow_drop_down, size: 40,), //Icons.
+              ),
+              Text(
+                  '  ',
+                  style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 60)
+              ),
               Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: CustomTheme.getLight() ? Colors.black : Colors.white,),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(
+                          15.0)
+                  ),
+                ),
                 child: Text(
-                    'Log the amount of hours in which you spent',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 23, fontFamily: "BarlowSemiCondensed")
+                    '  $_starter  ',
+                    style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 70)
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30.0),
-                child: Text(
-                  'volunteering:',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 23, fontFamily: "BarlowSemiCondensed"),
-                ),
+              Text(
+                  '  ',
+                  style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 60)
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FloatingActionButton(
-                    backgroundColor: Color(0xFFE0CB8F),
-                    onPressed: _decrementStarter,
-                    tooltip: 'Decrement',
-                    child: Icon(Icons.arrow_drop_down, size: 40,), //Icons.
-                  ),
-                  Text(
-                      '  ',
-                      style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 60)
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: CustomTheme.getLight() ? Colors.black : Colors.white,),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(
-                              15.0)
-                      ),
-                    ),
-                    child: Text(
-                        '  $_starter  ',
-                        style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 70)
-                    ),
-                  ),
-                  Text(
-                      '  ',
-                      style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 60)
-                  ),
-                  FloatingActionButton(
-                    backgroundColor: Color(0xFFE0CB8F),
-                    onPressed: _incrementStarter,
-                    tooltip: 'Increment',
-                    child: Icon(Icons.arrow_drop_up, size: 40,),
-                  ),
-                ],
-              ),
-              Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-                  child: TextButton(onPressed: _incrementTotal,
-                      child: Text("Enter", style: TextStyle(fontSize: 32,
-                          fontFamily: "BarlowSemiCondensed",
-                          color: Color(0xFFE0CB8F)),))),
-              ListView.builder(
-                  itemCount: widget.volunteer.getThreeLogEntries().length,
-                  reverse: true,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index){
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                      child: Card(
-                        shadowColor: Colors.white,
-                        child: ListTile(
-                          onTap: () {Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => EditHoursEntry(log: widget.volunteer.getThreeLogEntries().elementAt(index), volunteer: widget.volunteer,)));},
-                          title: Text(widget.volunteer.getThreeLogEntries().elementAt(index).toString() + " @ " + Log.getPST(widget.volunteer.getThreeLogEntries().elementAt(index)), style: TextStyle(fontSize: 20, fontFamily: "BarlowSemiCondensed"),),
-                          subtitle: Text("Edit Hours", style: TextStyle(color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F),),),
-                          tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-                          leading: Icon(
-                            Icons.account_balance_wallet_rounded,
-                            color: Color(0xFFE0CB8F),
-                            size: 32,
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-              ),
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(85.0, 0.0, 0.0, 0.0),
-                    child: Text(
-                        'Total: $_total ' + hourOrHours() + ".",
-                        style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 21)
-                    ),
-                  ),
-                  Container(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                      child: TextButton(onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AllEntries(volunteer: widget.volunteer,)),
-                        );
-                      },
-                          child: Text("View all entries", style: TextStyle(
-                              fontSize: 21, fontFamily: "BarlowSemiCondensed", color: Color(
-                              0xFFE0CB8F)),))),
-                ],
+              FloatingActionButton(
+                backgroundColor: Color(0xFFE0CB8F),
+                onPressed: _incrementStarter,
+                tooltip: 'Increment',
+                child: Icon(Icons.arrow_drop_up, size: 40,),
               ),
             ],
           ),
-        ),
+          Container(
+              padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+              child: TextButton(onPressed: _incrementTotal,
+                  child: Text("Enter", style: TextStyle(fontSize: 32,
+                      fontFamily: "BarlowSemiCondensed",
+                      color: Color(0xFFE0CB8F)),))),
+          ListView.builder(
+              itemCount: widget.volunteer.getThreeLogEntries(widget.volunteer).length,
+              reverse: true,
+              shrinkWrap: true,
+              itemBuilder: (context, index){
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+                  child: Card(
+                    shadowColor: Colors.white,
+                    child: ListTile(
+                      onTap: () {Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EditHoursEntry(log: widget.volunteer.getThreeLogEntries(widget.volunteer).elementAt(index), volunteer: widget.volunteer,)));},
+                      title: Text(widget.volunteer.getThreeLogEntries(widget.volunteer).elementAt(index).toString() + " @ " + Log.getPST(widget.volunteer.getThreeLogEntries(widget.volunteer).elementAt(index)), style: TextStyle(fontSize: 20, fontFamily: "BarlowSemiCondensed"),),
+                      subtitle: Text("Edit Hours", style: TextStyle(color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F),),),
+                      tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+                      leading: Icon(
+                        Icons.account_balance_wallet_rounded,
+                        color: Color(0xFFE0CB8F),
+                        size: 32,
+                      ),
+                    ),
+                  ),
+                );
+              }
+          ),
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(85.0, 0.0, 0.0, 0.0),
+                child: Text(
+                    'Total: $_total ' + hourOrHours() + ".",
+                    style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 21)
+                ),
+              ),
+              Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                  child: TextButton(onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AllEntries(volunteer: widget.volunteer,)),
+                    );
+                  },
+                      child: Text("View all entries", style: TextStyle(
+                          fontSize: 21, fontFamily: "BarlowSemiCondensed", color: Color(
+                          0xFFE0CB8F)),))),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -250,12 +238,12 @@ class Log{
         logs.add(this);
         volunteer.addHours(this);
       }
-    if(volunteer.getThreeLogEntries().length >= 3)
+    if(volunteer.getThreeLogEntries(volunteer).length >= 3)
     {
-      volunteer.getThreeLogEntries().removeAt(0);
+      volunteer.getThreeLogEntries(volunteer).removeAt(0);
       volunteer.addEntries(this);
     }
-    if(volunteer.getThreeLogEntries().length < 3)
+    if(volunteer.getThreeLogEntries(volunteer).length < 3)
       {
         volunteer.addEntries(this);
       }
@@ -402,86 +390,78 @@ class AllEntries extends StatefulWidget {
 }
 
 class _AllEntriesState extends State<AllEntries> {
+  String hourOrHours() {
+    String returning = "";
+    if(_LogHoursState._total == 1){
+      returning = "hour";
+    }
+    if(_LogHoursState._total != 1){
+      returning = "hours";
+    }
+    return returning;
+  }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-          appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(
-                OVCIcons.backicon,
-                size: 20,
-                color: Colors.white,
-              ),
-              onPressed: () {Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LogHours(volunteer: widget.volunteer,)),
-              );
-              },
-            ),
-            title: const Text('Log Entries', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
-            centerTitle: true,
-            elevation: 0.0,
-          ),
-          body: SingleChildScrollView(
-            child: Column(
+    return Scaffold(
+      backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFE0CB8F),
+        title: const Text('Log Entries', style: TextStyle(color: Colors.black, fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 0.0),
-                      child: Text(
-                        "Total: ",
-                        style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 25, color: Color(0xFFE0CB8F)),//
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 0.0),
-                      child: Text(
-                        _LogHoursState._total.toString() + hourOrHours(),
-                        style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 25),//, color: Color(0xFFE0CB8F)
-                      ),
-                    ),
-                  ],
+                Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 0.0),
+                  child: Text(
+                    "Total: ",
+                    style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 25, color: Color(0xFFE0CB8F)),//
+                  ),
                 ),
-                SingleChildScrollView(
-                  child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: widget.volunteer.getVolunteerLog().length,
-                      reverse: true,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index){
-                        return Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Card(
-                            shadowColor: Color(0xFFE0CB8F),
-                            child: ListTile(
-                              onTap: () {Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => EditHoursEntry(log: widget.volunteer.getVolunteerLog().elementAt(index), volunteer: widget.volunteer,)),);},
-                              title: Text(widget.volunteer.getVolunteerLog().elementAt(index).toString() + " @ " + Log.getPST(widget.volunteer.getVolunteerLog().elementAt(index)), style: TextStyle(fontSize: 21, fontFamily: "BarlowSemiCondensed"),),
-                              subtitle: Text("Edit Hours", style: TextStyle(color: CustomTheme.getLight() ? Colors.grey : Color(0xFFE0CB8F)),),
-                              tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-                              leading: Icon(
-                                Icons.account_balance_wallet_rounded,
-                                color: Color(0xFFE0CB8F),
-                                size: 33,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
+                Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 0.0),
+                  child: Text(
+                    _LogHoursState._total.toString() + hourOrHours(),
+                    style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 25),//, color: Color(0xFFE0CB8F)
                   ),
                 ),
               ],
             ),
-          ),
+            SingleChildScrollView(
+              child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: widget.volunteer.getVolunteerLog(widget.volunteer).length,
+                  reverse: true,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index){
+                    return Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Card(
+                        shadowColor: Color(0xFFE0CB8F),
+                        child: ListTile(
+                          onTap: () {Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditHoursEntry(log: widget.volunteer.getVolunteerLog(widget.volunteer).elementAt(index), volunteer: widget.volunteer,)),);},
+                          title: Text(widget.volunteer.getVolunteerLog(widget.volunteer).elementAt(index).toString() + " @ " + Log.getPST(widget.volunteer.getVolunteerLog(widget.volunteer).elementAt(index)), style: TextStyle(fontSize: 21, fontFamily: "BarlowSemiCondensed"),),
+                          subtitle: Text("Edit Hours", style: TextStyle(color: CustomTheme.getLight() ? Colors.grey : Color(0xFFE0CB8F)),),
+                          tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+                          leading: Icon(
+                            Icons.account_balance_wallet_rounded,
+                            color: Color(0xFFE0CB8F),
+                            size: 33,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -558,18 +538,8 @@ class _EditHoursEntryState extends State<EditHoursEntry> {
     return Scaffold(
       backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            OVCIcons.backicon,
-            size: 20,
-            color: Colors.white,
-          ),
-          onPressed: () {Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LogHours(volunteer: widget.volunteer,)),
-          );},
-        ),
-        title: const Text('Edit Hours', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
+        backgroundColor: CustomTheme.getLight() ? Color(0xFFE0CB8F) : Colors.black,
+        title: const Text('Edit Hours', style: TextStyle(color: Colors.black, fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
         centerTitle: true,
         elevation: 0.0,
       ),
