@@ -1,8 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
-import 'package:ovcapp/more_signup_info.dart';
-import 'package:ovcapp/services/client_auth.dart';
+import 'package:ovcapp/screens/authenticate/more_signup_info.dart';
 
 
 final _backgroundColor = Colors.black;
@@ -17,8 +15,6 @@ class ClientSignup extends StatefulWidget{
 }
 
 class _ClientSignupState extends State<ClientSignup>{
-
-  final AuthService _auth = AuthService();
 
   String email = '';
   String password = '';
@@ -89,8 +85,6 @@ class _ClientSignupState extends State<ClientSignup>{
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
         onPressed: () async {
-          print(email);
-          print(password);
           _navigateToMoreSignupInfoPage(context);
         },
         child: Text(
@@ -165,9 +159,9 @@ class _ClientSignupState extends State<ClientSignup>{
   }
 
   void _navigateToMoreSignupInfoPage(BuildContext context){
-    Navigator.of(context).push(MaterialPageRoute<void>(
+    Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) {
-        return MoreSignupInfo(title: 'More Signup Info');
+        return MoreSignupInfo(title: 'More Signup Info', email: email, password: password);
       },
     ));
   }

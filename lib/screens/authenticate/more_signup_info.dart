@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ovcapp/screens/client/client_wishlist.dart';
 
 final _backgroundColor = Colors.black;
 final _widgetColor = Color(0xFFE0CB8F);
 
 class MoreSignupInfo extends StatefulWidget{
-  MoreSignupInfo({Key? key, required this.title}) : super(key: key);
+  MoreSignupInfo({Key? key, required this.title, required this.email, required this.password}) : super(key: key);
 
-  final String title;
+  final String title, email, password;
   @override
   _MoreSignupInfoState createState() => _MoreSignupInfoState();
 }
 
 class _MoreSignupInfoState extends State<MoreSignupInfo>{
+
+  final _auth = FirebaseAuth.instance;
 
   TextStyle textStyle = TextStyle(fontSize: 20.0, color: Colors.white);
   TextStyle hintTextStyle = TextStyle(fontSize: 20.0, color: Colors.grey);
@@ -103,7 +107,11 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
       color: _widgetColor,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-        onPressed: (){},
+        onPressed: () async {
+          await _auth.createUserWithEmailAndPassword(email: widget.email, password: widget.password).then((_){
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ClientWishlist(title: 'Client Wishlist')));
+          });
+          },
         child: Text(
           'Sign up',
           textAlign: TextAlign.center,
