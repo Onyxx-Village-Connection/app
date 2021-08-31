@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ovcapp/volunteer_sign_up.dart';
 //official landing page - Advik Kunta (for reference because
 //there's another landing page that I don't want to delete)
 class OnyxxLanding extends StatelessWidget{
@@ -47,7 +48,12 @@ class OnyxxLanding extends StatelessWidget{
             child: OutlinedButton(
               child: Text('I Am A Volunteer'),
               // In the onPressed area, add the navigation to the volunteer signup page
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+                  return SignUp();
+                }));
+              },
 
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE0CB8F)),
