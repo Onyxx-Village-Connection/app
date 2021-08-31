@@ -5,22 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:ovcapp/profile_page.dart';
 import 'constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ovcapp/assets/ovcicons.dart';
+import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
+import 'package:ovcapp/themes.dart';
+import 'package:ovcapp/volunteerlog/volunteerlog.dart';
 
 final _firestore = FirebaseFirestore.instance;
 firebase_storage.FirebaseStorage storage =
     firebase_storage.FirebaseStorage.instance;
 
 class TabBuilder extends StatefulWidget {
+  const TabBuilder({Key? key, required this.volunteer}) : super(key: key);
+  final Volunteer volunteer;
   @override
   _TabBuilderState createState() => _TabBuilderState();
 }
 
 class _TabBuilderState extends State<TabBuilder> {
   int i = 0;
-  List<Widget> _widgetOptions = <Widget>[
-    Pickups(),
-    ProfilePage(),
-  ];
+  
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,17 +33,32 @@ class _TabBuilderState extends State<TabBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimaryColor,
+    List<Widget> _widgetOptions = <Widget>[ //moved here to access widget
+       Pickups(),
+       Delivery(),
+       VolunteerLog(volunteer: widget.volunteer,), 
+    ];
+    return MaterialApp(
+      theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+      backgroundColor: Color(0xFFE0CB8F),
       bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Color(0xFFE0CB8F),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.pending_actions_rounded),
             label: 'Available Pickups',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.airport_shuttle_rounded),
+            label: 'Deliveries',
+          ),
+            BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance_wallet_rounded),
+            label: 'My Log',
           ),
         ],
         currentIndex: i,
@@ -50,7 +68,9 @@ class _TabBuilderState extends State<TabBuilder> {
       body: Center(
         child: SafeArea(child: _widgetOptions.elementAt(i)),
       ),
-    );
+      ),          
+      ),
+    );     
   }
 }
 
@@ -65,7 +85,18 @@ class _PickupsState extends State<Pickups> {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
-        title: Text('Pickups'),
+         leading: GestureDetector(
+          onTap: () {Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfilePage()),
+          );},//profile should be here
+          child: Icon(
+            OVCIcons.profileicon, size: 30.0,
+          ),
+        ), 
+        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
+        centerTitle: true,
+        elevation: 0.0,  
       ),
       body: Column(
         children: [
@@ -164,6 +195,40 @@ class PickupList extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class Delivery extends StatefulWidget {
+  const Delivery({Key? key}) : super(key: key);
+
+  @override
+  _DeliveryState createState() => _DeliveryState();
+}
+
+class _DeliveryState extends State<Delivery> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () { Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfilePage()),
+          );},
+          child: Icon(
+            OVCIcons.profileicon, size: 30.0, // add custom icons also
+          ),
+        ),
+        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: Container(
+          color: Colors.white,
+          child: Center(
+              child: Text('Deliveries'))
       ),
     );
   }

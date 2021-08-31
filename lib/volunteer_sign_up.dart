@@ -5,12 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ovcapp/profile_page.dart';
+import 'package:ovcapp/volunteer_pickup.dart';
 import 'package:ovcapp/volunteer_sign_in.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'constants.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -329,10 +331,11 @@ class _SignUpState extends State<SignUp> {
                                 error = "Success!";
                               });
                               await uploadImageToFirebase(context);
+                              Volunteer person = new Volunteer(email, email, "N/A");
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ProfilePage()),
+                                    builder: (context) => TabBuilder(volunteer: person)),
                               );
                             }
                           } catch (e) {

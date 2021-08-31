@@ -60,55 +60,37 @@ class _IndividualPickupState extends State<IndividualPickup> {
   @override
   Widget build(BuildContext context)
   {
-    return MaterialApp(
-      theme: CustomTheme.getLight() ? CustomTheme.getLightTheme() : CustomTheme.getDarkTheme(),
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-          appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(
-                OVCIcons.backicon,
-                size: 20,
-                color: Colors.white,
-              ),
-              onPressed: () {Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => VolunteerLog()),
-              );
-              },
-            ),
-            title: const Text('Pickup Item', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
-            centerTitle: true,
-            elevation: 0.0,
-          ),
-          body: Column(children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-            ),
-            Image(
-              image: AssetImage('images/placeholder.jpg'),
-              height: 100,
-              width: 1000,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-            ),
-            organize(" Food name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getName()),
-            organize(" Picked up on: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getDate()),
-            organize(" Doner name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getDonerName()),
-            organize(" Pickup address: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getAddress()),
-            organize(" # of boxes: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getNumOfBoxes().toString()),
-            organize(" Weight of donation: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getWeight().toString() + " lbs"),
-            organize(" Requires Refrigeration: ", trueOrFalse()),
-            Container(
-              padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-            ),
-          ],
-          ),
+    return Scaffold(
+      backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFE0CB8F),
+        title: const Text('Pickup Item', style: TextStyle(color: Colors.black, fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: Column(children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
         ),
+        Image(
+          image: AssetImage('images/placeholder.jpg'),
+          height: 100,
+          width: 1000,
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+        ),
+        organize(" Food name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getName()),
+        organize(" Picked up on: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getDate()),
+        organize(" Doner name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getDonerName()),
+        organize(" Pickup address: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getAddress()),
+        organize(" # of boxes: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getNumOfBoxes().toString()),
+        organize(" Weight of donation: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getWeight().toString() + " lbs"),
+        organize(" Requires Refrigeration: ", trueOrFalse()),
+        Container(
+          padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+        ),
+      ],
       ),
     );
   }
