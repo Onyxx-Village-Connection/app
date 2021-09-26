@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/landing_page.dart';
+import 'package:ovcapp/landing.dart';
+// import 'package:ovcapp/landing_page.dart';
 
 // import 'package:ovcapp/landing.dart';
 //Splash page - will focus on this for 2 seconds then redirect to landing.dart
@@ -21,7 +22,7 @@ class _SplashState extends State<Splash> {
   _navigatetohome() async {
     await Future.delayed(Duration(seconds: 2), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LandingPage()));
+        context, MaterialPageRoute(builder: (context) => OnyxxLanding()));
   }
 
   @override
