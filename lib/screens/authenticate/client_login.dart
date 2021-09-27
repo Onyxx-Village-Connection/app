@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
-import 'package:ovcapp/services/client_auth.dart';
+import 'package:ovcapp/screens/client/client_wishlist.dart';
 
 
 final _backgroundColor = Colors.black;
@@ -16,7 +17,7 @@ class ClientLogin extends StatefulWidget{
 
 class _ClientLoginState extends State<ClientLogin>{
 
-  final AuthService _auth = AuthService();
+  final _auth = FirebaseAuth.instance;
 
   String email = '';
   String password = '';
@@ -87,8 +88,10 @@ class _ClientLoginState extends State<ClientLogin>{
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
         onPressed: () async {
-          print(email);
-          print(password);
+          await _auth.signInWithEmailAndPassword(
+              email: email, password: password).then((_){
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ClientWishlist(title: 'Client Wishlist')));
+          });
         },
         child: Text(
           'Login',
