@@ -19,7 +19,7 @@ class Pickups {
     String year = getDate().toString().substring(6);
     int yr = int.parse(year);
     dateInt = mo + day + yr;
-    volunteer.addPickup(this);
+    //volunteer.addPickup(this);
     pickups.add(this);
     organizeByDate();
     volunteer.sortVolunteerPickups();
