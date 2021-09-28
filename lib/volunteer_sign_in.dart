@@ -5,7 +5,9 @@ import 'package:ovcapp/profile_page.dart';
 import 'package:ovcapp/volunteer_pickup.dart';
 import 'package:ovcapp/volunteer_sign_up.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
+import 'package:ovcapp/volunteerlog/volunteerlog.dart';
 import 'constants.dart';
+import 'package:ovcapp/volunteerlog/loghours/loghours.dart';
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
 
@@ -130,6 +132,8 @@ class _SignInState extends State<SignIn> {
                               await _auth.signInWithEmailAndPassword(
                                   email: userEmail, password: userPassword);
                           if (userEmail != "" || userPassword != "") {
+                            VolunteerLog.resetCounter();
+                            LogHours.resetCounterr();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
