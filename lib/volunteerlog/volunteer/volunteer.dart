@@ -102,15 +102,36 @@ class Volunteer{
   }
 
   addPickup(Pickups pickup){
-    volunteerPickups.add(pickup);
+    int counter=0;
+    for(int i=0; i<volunteerPickups.length; i++){
+      if(volunteerPickups[i].item == pickup.item && volunteerPickups[i].date == pickup.date){
+        counter++;
+      }
+    }
+    if(counter == 0){
+      volunteerPickups.add(pickup);
+    }
   }
 
   addDelivery(Deliveries deliveries){
-    volunteerDeliveries.add(deliveries);
+    //volunteerDeliveries.add(deliveries);
+    int counter=0;
+    for(int i=0; i<volunteerDeliveries.length; i++){
+      if(volunteerDeliveries[i].item == deliveries.item && volunteerDeliveries[i].date == deliveries.date){
+        counter++;
+      }
+    }
+    if(counter == 0){
+      volunteerDeliveries.add(deliveries);
+    }
   }
 
   addEntries(Log log){
     threeLogEntries.add(log);
+    if(threeLogEntries.length > 3)
+    {
+      threeLogEntries.removeAt(0);
+    }
   }
 
   getThreeLogEntries(Volunteer volunteerObj){
