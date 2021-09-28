@@ -33,6 +33,7 @@ class _SignUpState extends State<SignUp> {
   String downloadUrl = '';
   var _image;
   final ImagePicker _picker = ImagePicker();
+  static CollectionReference hours = FirebaseFirestore.instance.collection("Volunteer Hours");
   Future uploadImageToFirebase(BuildContext context) async {
     String fileName = basename(_image.path);
     Reference firebaseStorageRef =
@@ -332,6 +333,7 @@ class _SignUpState extends State<SignUp> {
                               });
                               await uploadImageToFirebase(context);
                               Volunteer person = new Volunteer(email, email, "N/A");
+                              await hours.doc(FirebaseAuth.instance.currentUser!.email).set({'user':person.name, 'hoursEntered':0, 'totalHours':0, 'editedHours':0}).then((value) => print("Hours added"));
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
