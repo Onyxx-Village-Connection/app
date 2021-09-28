@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ovcapp/volunteer_pickup.dart';
 import 'package:ovcapp/volunteerlog/deliveries/deliveries.dart';
 import 'package:ovcapp/themes.dart';
 import 'package:ovcapp/volunteerlog/loghours/loghours.dart';
@@ -12,9 +13,9 @@ import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:ovcapp/volunteerlog/food/food.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 import 'package:ovcapp/profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 int count = 0;
-
 volunteerLogTester(BuildContext context, Volunteer person) //add pickup and delivery objects to display on log screen
 {
   if(count == 0) //counter is used so objects don't duplicate
@@ -42,11 +43,54 @@ volunteerLogTester(BuildContext context, Volunteer person) //add pickup and deli
 class VolunteerLog extends StatefulWidget {
   const VolunteerLog({Key? key, required this.volunteer}) : super(key: key);
   final Volunteer volunteer;
+  static int totalHrs = 0;
+  static int counter = 0;
+  static resetCounter(){
+    counter = 0;
+  }
+  static updateHrs(newHrs){
+    totalHrs = newHrs;
+  }
   @override
   _VolunteerLogState createState() => _VolunteerLogState();
 }
 
 class _VolunteerLogState extends State<VolunteerLog> {
+  final _firestore = FirebaseFirestore.instance;
+  whichTwo(BuildContext context, ){
+    return FutureBuilder<QuerySnapshot>(
+      future: _firestore
+          .collection('Volunteer Hours')
+          .get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return SafeArea(
+            child: Center(
+              child: Column(
+                children: [
+                  CircularProgressIndicator(
+                    backgroundColor: Color(0xFFE0CB8F),
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        Iterable<QueryDocumentSnapshot<Object?>> orders = snapshot.data!.docs.reversed;
+        for (var order in orders) {
+          if(order.id == widget.volunteer.name && VolunteerLog.counter == 0)
+            {
+              VolunteerLog.updateHrs(order.get('totalHours'));
+              VolunteerLog.counter++;
+            }
+        }
+
+        return body(context);
+      },
+    );
+
+  }
   Column body(BuildContext context){
     volunteerLogTester(context, widget.volunteer);
     return Column(
@@ -113,7 +157,7 @@ class _VolunteerLogState extends State<VolunteerLog> {
                         side: BorderSide(color: Color(0xFFE0CB8F), width: 2)), ),
                       padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),),
                     child: ListBody(children: [
-                      Text(widget.volunteer.totalVolunteerHours(widget.volunteer).toString() + hourOrHours(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white)),],//_LogHoursState._total.toString()
+                      Text(LogHours.getTotal().toString() + hourOrHours(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white)),],//_LogHoursState._total.toString()
                     ),
                   )
               ),
@@ -154,9 +198,7 @@ class _VolunteerLogState extends State<VolunteerLog> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: Container(
-        child: body(context),
-      ),
+      body: whichTwo(context)
     );
   }
 }
