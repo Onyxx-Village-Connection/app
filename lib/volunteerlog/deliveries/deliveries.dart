@@ -20,7 +20,7 @@ class Deliveries {
       String year = getDate().toString().substring(6);
       int yr = int.parse(year);
       dateInt = mo + day + yr;
-      deliveries.add(this);
+      //deliveries.add(this);
       volunteer.addDelivery(this);
       organizeByDate();
       volunteer.sortVolunteerDeliveries();
