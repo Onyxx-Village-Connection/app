@@ -9,6 +9,7 @@ import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 import 'package:ovcapp/themes.dart';
 import 'package:ovcapp/volunteerlog/volunteerlog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 final _firestore = FirebaseFirestore.instance;
 firebase_storage.FirebaseStorage storage =
@@ -85,6 +86,7 @@ class _PickupsState extends State<Pickups> {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
+          backgroundColor: Color(0xFFE0CB8F),
          leading: GestureDetector(
           onTap: () {Navigator.push(
             context,
@@ -94,7 +96,7 @@ class _PickupsState extends State<Pickups> {
             OVCIcons.profileicon, size: 30.0,
           ),
         ), 
-        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
+        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, color: Colors.black),),
         centerTitle: true,
         elevation: 0.0,  
       ),
@@ -106,7 +108,7 @@ class _PickupsState extends State<Pickups> {
     );
   }
 }
-
+int counter = 0;
 class PickupsStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -136,12 +138,21 @@ class PickupsStream extends StatelessWidget {
         for (var order in orders) {
           final name = order.get('name');
           final date = order.get('date');
+          final user = order.get('pickupBy');  
 
           final orderIndividuals = PickupList(
             one: name,
             two: date,
           );
-          orderList.add(orderIndividuals);
+          if(user == "" || user == null)
+            {
+              orderList.add(orderIndividuals);
+            }
+          if((user != "" || user != null) && counter == 0)
+          {
+            Volunteer.allPendingPickups.add(Pending(name, date, user));
+          }
+            counter++;
         }
         return Expanded(
           child: ListView(
@@ -166,6 +177,9 @@ class PickupList extends StatelessWidget {
   final String one;
   final String two;
 
+  static CollectionReference pend = FirebaseFirestore.instance.collection("Pickup & Deliveries");
+  static CollectionReference pickups = FirebaseFirestore.instance.collection("Volunteer");
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -185,18 +199,36 @@ class PickupList extends StatelessWidget {
                   color: kPrimaryColor,
                 ),
               ),
-              Text(
-                'Pickup Date & Time: ' + two,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: kPrimaryColor,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Pickup Date & Time: ' + two,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                  IconButton(onPressed: () {addToPending(Volunteer.matchingCredentials(FirebaseAuth.instance.currentUser!.email.toString()), this);}, icon: Icon(OVCIcons.addicon))
+                ],
               ),
-            ],
+
+            ],//
           ),
         ),
       ),
     );
+  }
+
+  addToPending(Volunteer volunteer, PickupList obj) async {
+    //await pickups.add({'pickupBy':volunteer.email, 'pickupOn':obj.two, 'donationName':obj.one});
+    //await pend.doc("Data").collection("Pending").doc(obj.one+obj.two+volunteer.email).set({'donationName':obj.one, 'pickupBy':volunteer.email, 'pickupOn':obj.two}).then((value) => print("Pend added"));//pend.doc(FirebaseAuth.instance.currentUser!.email).set({'user':widget.volunteer.getName(), 'hoursEntered':_starter, 'totalHours':_total + _starter, 'editedHours':0}).then((value) => print("Hours added"));
+
+    await pend.doc("Data").collection("Pickups").add({'donationName':obj.one, 'pickupBy':volunteer.email, 'pickupOn':obj.two}).then((value) => print("Pend added"));
+    //await pickups.doc("Data").collection("Pickup Data").doc(obj.one).set({'name':obj.one, 'date':obj.two, 'pickupBy':volunteer.email});
+
+    // do something here to make firebase rmr that pickup obj is taken
+    Pending obj1 = Pending(obj.one, obj.two, volunteer.email);
+    Volunteer.allPendingPickups.add(obj1);
   }
 }
 
@@ -212,6 +244,7 @@ class _DeliveryState extends State<Delivery> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFE0CB8F),  
         leading: GestureDetector(
           onTap: () { Navigator.push(
             context,
@@ -221,7 +254,7 @@ class _DeliveryState extends State<Delivery> {
             OVCIcons.profileicon, size: 30.0, // add custom icons also
           ),
         ),
-        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
+        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, color: Colors.black),),
         centerTitle: true,
         elevation: 0.0,
       ),
