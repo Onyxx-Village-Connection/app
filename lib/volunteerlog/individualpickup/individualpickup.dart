@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
-import 'package:ovcapp/volunteerlog/volunteerlog.dart';
-import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:ovcapp/themes.dart';
 
 class IndividualPickup extends StatefulWidget{
@@ -68,29 +66,31 @@ class _IndividualPickupState extends State<IndividualPickup> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: Column(children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+          ),
+          Image(
+            image: AssetImage('images/placeholder.jpg'),
+            height: 100,
+            width: 1000,
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+          ),
+          organize(" Food name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getName()),
+          organize(" Picked up on: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getDate()),
+          organize(" Doner name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getDonerName()),
+          organize(" Pickup address: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getAddress()),
+          organize(" # of boxes: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getNumOfBoxes().toString()),
+          organize(" Weight of donation: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getWeight().toString() + " lbs"),
+          organize(" Requires Refrigeration: ", trueOrFalse()),
+          Container(
+            padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+          ),
+        ],
         ),
-        Image(
-          image: AssetImage('images/placeholder.jpg'),
-          height: 100,
-          width: 1000,
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-        ),
-        organize(" Food name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getName()),
-        organize(" Picked up on: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getDate()),
-        organize(" Doner name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getDonerName()),
-        organize(" Pickup address: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getAddress()),
-        organize(" # of boxes: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getNumOfBoxes().toString()),
-        organize(" Weight of donation: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getWeight().toString() + " lbs"),
-        organize(" Requires Refrigeration: ", trueOrFalse()),
-        Container(
-          padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-        ),
-      ],
       ),
     );
   }
