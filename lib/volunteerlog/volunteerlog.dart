@@ -171,7 +171,7 @@ class _VolunteerLogState extends State<VolunteerLog> {
             OVCIcons.profileicon, size: 30.0,
           ),
         ),
-        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
+        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, color: Colors.black),),
         centerTitle: true,
         elevation: 0.0,
       ),
