@@ -4,25 +4,16 @@ import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 class Pickups {
   Food item = new Food("name", "donerName", "address", 0.0, false, 0);
   String date = "3/15";
-  int dateInt = 0;
+  String dateInt = "";
   Volunteer volunteer = new Volunteer("", "", "");
   static List<Pickups> pickups = <Pickups>[];
 
   Pickups(Food item, String date, Volunteer volunteer){
     this.item = item;
     this.date = date;
+    this.dateInt = date;
     this.volunteer = volunteer;
-    String month = getDate().toString().substring(0, 2);
-    int mo = int.parse(month);
-    String days = getDate().toString().substring(3, 5);
-    int day = int.parse(days);
-    String year = getDate().toString().substring(6);
-    int yr = int.parse(year);
-    dateInt = mo + day + yr;
-    //volunteer.addPickup(this);
     pickups.add(this);
-    organizeByDate();
-    volunteer.sortVolunteerPickups();
   }
 
   getName(){
