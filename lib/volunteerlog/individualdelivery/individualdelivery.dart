@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
-import 'package:ovcapp/volunteerlog/volunteerlog.dart';
 import 'package:ovcapp/themes.dart';
 
 class IndividualDelivery extends StatefulWidget{

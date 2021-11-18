@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ovcapp/volunteerlog/Pending.dart';
 //import 'package:ovcapp/volunteer_pickup.dart';
 import 'package:ovcapp/volunteerlog/deliveries/deliveries.dart';
 import 'package:ovcapp/themes.dart';
@@ -10,35 +11,11 @@ import 'package:ovcapp/volunteerlog/individualdelivery/individualdelivery.dart';
 import 'package:ovcapp/volunteerlog/individualpickup/individualpickup.dart';
 import 'package:ovcapp/volunteerlog/pickups/pickups.dart';
 import 'package:ovcapp/assets/ovcicons.dart';
-import 'package:ovcapp/volunteerlog/food/food.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 import 'package:ovcapp/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 int count = 0;
-volunteerLogTester(BuildContext context, Volunteer person) //add pickup and delivery objects to display on log screen
-{
-  if(count == 0) //counter is used so objects don't duplicate
-    {
-      //initialize these objects to view pickups, deliveries on screen, they are dummy objects, send actual pickups/deliveries for a volunteer here.
-      /*Food bread = new Food("Bread", "user", "123 My House Ct.", 2.0, true, 2);
-      Deliveries bread1 = new Deliveries(bread, "03-12-2021", person, context);
-      Food bread2 = new Food("Bread", "user", "123 My House Ct.", 2.0, false, 2);
-      Pickups bread3 = new Pickups(bread2, "03-12-2021", person);
-      Food lasagna = new Food("Lasagna", "user", "123 My House Ct.", 2.0, false, 2);
-      Pickups lasagna1 = new Pickups(lasagna, "03-13-2021", person);
-      Food salad = new Food("Salad", "user", "123 My House Ct.", 2.0, true, 2);
-      Deliveries salad1 = new Deliveries(salad, "03-10-2021", person, context);
-      Food pasta = new Food("Pasta", "user", "123 My House Ct.", 2.0, true, 2);
-      Pickups pasta1 = new Pickups(pasta, "03-15-2021", person);
-      Food lasagna2 = new Food("Lasagna", "user", "123 My House Ct.", 2.0, false, 2);
-      Deliveries lasagna3 = new Deliveries(lasagna2, "03-14-2021", person, context);
-      Food pasta2 = new Food("Pasta", "user", "123 My House Ct.", 2.0, true, 2);
-      Deliveries pasta3 = new Deliveries(pasta2, "03-11-2021", person, context);
-      count++;*/
-    }
-
-}
 
 class VolunteerLog extends StatefulWidget {
   const VolunteerLog({Key? key, required this.volunteer}) : super(key: key);
@@ -92,7 +69,6 @@ class _VolunteerLogState extends State<VolunteerLog> {
 
   }
   Column body(BuildContext context){
-    volunteerLogTester(context, widget.volunteer);
     return Column(
       children: [
         Container(
@@ -157,7 +133,7 @@ class _VolunteerLogState extends State<VolunteerLog> {
                         side: BorderSide(color: Color(0xFFE0CB8F), width: 2)), ),
                       padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),),
                     child: ListBody(children: [
-                      Text(LogHours.getTotal().toString() + hourOrHours(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white)),],//_LogHoursState._total.toString()
+                      Text(widget.volunteer.getHours().toString() + hourOrHours(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white)),],//_LogHoursState._total.toString()
                     ),
                   )
               ),
@@ -183,6 +159,7 @@ class _VolunteerLogState extends State<VolunteerLog> {
     return Scaffold(
       backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
       appBar: AppBar(
+        backgroundColor: CustomTheme.getLight() ? Color(0xFFE0CB8F) : Colors.black,
         leading: GestureDetector(
           onTap: () {
             Navigator.push(
@@ -194,7 +171,7 @@ class _VolunteerLogState extends State<VolunteerLog> {
             OVCIcons.profileicon, size: 30.0,
           ),
         ),
-        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, ),),
+        title: Text('Onyxx Village Connection', style: TextStyle(fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25, color: Colors.black),),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -203,10 +180,18 @@ class _VolunteerLogState extends State<VolunteerLog> {
   }
 }
 
+List<Pending> thePends = Volunteer.allPendingPickups;
 listItems(BuildContext context, String type, Volunteer volunteer){
+  Volunteer.sortVolunteerPickups();
   Widget returning = new Container();
-  List<Pickups> listPickups = Pickups.pickups;
+  List<Pickups> listPickups = Volunteer.returnVolunteersPickups(volunteer);
   List<Deliveries> listDeliver = Deliveries.deliveries;
+  thePends = <Pending>[];
+  for(int i=0; i<Volunteer.allPendingPickups.length; i++){
+    if(Volunteer.allPendingPickups.elementAt(i).user == volunteer.name){
+      thePends.add(Volunteer.allPendingPickups.elementAt(i));
+    }
+  }
   if(type == "pickup")
     {
       if(listPickups.length >= 3)
@@ -248,26 +233,7 @@ listItems(BuildContext context, String type, Volunteer volunteer){
           ],
         );
       }
-      if(listPickups.length >= 3)
-      {
-        returning = ListBody(
-          children: [
-            organize(context, 1, "cart", "pickup", volunteer),
-            organize(context, 2, "cart", "pickup", volunteer),
-            organize(context, 3, "cart", "pickup", volunteer),
-          ],
-        );
-      }
-      if(listPickups.length == 2)
-      {
-        returning = ListBody(
-          children: [
-            organize(context, 1, "cart", "pickup", volunteer),
-            organize(context, 2, "cart", "pickup", volunteer),
-          ],
-        );
-      }
-      if(listPickups.length == 1)
+      if(listPickups.length >= 1)
       {
         returning = ListBody(
           children: [
@@ -363,8 +329,8 @@ Widget organize(BuildContext context, int number, String which, String widg, Vol
                       side: BorderSide(color: Color(0xFFE0CB8F), width: 2)),),
                     padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),),
                   child: ListBody(children: [
-                    Text(volunteer.getVolunteerPickups().elementAt(volunteer.getVolunteerPickups().length-number).getName(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white,)),
-                    Text("Picked up on "+volunteer.getVolunteerPickups().elementAt(volunteer.getVolunteerPickups().length-number).getDate().toString().substring(0, 5), style: TextStyle(fontSize: 13, color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)))
+                    Text(Volunteer.returnVolunteersPickups(volunteer).elementAt(Volunteer.returnVolunteersPickups(volunteer).length-number).getName(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white,)),
+                    Text("Picked up on "+Volunteer.returnVolunteersPickups(volunteer).elementAt(Volunteer.returnVolunteersPickups(volunteer).length-number).getDate(), style: TextStyle(fontSize: 13, color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)))
                   ], ),
                 )),
           ),
