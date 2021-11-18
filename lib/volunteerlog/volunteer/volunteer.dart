@@ -12,6 +12,7 @@ class Volunteer{
   static List<Log> volunteerLog = <Log>[];
   static List<Log> threeLogEntries = <Log>[];
   static List<Volunteer> allVolunteers = <Volunteer>[];
+  static List<Pending> allPendingPickups = <Pending>[];
 
   Volunteer(String name, String email, String phone){
     this.name = name;
@@ -69,12 +70,22 @@ class Volunteer{
     return volunteerDeliveries;
   }
 
-  sortVolunteerDeliveries(){
+  static sortVolunteerDeliveries(){
     volunteerDeliveries.sort((a, b) => a.getDateInt().compareTo(b.getDateInt()));
   }
 
-  sortVolunteerPickups(){
-    volunteerPickups.sort((a, b) => a.getDateInt().compareTo(b.getDateInt()));
+  static sortVolunteerPickups(){
+    volunteerPickups.sort((a, b) => a.getDate().compareTo(b.getDate()));
+  }
+  
+  static returnVolunteersPickups(Volunteer volunteer){
+    List<Pickups> listPickups = <Pickups>[];
+    for(int i=0; i<volunteer.getVolunteerPickups().length; i++){
+      if(volunteer.getVolunteerPickups().elementAt(i).volunteer == volunteer){
+        listPickups.add(volunteer.getVolunteerPickups().elementAt(i));
+      }
+    }
+    return listPickups;
   }
 
   getVolunteerLog(Volunteer volunteerObj){
@@ -109,7 +120,7 @@ class Volunteer{
       }
     }
     if(counter == 0){
-      volunteerPickups.add(pickup);
+      //volunteerPickups.add(pickup);
     }
   }
 
@@ -135,23 +146,44 @@ class Volunteer{
   }
 
   getThreeLogEntries(Volunteer volunteerObj){
-    List<Log> three = <Log>[];
-    for(int i=0; i<threeLogEntries.length; i++)
-      {
-        if(threeLogEntries.elementAt(i).volunteer == volunteerObj)
-          {
-            three.add(threeLogEntries.elementAt(i));
-          }
-      }
-    return three;
+    return threeLogEntries;
   }
 
   addHours(Log log){
     volunteerLog.add(log);
   }
+  
+  addIntHours(int total){
+    hours = total;
+  }
+
+  getHours(){
+    return hours;
+  }
 
   @override
   String toString() {
     return "Volunteer: " + getName() + "\nPhone Number: " + getPhone() + "\nE-mail: " + getEmail();
+  }
+}
+
+class Pending {
+  String one = "";
+  String two = "";
+  String user = "";
+  Pending(String one, String two, String user){
+    this.one = one;
+    this.two = two;
+    this.user = user;
+  }
+
+  returnPendingPickups(Volunteer volunteer){
+    List<Pending> userPending = <Pending>[];
+    for(int i=0; i<Volunteer.allPendingPickups.length; i++){
+      if(Volunteer.allPendingPickups[i].user == volunteer.email){
+        userPending.add(Volunteer.allPendingPickups[i]);
+      }
+    }
+    return userPending;
   }
 }
