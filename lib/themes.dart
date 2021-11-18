@@ -55,5 +55,12 @@ class CustomTheme{
         unselectedItemColor: Colors.black,
         unselectedLabelStyle: TextStyle(color: Colors.black)
     ),
+    buttonTheme: ButtonThemeData(
+      buttonColor: Color(0xFFE0CB8F),
+      disabledColor: Colors.black,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
+          side: BorderSide(color: Colors.black)),
+    ),
   );
 }
