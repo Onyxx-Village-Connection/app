@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:ovcapp/themes.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 import 'package:ovcapp/volunteerlog/volunteerlog.dart';
@@ -26,16 +25,112 @@ class LogHours extends StatefulWidget {
   }
 }
 
+String convert =  "";
+int numberOfEntries = 0;
+String? use = FirebaseAuth.instance.currentUser!.email;
+
+indexAsAString(int define){
+  String finalString = "";
+  if(define>10){
+    finalString = '0'+define.toString();
+  }
+  else{
+    finalString = define.toString();
+  }
+  return finalString;
+}
+
+String getPST(String date){
+String mutable = date;
+String time = mutable.substring(11, 16);
+String returning = "";
+if(time.substring(0, 2) == "00")
+{
+returning = "12";
+}
+if(time.substring(0, 2) == "13")
+{
+returning = "1";
+}
+if(time.substring(0, 2) == "14")
+{
+returning = "2";
+}
+if(time.substring(0, 2) == "15")
+{
+returning = "3";
+}
+if(time.substring(0, 2) == "16")
+{
+returning = "4";
+}
+if(time.substring(0, 2) == "17")
+{
+returning = "5";
+}
+if(time.substring(0, 2) == "18")
+{
+returning = "6";
+}
+if(time.substring(0, 2) == "19")
+{
+returning = "7";
+}
+if(time.substring(0, 2) == "20")
+{
+returning = "8";
+}
+if(time.substring(0, 2) == "21")
+{
+returning = "9";
+}
+if(time.substring(0, 2) == "22")
+{
+returning = "10";
+}
+if(time.substring(0, 2) == "23")
+{
+returning = "11";
+}
+if(int.parse(time.substring(0, 2)) > 11)
+{
+if(int.parse(time.substring(0, 2)) == 12)
+{
+returning += time.substring(0, 2);
+}
+returning += time.substring(2) + "pm";
+
+}
+if(int.parse(time.substring(0, 2)) <= 11)
+{
+if(int.parse(time.substring(0, 2)) == 00)
+{
+returning += time.substring(2) + "am";
+}
+else{
+returning += time + "am";
+}
+}
+if(returning.substring(0, 1) == '0')
+{
+returning = returning.substring(1);
+}
+
+return returning;
+}
+
 class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin {
   static int _counter = 0;
   static int _starter = 0;
   static int _total = _counter + _starter;
   static CollectionReference hours = FirebaseFirestore.instance.collection("Volunteer Hours");
+  static CollectionReference entries = FirebaseFirestore.instance.collection("Log Entries");
   
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    convert = use.toString() + keepTrack.length.toString();
     //_total = widget.volunteer.totalVolunteerHours(widget.volunteer);
     if(counting == 0){
       counting++;
@@ -73,8 +168,12 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
 
 
  _incrementTotal() async{
+   DateTime now = new DateTime.now();
+   AllHoursList slayy = new AllHoursList(index: counter, date: now.toLocal().toString(), volunteer: widget.volunteer, one: _starter);
+   keepTrack.add(nuObj);
     await hours.doc(FirebaseAuth.instance.currentUser!.email).set({'user':widget.volunteer.getName(), 'hoursEntered':_starter, 'totalHours':_total + _starter, 'editedHours':0}).then((value) => print("Hours added"));
-    setState(() {
+    await entries.add({'user':widget.volunteer.getName(), 'hoursEntered':_starter, 'totalHours':_total + _starter, 'editedHours':0, 'date':now.toLocal().toString()});
+   setState(() {
       _total += _starter;
       if(_starter !=0)
       {
@@ -86,7 +185,7 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
       _starter = 0;
 
     });
-
+    keepTrack.remove(nuObj);
   }
 
   int itemCount(){
@@ -174,11 +273,8 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
                 child: Card(
                   shadowColor: Colors.white,
                   child: ListTile(
-                    onTap: () {Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EditHoursEntry(log: volunteer.getThreeLogEntries(volunteer).elementAt(index), volunteer: volunteer,)));},
-                    title: Text(volunteer.getThreeLogEntries(volunteer).elementAt(index).toString() + " @ " + Log.getPST(volunteer.getThreeLogEntries(volunteer).elementAt(index)), style: TextStyle(fontSize: 20, fontFamily: "BarlowSemiCondensed"),),
-                    subtitle: Text("Edit Hours", style: TextStyle(color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F),),),
+                    onTap: () {},
+                    title: Text(volunteer.getThreeLogEntries(volunteer).elementAt(index).toString() + " @ " + getPST(volunteer.getThreeLogEntries(volunteer).elementAt(index).date), style: TextStyle(fontSize: 20, fontFamily: "BarlowSemiCondensed"),),
                     tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
                     leading: Icon(
                       Icons.account_balance_wallet_rounded,
@@ -266,6 +362,7 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
           {
             VolunteerLog.totalHrs = order.get('totalHours');
             LogHours.setTotal(order.get('totalHours'));
+            widget.volunteer.addIntHours(order.get('totalHours'));
             LogHours.counterr++;
           }
         }
@@ -302,12 +399,12 @@ class Log{
         logs.add(this);
         volunteer.addHours(this);
       }
-    if(volunteer.getThreeLogEntries(volunteer).length >= 3)
+    if(volunteer.getThreeLogEntries(volunteer).length >= 2)
     {
       volunteer.getThreeLogEntries(volunteer).removeAt(0);
       volunteer.addEntries(this);
     }
-    if(volunteer.getThreeLogEntries(volunteer).length < 3)
+    if(volunteer.getThreeLogEntries(volunteer).length < 2)
       {
         volunteer.addEntries(this);
       }
@@ -474,6 +571,39 @@ class _AllEntriesState extends State<AllEntries> {
         centerTitle: true,
         elevation: 0.0,
       ),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 0.0),
+                child: Text(
+                  "Total: ",
+                  style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 25, color: Color(0xFFE0CB8F)),//
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 0.0),
+                child: Text(
+                  _LogHoursState._total.toString() + hourOrHours(),
+                  style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 25),//, color: Color(0xFFE0CB8F)
+                ),
+              ),
+            ],
+          ),
+          AllHoursStream(volunteer: widget.volunteer,),
+        ],
+      ),
+    );
+      /*Scaffold(
+      backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFE0CB8F),
+        title: const Text('Log Entries', style: TextStyle(color: Colors.black, fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -528,14 +658,149 @@ class _AllEntriesState extends State<AllEntries> {
           ],
         ),
       ),
+    );*/
+  }
+}
+
+int counter = 0;
+final _firestore = FirebaseFirestore.instance;
+List <AllHoursList> keepTrack = [];
+
+bool isntSameObj(){
+  bool isntSame = true;
+  for(int i=0; i<keepTrack.length-1; i++){
+    for(int j=i+1; j<keepTrack.length; j++){
+      if(keepTrack[i].date == keepTrack[j].date){
+        isntSame = false;
+      }
+    }
+  }
+  return isntSame;
+}
+
+class AllHoursStream extends StatelessWidget {
+  AllHoursStream({Key? key, required this.volunteer}) : super(key: key);
+  final Volunteer volunteer;
+
+  @override
+  Widget build(BuildContext context) {
+    counter = 0;
+    return FutureBuilder<QuerySnapshot>(
+      future: _firestore
+          .collection('Log Entries')
+          .get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return SafeArea(
+            child: Center(
+              child: Column(
+                children: [
+                  CircularProgressIndicator(
+                    backgroundColor: Color(0xFFE0CB8F),
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE0CB8F)),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        final orders = snapshot.data!.docs.reversed;
+        List<AllHoursList> orderList = [];
+        counter = 0;
+        for (var order in orders) {
+          final hours = order.get('hoursEntered');
+          final date = order.get('date');
+          final user = order.get('user');
+
+          final orderIndividuals = AllHoursList(
+            index: counter,
+            volunteer: volunteer,
+            one: hours,
+            date: date,
+          );
+
+          if(user == volunteer.email)
+          {
+            //Log newObj = new Log(date, hours, volunteer);
+            orderList.add(orderIndividuals);
+            counter++;
+            if(isntSameObj()){
+              keepTrack.add(orderIndividuals);
+            }
+            //Volunteer.volunteerPickups.add(newObj);
+          }
+          /*else{
+            Volunteer.allPendingPickups.add(Pending(name, date, user));
+          }*/
+          //findSameObj();
+          orderList.sort((b, a) => a.date.compareTo(b.date));
+        }
+
+        numberOfEntries = counter;
+        return Expanded(
+          child: ListView(
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 20.0,
+            ),
+            children: orderList,
+          ),
+        );
+      },
     );
   }
 }
 
+
+class AllHoursList extends StatelessWidget {
+  AllHoursList({Key? key,
+    required this.index,
+    required this.date,
+    required this.volunteer, required this.one,}) : super(key: key);
+
+  final int index;
+  final String date;
+  final Volunteer volunteer;
+  final int one;
+  String hourOrHours() {
+    String returning = "";
+    if(one == 1){
+      returning = " hour";
+    }
+    if(one != 1){
+      returning = " hours";
+    }
+    return returning;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(0.0),
+      child: Card(
+        shadowColor: Color(0xFFE0CB8F),
+        child: ListTile( //Navigator.push(context, MaterialPageRoute(builder: (context) => EditHoursEntry(log: volunteer.getVolunteerLog(volunteer).elementAt(index), volunteer: volunteer, idx: index,)),);
+          onTap: () {},
+          title: Text("You logged "+one.toString()+hourOrHours()+" on "+date.substring(5,7)+"-"+date.substring(8, 10)+"-"+date.substring(0,4)+" @ "+getPST(date), style: TextStyle(fontSize: 21, fontFamily: "BarlowSemiCondensed"),),
+          //subtitle: Text("Edit Hours ", style: TextStyle(color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)),),
+          tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
+          leading: Icon(
+            Icons.account_balance_wallet_rounded,
+            color: Color(0xFFE0CB8F),
+            size: 33,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*
 class EditHoursEntry extends StatefulWidget {
-  const EditHoursEntry({Key? key, required this.log, required this.volunteer}) : super(key: key);
+  const EditHoursEntry({Key? key, required this.log, required this.idx, required this.volunteer}) : super(key: key);
   final Log log;
   final Volunteer volunteer;
+  final int idx;
   @override
   _EditHoursEntryState createState() => _EditHoursEntryState();
 }
@@ -590,8 +855,13 @@ class _EditHoursEntryState extends State<EditHoursEntry> {
   }
 
   _incrementTotal() async{
+    DateTime now = new DateTime.now();
     //await _LogHoursState.hours.add({'user':widget.volunteer.getName(), 'hoursEntered':_total, 'totalHours':totalDupe, 'editedHours':totalDupe-_total}).then((value) => print("Hours added"))
     await _LogHoursState.hours.doc(FirebaseAuth.instance.currentUser!.email).set({'user':widget.volunteer.getName(), 'hoursEntered':_total, 'totalHours':_LogHoursState._total + _starter, 'editedHours':totalDupe-_total}).then((value) => print("Hours added"));//__BodyState
+    await _LogHoursState.entries.doc(use.toString()+indexAsAString(widget.idx)).set({'user':widget.volunteer.getName(), 'hoursEntered':_total, 'totalHours':_LogHoursState._total + _starter, 'editedHours':totalDupe-_total, 'date':now.toLocal().toString()});
+    if(widget.idx>index){
+      await _LogHoursState.entries.doc(use.toString()+indexAsAString(index)).set({'user':widget.volunteer.getName(), 'hoursEntered':keepTrack.elementAt(keepTrack.length-1).one, 'totalHours':_LogHoursState._total + _starter, 'editedHours': 0, 'date':now.toLocal().toString()});//keepTrack.elementAt(keepTrack.length-1).date
+    }
     setState(() {
       print(widget.volunteer.getName() + " edited their logged " + _total.toString() + " "+hourOrHours() + " to " + (totalDupe).toString() + " "+hourOrHours() + " for " + widget.log.getFormalDate() + " @ " + Log.getPST(widget.log));
       _total = totalDupe;
@@ -681,4 +951,6 @@ class _EditHoursEntryState extends State<EditHoursEntry> {
   }
 }
 
+
+*/
 
