@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:ovcapp/assets/ovcicons.dart';
 import 'package:ovcapp/volunteerlog/volunteerlog.dart';
 import 'package:ovcapp/themes.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
