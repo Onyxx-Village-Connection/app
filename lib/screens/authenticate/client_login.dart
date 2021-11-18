@@ -3,11 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ovcapp/screens/authenticate/client_signup.dart';
 import 'package:ovcapp/screens/client/client_wishlist.dart';
 
-
 final _backgroundColor = Colors.black;
 final _widgetColor = Color(0xFFE0CB8F);
 
-class ClientLogin extends StatefulWidget{
+class ClientLogin extends StatefulWidget {
   ClientLogin({Key? key, required this.title}) : super(key: key);
 
   final String title;
@@ -15,8 +14,7 @@ class ClientLogin extends StatefulWidget{
   _ClientLoginState createState() => _ClientLoginState();
 }
 
-class _ClientLoginState extends State<ClientLogin>{
-
+class _ClientLoginState extends State<ClientLogin> {
   final _auth = FirebaseAuth.instance;
 
   String email = '';
@@ -40,8 +38,7 @@ class _ClientLoginState extends State<ClientLogin>{
     ),
   );
 
-  Widget _buildClientLoginWidgets(BuildContext context){
-
+  Widget _buildClientLoginWidgets(BuildContext context) {
     final emailBox = TextFormField(
       style: textStyle,
       decoration: InputDecoration(
@@ -51,12 +48,12 @@ class _ClientLoginState extends State<ClientLogin>{
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your email address';
         }
       },
-      onChanged: (val){
+      onChanged: (val) {
         setState(() => email = val);
       },
     );
@@ -71,12 +68,12 @@ class _ClientLoginState extends State<ClientLogin>{
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your password';
         }
       },
-      onChanged: (val){
+      onChanged: (val) {
         setState(() => password = val);
       },
     );
@@ -88,15 +85,21 @@ class _ClientLoginState extends State<ClientLogin>{
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
         onPressed: () async {
-          await _auth.signInWithEmailAndPassword(
-              email: email, password: password).then((_){
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ClientWishlist(title: 'Client Wishlist')));
+          await _auth
+              .signInWithEmailAndPassword(email: email, password: password)
+              .then((_) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    ClientWishlist(title: 'Client Wishlist')));
           });
         },
         child: Text(
           'Login',
           textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: 'BigShouldersDisplay', fontSize: 25.0, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontFamily: 'BigShouldersDisplay',
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -104,16 +107,22 @@ class _ClientLoginState extends State<ClientLogin>{
     final notHaveAccountTextButton = Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget> [
+        children: <Widget>[
           Text(
             'Do not have an account?',
-            style: TextStyle(fontFamily: 'BarlowSemiCondensed', fontSize: 18.0, color: Colors.white),
+            style: TextStyle(
+                fontFamily: 'BarlowSemiCondensed',
+                fontSize: 18.0,
+                color: Colors.white),
           ),
           TextButton(
             onPressed: () => _navigateToClientSignup(context),
             child: Text(
               'Sign up',
-              style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: _widgetColor),
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: 'BarlowSemiCondensed',
+                  color: _widgetColor),
             ),
           ),
         ],
@@ -121,41 +130,40 @@ class _ClientLoginState extends State<ClientLogin>{
     );
 
     return ListView(
-        children: <Widget>[
-          Image.asset(
-            'images/ovclogo.png',
-            height: 250,
-            width: 250,
-            scale: 1.0,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 15.0),
-            child: emailBox,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
-            child: passwordBox,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(150.0, 20.0, 150.0, 15.0),
-            child: loginButton,
-          ),
-          notHaveAccountTextButton,
-        ],
+      children: <Widget>[
+        Image.asset(
+          'images/ovclogo.png',
+          height: 250,
+          width: 250,
+          scale: 1.0,
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 15.0),
+          child: emailBox,
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
+          child: passwordBox,
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(150.0, 20.0, 150.0, 15.0),
+          child: loginButton,
+        ),
+        notHaveAccountTextButton,
+      ],
     );
   }
 
-  void _navigateToClientSignup(BuildContext context){
+  void _navigateToClientSignup(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return ClientSignup(title: 'Client Signup');
       },
     ));
   }
 
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     final loginForm = Container(
       color: _backgroundColor,
       child: _buildClientLoginWidgets(context),
@@ -166,4 +174,3 @@ class _ClientLoginState extends State<ClientLogin>{
     );
   }
 }
-

@@ -1,12 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:ovcapp/screens/authenticate/user_login.dart';
 import 'package:ovcapp/volunteer_sign_up.dart';
-//official landing page - Advik Kunta (for reference because
-//there's another landing page that I don't want to delete)
-class OnyxxLanding extends StatelessWidget{
+import 'package:ovcapp/screens/authenticate/client_login.dart';
+
+class OnyxxLanding extends StatelessWidget {
   const OnyxxLanding({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: new Column(
@@ -22,75 +23,71 @@ class OnyxxLanding extends StatelessWidget{
               fit: BoxFit.contain,
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 75, top: 10, right: 75, bottom: 10),
-            child: OutlinedButton(
-
-              child: Text('I Am A Donor'),
-              // in this onPressed add navigation to donor
-
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE0CB8F)),
-                foregroundColor:MaterialStateProperty.all<Color>(Colors.black),
-                overlayColor: MaterialStateProperty.all<Color>(Colors.black12),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                ),
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(30))
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 75, top: 10, right: 75, bottom: 10),
-            child: OutlinedButton(
-              child: Text('I Am A Volunteer'),
-              // In the onPressed area, add the navigation to the volunteer signup page
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-                  return SignUp();
-                }));
-              },
-
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE0CB8F)),
-                foregroundColor:MaterialStateProperty.all<Color>(Colors.black),
-                overlayColor: MaterialStateProperty.all<Color>(Colors.black12),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                ),
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(30)),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 75, top: 10, right: 75, bottom: 10),
-            child: OutlinedButton(
-              child: Text('I Am A Client'),
-              //add navigation to client signup
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE0CB8F)),
-                foregroundColor:MaterialStateProperty.all<Color>(Colors.black),
-                overlayColor: MaterialStateProperty.all<Color>(Colors.black12),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                ),
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(30))
-              ),
-            ),
-          )
+          roleButton(context, 'Donor'),
+          roleButton(context, 'Volunteer'),
+          roleButton(context, 'Client'),
         ],
-
       ),
     );
+  }
 
+  Padding roleButton(BuildContext context, String role) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 75, top: 10, right: 75, bottom: 10),
+      child: OutlinedButton(
+        onPressed: () {
+          print('$role click');
+          _navigateToRole(context, role);
+        },
+        child: Text(
+          'I am a $role',
+        ),
+        style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(Color(0xFFE0CB8F)),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+            overlayColor: MaterialStateProperty.all<Color>(Colors.black12),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+            ),
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                EdgeInsets.all(30))),
+      ),
+    );
+  }
+
+  void _navigateToRole(BuildContext context, String role) {
+    switch (role) {
+      case 'Donor':
+        {
+          Navigator.of(context)
+              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+            // return MyDonations(title: 'Donor');
+            return UserLogin(role: role);
+          }));
+        }
+        break;
+      case 'Volunteer':
+        {
+          Navigator.of(context)
+              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+            return SignUp();
+          }));
+        }
+        break;
+      case 'Client':
+        {
+          Navigator.of(context)
+              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+            return ClientLogin(title: 'Client');
+          }));
+        }
+        break;
+      default:
+        {}
+        break;
+    }
   }
 }

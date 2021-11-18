@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
 import 'package:ovcapp/screens/authenticate/more_signup_info.dart';
 
-
 final _backgroundColor = Colors.black;
 final _widgetColor = Color(0xFFE0CB8F);
 
-class ClientSignup extends StatefulWidget{
+class ClientSignup extends StatefulWidget {
   ClientSignup({Key? key, required this.title}) : super(key: key);
 
   final String title;
@@ -14,8 +13,7 @@ class ClientSignup extends StatefulWidget{
   _ClientSignupState createState() => _ClientSignupState();
 }
 
-class _ClientSignupState extends State<ClientSignup>{
-
+class _ClientSignupState extends State<ClientSignup> {
   String email = '';
   String password = '';
 
@@ -23,22 +21,21 @@ class _ClientSignupState extends State<ClientSignup>{
   TextStyle hintTextStyle = TextStyle(fontSize: 20.0, color: Colors.grey);
 
   OutlineInputBorder focusedField = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(5.0),
-      borderSide: BorderSide(
-        color: Colors.grey,
-      ),
+    borderRadius: BorderRadius.circular(5.0),
+    borderSide: BorderSide(
+      color: Colors.grey,
+    ),
   );
 
   OutlineInputBorder enabledField = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(5.0),
-      borderSide: BorderSide(
-        color: Colors.white10,
-        width: 2.0,
-      ),
+    borderRadius: BorderRadius.circular(5.0),
+    borderSide: BorderSide(
+      color: Colors.white10,
+      width: 2.0,
+    ),
   );
 
-  Widget _buildClientSignupWidgets(BuildContext context){
-
+  Widget _buildClientSignupWidgets(BuildContext context) {
     final emailBox = TextFormField(
       style: textStyle,
       decoration: InputDecoration(
@@ -48,12 +45,12 @@ class _ClientSignupState extends State<ClientSignup>{
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your email address';
         }
       },
-      onChanged: (val){
+      onChanged: (val) {
         setState(() => email = val);
       },
     );
@@ -68,12 +65,12 @@ class _ClientSignupState extends State<ClientSignup>{
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your password';
         }
       },
-      onChanged: (val){
+      onChanged: (val) {
         setState(() => password = val);
       },
     );
@@ -90,7 +87,10 @@ class _ClientSignupState extends State<ClientSignup>{
         child: Text(
           'Next',
           textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: 'BigShouldersDisplay', fontSize: 25.0, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontFamily: 'BigShouldersDisplay',
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -98,24 +98,30 @@ class _ClientSignupState extends State<ClientSignup>{
     final haveAccountTextButton = Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget> [
+        children: <Widget>[
           Text(
             'Already have an account?',
-            style: TextStyle(fontFamily: 'BarlowSemiCondensed', fontSize: 18.0, color: Colors.white),
+            style: TextStyle(
+                fontFamily: 'BarlowSemiCondensed',
+                fontSize: 18.0,
+                color: Colors.white),
           ),
           TextButton(
-              onPressed: () => _navigateToClientLogin(context),
-              child: Text(
-                'Login',
-                style: TextStyle(fontSize: 18.0, fontFamily: 'BarlowSemiCondensed', color: _widgetColor),
-              ),
+            onPressed: () => _navigateToClientLogin(context),
+            child: Text(
+              'Login',
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: 'BarlowSemiCondensed',
+                  color: _widgetColor),
+            ),
           ),
         ],
       ),
     );
 
     return ListView(
-      children: <Widget> [
+      children: <Widget>[
         Image.asset(
           'images/ovclogo.png',
           height: 155,
@@ -123,15 +129,15 @@ class _ClientSignupState extends State<ClientSignup>{
           scale: 1.2,
         ),
         Padding(
-            padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-            child: Text(
-              'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
-              textAlign: TextAlign.center,
-              style: textStyle.copyWith(height: 2.0),
-              overflow: TextOverflow.ellipsis,
-              softWrap: true,
-              maxLines: 8,
-            ),
+          padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+          child: Text(
+            'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
+            textAlign: TextAlign.center,
+            style: textStyle.copyWith(height: 2.0),
+            overflow: TextOverflow.ellipsis,
+            softWrap: true,
+            maxLines: 8,
+          ),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 15.0),
@@ -158,18 +164,17 @@ class _ClientSignupState extends State<ClientSignup>{
     ));
   }
 
-  void _navigateToMoreSignupInfoPage(BuildContext context){
+  void _navigateToMoreSignupInfoPage(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) {
-        return MoreSignupInfo(title: 'More Signup Info', email: email, password: password);
+        return MoreSignupInfo(
+            title: 'More Signup Info', email: email, password: password);
       },
     ));
   }
 
-
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     final signupForm = Container(
       color: _backgroundColor,
       child: _buildClientSignupWidgets(context),

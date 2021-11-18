@@ -3,7 +3,7 @@ import 'package:ovcapp/itemcard_form.dart';
 
 final _backgroundColor = Colors.black87;
 
-class ClientWishlist extends StatefulWidget{
+class ClientWishlist extends StatefulWidget {
   ClientWishlist({Key? key, required this.title}) : super(key: key);
 
   final String title;
@@ -11,47 +11,45 @@ class ClientWishlist extends StatefulWidget{
   _ClientWishlistState createState() => _ClientWishlistState();
 }
 
-class _ClientWishlistState extends State<ClientWishlist>{
-
+class _ClientWishlistState extends State<ClientWishlist> {
   TextStyle textStyle = TextStyle(fontSize: 18.0, color: Colors.white);
 
   bool _isSelected = false;
 
-  Widget _buildClientWishlistWidgets(BuildContext context){
-
+  Widget _buildClientWishlistWidgets(BuildContext context) {
     final itemCardButton = GestureDetector(
-      onTap: (){
+      onTap: () {
         setState(() {
           _isSelected = !_isSelected;
         });
       },
       child: Icon(
         Icons.star,
-        color: _isSelected? Colors.amber: Colors.grey,
+        color: _isSelected ? Colors.amber : Colors.grey,
         size: 30.0,
       ),
     );
 
     final itemCard = Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
         padding: EdgeInsets.all(10.0),
-        child: Container(
-          padding: EdgeInsets.all(10.0),
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget> [
-              itemCardButton,
-              Text(
-                'Item name',
-                style: textStyle.copyWith(color: Colors.amber),
-              ),
-              IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.delete),
-              )
-            ],
-          ),
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            itemCardButton,
+            Text(
+              'Item name',
+              style: textStyle.copyWith(color: Colors.amber),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.delete),
+            )
+          ],
         ),
+      ),
     );
 
     return ListView(
@@ -59,20 +57,18 @@ class _ClientWishlistState extends State<ClientWishlist>{
         itemCard,
       ],
     );
-
   }
 
-  void _navigateToItemCardForm(BuildContext context){
+  void _navigateToItemCardForm(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return ItemCardForm(title: 'ItemCardForm');
       },
     ));
   }
 
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     final pageRoutingButtons = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -87,7 +83,7 @@ class _ClientWishlistState extends State<ClientWishlist>{
               textAlign: TextAlign.center,
               style: textStyle,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ),
         Container(
@@ -101,7 +97,7 @@ class _ClientWishlistState extends State<ClientWishlist>{
               textAlign: TextAlign.center,
               style: textStyle,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ),
         Container(
@@ -115,7 +111,7 @@ class _ClientWishlistState extends State<ClientWishlist>{
               textAlign: TextAlign.center,
               style: textStyle,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ),
       ],
@@ -145,18 +141,15 @@ class _ClientWishlistState extends State<ClientWishlist>{
                   size: 26.0,
                   color: Colors.amber,
                 ),
-              )
-          ),
+              )),
         ],
       ),
-
       body: clientResources,
-      bottomSheet:  Container(
+      bottomSheet: Container(
         color: _backgroundColor,
         padding: EdgeInsets.fromLTRB(5.0, 0, 5.0, 10.0),
         child: pageRoutingButtons,
       ),
     );
-
   }
 }
