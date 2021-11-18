@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ovcapp/splash.dart';
+
+import './landing.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +16,7 @@ class OnyxxApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Onyxx Village Connection',
       theme: ThemeData.dark(),
-      home: Splash(),
-      // home: LandingPage(),
+      home: OnyxxLanding(),
     );
   }
 }

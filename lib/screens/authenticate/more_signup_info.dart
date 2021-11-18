@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ovcapp/screens/client/client_wishlist.dart';
+import 'package:ovcapp/screens/client/tabs.dart';
 
 final _backgroundColor = Colors.black;
 final _widgetColor = Color(0xFFE0CB8F);
 
-class MoreSignupInfo extends StatefulWidget{
-  MoreSignupInfo({Key? key, required this.title, required this.email, required this.password}) : super(key: key);
+class MoreSignupInfo extends StatefulWidget {
+  MoreSignupInfo(
+      {Key? key,
+      required this.title,
+      required this.email,
+      required this.password})
+      : super(key: key);
 
   final String title, email, password;
   @override
   _MoreSignupInfoState createState() => _MoreSignupInfoState();
 }
 
-class _MoreSignupInfoState extends State<MoreSignupInfo>{
-
-
+class _MoreSignupInfoState extends State<MoreSignupInfo> {
   String name = '';
   String phone = '';
   String city = '';
@@ -42,8 +45,7 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
     ),
   );
 
-  Widget _buildMoreSignupInfoWidgets (BuildContext context){
-
+  Widget _buildMoreSignupInfoWidgets(BuildContext context) {
     final nameBox = TextFormField(
       style: textStyle,
       decoration: InputDecoration(
@@ -53,12 +55,12 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your name';
         }
       },
-      onChanged: (val){
+      onChanged: (val) {
         setState(() => name = val);
       },
     );
@@ -72,12 +74,12 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your phone number';
         }
       },
-      onChanged: (val){
+      onChanged: (val) {
         setState(() => phone = val);
       },
     );
@@ -91,12 +93,12 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.all(20.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your city';
         }
       },
-      onChanged: (val){
+      onChanged: (val) {
         setState(() => city = val);
       },
     );
@@ -110,12 +112,12 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         hintStyle: hintTextStyle,
         contentPadding: EdgeInsets.fromLTRB(15.0, 20.0, 20.0, 30.0),
       ),
-      validator: (String? value){
-        if (value == null || value.isEmpty){
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'Please enter the length of time you have been involved';
         }
       },
-      onChanged: (val){
+      onChanged: (val) {
         setState(() => howLong = val);
       },
     );
@@ -127,16 +129,23 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
         onPressed: () async {
-          await _auth.createUserWithEmailAndPassword(email: widget.email, password: widget.password).then((_){
+          await _auth
+              .createUserWithEmailAndPassword(
+                  email: widget.email, password: widget.password)
+              .then((_) {
             User? client = _auth.currentUser;
             clientSetup(name, phone, city, howLong);
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ClientWishlist(title: 'Client Wishlist')));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => ClientTabBarScreen()));
           });
-          },
+        },
         child: Text(
           'Sign up',
           textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: 'BigShouldersDisplay', fontSize: 25.0, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontFamily: 'BigShouldersDisplay',
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -148,8 +157,8 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
           child: Text(
             'We need more information from you...',
             textAlign: TextAlign.center,
-            style : textStyle.copyWith(fontSize: 20.0),
-          ) ,
+            style: textStyle.copyWith(fontSize: 20.0),
+          ),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
@@ -175,17 +184,24 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
     );
   }
 
-  Future<void> clientSetup(String name, String phone, String city, String howLong) async {
-    CollectionReference clients = FirebaseFirestore.instance.collection('Clients');
+  Future<void> clientSetup(
+      String name, String phone, String city, String howLong) async {
+    CollectionReference clients =
+        FirebaseFirestore.instance.collection('Clients');
     FirebaseAuth auth = FirebaseAuth.instance;
     String uid = auth.currentUser!.uid.toString();
-    clients.add({'uid': uid, 'name': name, 'phone': phone, 'city': city, 'how long with OVC': howLong});
+    clients.add({
+      'uid': uid,
+      'name': name,
+      'phone': phone,
+      'city': city,
+      'how long with OVC': howLong
+    });
     return;
   }
 
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     final moreSignupInfoForm = Container(
       color: _backgroundColor,
       child: _buildMoreSignupInfoWidgets(context),
@@ -199,7 +215,6 @@ class _MoreSignupInfoState extends State<MoreSignupInfo>{
         ),
         backgroundColor: _backgroundColor,
       ),
-
       body: moreSignupInfoForm,
     );
   }
