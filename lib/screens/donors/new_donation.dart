@@ -346,13 +346,13 @@ class _NewDonationState extends State<NewDonation> {
     donation.depth = double.parse(_depthController.text);
     donation.height = double.parse(_heightController.text);
 
-    var donations = DonationsProvider.of(context);
-    print("Before adding new donation, num of donations: " +
-        donations.length().toString());
-    print("Add new donation: " + donation.name);
-    donations.add(donation);
-    print("After adding new donation, num of donations: " +
-        donations.length().toString());
+    // var donations = DonationsProvider.of(context);
+    // print("Before adding new donation, num of donations: " +
+    //     donations.length().toString());
+    // print("Add new donation: " + donation.name);
+    // donations.add(donation);
+    // print("After adding new donation, num of donations: " +
+    //     donations.length().toString());
 
     // show pop up
     showDialog(
