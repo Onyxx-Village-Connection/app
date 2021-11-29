@@ -1,28 +1,11 @@
 // 'New Donation' screen for donor
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:ovcapp/screens/donors/donation.dart';
 import 'package:ovcapp/screens/donors/donations_provider.dart';
-
-// class NewDonation extends StatelessWidget {
-//   final String title; // title of page
-//   final Donation donation;
-
-//   const NewDonation({Key? key, required this.title, required this.donation})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(this.title),
-//       ),
-//       body: NewDonationForm(),
-//     );
-//   }
-// }
 
 // new donation form widget
 class NewDonation extends StatefulWidget {
@@ -50,12 +33,33 @@ class _NewDonationState extends State<NewDonation> {
   final _depthController = TextEditingController();
   final _heightController = TextEditingController();
 
-  // var donation = new Donation();
-
   Image _picture = Image(image: AssetImage('images/placeholder.jpg'));
 
   @override
   Widget build(BuildContext context) {
+    if (donation.docId.isNotEmpty) {
+      _nameController.text = donation.name;
+      _nameController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _nameController.text.length));
+      _weightController.text = donation.weight.toString();
+      _weightController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _weightController.text.length));
+      _numBoxesController.text = donation.numBoxes.toString();
+      _numBoxesController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _numBoxesController.text.length));
+      _numMealsController.text = donation.numMeals.toString();
+      _numMealsController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _numMealsController.text.length));
+      _widthController.text = donation.width.toString();
+      _widthController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _widthController.text.length));
+      _depthController.text = donation.depth.toString();
+      _depthController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _depthController.text.length));
+      _heightController.text = donation.height.toString();
+      _heightController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _heightController.text.length));
+    }
     return Scaffold(
       appBar: AppBar(
         title: (donation.docId.isEmpty
@@ -77,28 +81,28 @@ class _NewDonationState extends State<NewDonation> {
                   child: _picture,
                 ),
               ),
-              _newDonationField(_nameController, 'Item name', 'Item name'),
               _newDonationField(
-                  _weightController, 'Item weight', 'Item weight'),
-              _newDonationField(
-                  _numBoxesController, 'Number of boxes', 'Number of boxes'),
-              _newDonationField(
-                  _numMealsController, 'Number of meals', 'Number of meals'),
-              const Text('Dimension (inch)'),
+                  _nameController, 'Item name', 'Item name', "text"),
+              _newDonationField(_weightController, 'Item weight (lb)',
+                  'Item weight (lb)', 'double'),
+              _newDonationField(_numBoxesController, 'Number of boxes',
+                  'Number of boxes', 'number'),
+              _newDonationField(_numMealsController, 'Number of meals',
+                  'Number of meals', 'number'),
+              const Text('Dimension'),
               Row(
                 children: [
                   Expanded(
-                    child:
-                        _newDonationField(_widthController, 'Width', 'Width'),
+                    child: _newDonationField(_widthController, 'Width (inch)',
+                        'Width (inch)', 'double'),
                   ),
                   Expanded(
-                    child:
-                        _newDonationField(_depthController, 'Depth', 'Depth'),
+                    child: _newDonationField(_depthController, 'Depth (inch)',
+                        'Depth (inch)', 'double'),
                   ),
                   Expanded(
-                    child: _newDonationField(
-                        _heightController, 'Height', 'Height', false),
-                  ),
+                      child: _newDonationField(_heightController,
+                          'Height (inch)', 'Height (inch)', 'double', false)),
                 ],
               ),
               const Text('Indicate Possible Allergens:'),
@@ -263,20 +267,52 @@ class _NewDonationState extends State<NewDonation> {
   }
 
   Widget _newDonationField(
-      TextEditingController controller, String label, String hint,
+      TextEditingController controller, String label, String hint, String type,
       [bool nextFocus = true]) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextFormField(
+        keyboardType: type.contains("num")
+            ? TextInputType.number
+            : type.contains("double")
+                ? TextInputType.numberWithOptions(decimal: true)
+                : TextInputType.text,
+        inputFormatters: <TextInputFormatter>[
+          type.contains("num")
+              ? FilteringTextInputFormatter.digitsOnly
+              : type.contains("double")
+                  ? FilteringTextInputFormatter.allow(
+                      RegExp(r'[0-9]+\.*[0-9]*'))
+                  : FilteringTextInputFormatter.allow(RegExp(r'\w+'))
+        ],
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
           border: OutlineInputBorder(),
         ),
-        onEditingComplete: () => nextFocus
-            ? FocusScope.of(context).nextFocus()
-            : FocusScope.of(context).unfocus(),
+        onEditingComplete: () {
+          if (label.contains("name")) {
+            donation.name = _nameController.text;
+          } else if (label.contains("weight")) {
+            donation.weight = double.parse(_weightController.text);
+          } else if (label.contains("box")) {
+            donation.numBoxes = int.parse(_numBoxesController.text);
+          } else if (label.contains("meal")) {
+            donation.numMeals = int.parse(_numMealsController.text);
+          } else if (label.contains("Width")) {
+            donation.width = double.parse(_widthController.text);
+          } else if (label.contains("Depth")) {
+            donation.depth = double.parse(_depthController.text);
+          } else if (label.contains("Height")) {
+            donation.height = double.parse(_heightController.text);
+          } else {
+            // do nothing
+          }
+          nextFocus
+              ? FocusScope.of(context).nextFocus()
+              : FocusScope.of(context).unfocus();
+        },
         validator: (text) => (text != null && text.isEmpty) ? hint : null,
       ),
     );
