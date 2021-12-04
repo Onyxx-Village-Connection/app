@@ -70,7 +70,7 @@ class Volunteer{
     return volunteerDeliveries;
   }
 
-  static sortVolunteerDeliveries(){
+  sortVolunteerDeliveries(){
     volunteerDeliveries.sort((a, b) => a.getDateInt().compareTo(b.getDateInt()));
   }
 

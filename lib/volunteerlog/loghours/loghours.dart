@@ -169,7 +169,7 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
 
  _incrementTotal() async{
    DateTime now = new DateTime.now();
-   AllHoursList slayy = new AllHoursList(index: counter, date: now.toLocal().toString(), volunteer: widget.volunteer, one: _starter);
+   AllHoursList nuObj = new AllHoursList(index: counter, date: now.toLocal().toString(), volunteer: widget.volunteer, one: _starter);
    keepTrack.add(nuObj);
     await hours.doc(FirebaseAuth.instance.currentUser!.email).set({'user':widget.volunteer.getName(), 'hoursEntered':_starter, 'totalHours':_total + _starter, 'editedHours':0}).then((value) => print("Hours added"));
     await entries.add({'user':widget.volunteer.getName(), 'hoursEntered':_starter, 'totalHours':_total + _starter, 'editedHours':0, 'date':now.toLocal().toString()});
