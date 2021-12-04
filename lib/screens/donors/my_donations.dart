@@ -16,10 +16,10 @@ class MyDonations extends StatefulWidget {
 }
 
 class _MyDonationsState extends State<MyDonations> {
-  final List<Donation> donations = [];
+  // final List<Donation> donations = [];
   final firestoreInstance = FirebaseFirestore.instance;
 
-  var donation = new Donation();
+  var donation;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +30,7 @@ class _MyDonationsState extends State<MyDonations> {
           IconButton(
             // add new donation
             onPressed: () async {
+              donation = new Donation();
               Route route = MaterialPageRoute(
                   builder: (context) => NewDonation(donation: donation));
               donation = await Navigator.push(context, route);
@@ -41,7 +42,7 @@ class _MyDonationsState extends State<MyDonations> {
                   .doc(donation.docId)
                   .set(donation.toJson());
               setState(() {
-                donations.add(donation);
+                // donations.add(donation);
               });
             },
             icon: const Icon(Icons.add),
@@ -79,6 +80,8 @@ class _MyDonationsState extends State<MyDonations> {
                   streamSnapShot.data!.docs[index];
               Donation donation = Donation.fromJson(
                   documentSnapshot.data() as Map<String, dynamic>);
+              donation.userId = widget.userId;
+              donation.docId = documentSnapshot.id;
               return ListTile(
                 leading: Icon(
                   Icons.favorite,
@@ -88,21 +91,22 @@ class _MyDonationsState extends State<MyDonations> {
                   donation.name,
                   style: TextStyle(fontSize: 24, color: Colors.yellow),
                 ),
+                onTap: () async {
+                  Route route = MaterialPageRoute(
+                      builder: (context) => NewDonation(donation: donation));
+                  donation = await Navigator.push(context, route);
+                  // donation.userId = widget.userId;
+                  // donation.docId = documentSnapshot.id;
+                  firestoreInstance
+                      .collection("donations")
+                      .doc(donation.docId)
+                      .set(donation.toJson());
+                  setState(() {
+                    // donations.add(donation);
+                  });
+                },
               );
             },
-            // return ListTile(
-            //   leading: IconButton(
-            //     onPressed: () {
-            //       print("Before refresh, num of donations: " +
-            //           donations.length.toString());
-            //       setState(() {});
-            //       print("After refresh, num of donations: " +
-            //           donations.length.toString());
-            //     },
-            //     icon: const Icon(Icons.refresh),
-            //   ),
-            //   title: Text('refresh'),
-            // );
           );
         } else {
           return ListTile(
