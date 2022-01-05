@@ -37,8 +37,6 @@ class _NewWishlistItemScreenState extends State<NewWishlistItemScreen> {
     _form.currentState!.save();
     // add wishlist to firestore
     final user = FirebaseAuth.instance.currentUser;
-    //final userId =
-    //  await FirebaseFirestore.instance.collection('users').get(user.uid);
 
     FirebaseFirestore.instance.collection('Client Wishlists').add({
       'title': _savedValues['title'],

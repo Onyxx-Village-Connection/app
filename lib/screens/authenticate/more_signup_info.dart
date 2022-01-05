@@ -1,10 +1,18 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ovcapp/screens/client/tabs.dart';
+import 'package:path/path.dart';
+import 'package:phone_number/phone_number.dart';
 
-final _backgroundColor = Colors.black;
-final _widgetColor = Color(0xFFE0CB8F);
+import '../../screens/client/client_home_tabs.dart';
+import '../../widgets/auth/inputBox.dart';
+import '../../widgets/auth/styleConstants.dart';
+import '../../widgets/auth/loginSignupButton.dart';
+import '../../widgets/auth/errSnackBar.dart';
+import '../../widgets/auth/validatorFns.dart';
+import '../../widgets/client/profile_image.dart';
 
 class MoreSignupInfo extends StatefulWidget {
   MoreSignupInfo(
@@ -20,135 +28,69 @@ class MoreSignupInfo extends StatefulWidget {
 }
 
 class _MoreSignupInfoState extends State<MoreSignupInfo> {
-  String name = '';
-  String phone = '';
-  String city = '';
-  String howLong = '';
+  File? _profileImgFile;
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _timeWithOVCController = TextEditingController();
+
+  final _form = GlobalKey<FormState>();
+  final _nameFocusNode = FocusNode();
+  final _cityFocusNode = FocusNode();
+  final _phoneFocusNode = FocusNode();
+  final _timeWithOVCFocusNode = FocusNode();
 
   final _auth = FirebaseAuth.instance;
 
-  TextStyle textStyle = TextStyle(fontSize: 20.0, color: Colors.white);
-  TextStyle hintTextStyle = TextStyle(fontSize: 20.0, color: Colors.grey);
-
-  OutlineInputBorder focusedField = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5.0),
-    borderSide: BorderSide(
-      color: Colors.grey,
-    ),
-  );
-
-  OutlineInputBorder enabledField = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5.0),
-    borderSide: BorderSide(
-      color: Colors.white10,
-      width: 2.0,
-    ),
-  );
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    _nameController.dispose();
+    _cityController.dispose();
+    _phoneController.dispose();
+    _timeWithOVCController.dispose();
+    super.dispose();
+  }
 
   Widget _buildMoreSignupInfoWidgets(BuildContext context) {
-    final nameBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'Your Name',
-        hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.all(20.0),
-      ),
-      validator: (String? value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your name';
-        }
-      },
-      onChanged: (val) {
-        setState(() => name = val);
-      },
-    );
+    String? _phoneValidator(phoneVal) {
+      if (phoneVal == null || phoneVal.isEmpty || phoneVal.length < 2) {
+        return 'Please enter your phone number';
+      }
 
-    final phoneNumberBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'Phone Number',
-        hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.all(20.0),
-      ),
-      validator: (String? value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your phone number';
-        }
-      },
-      onChanged: (val) {
-        setState(() => phone = val);
-      },
-    );
+      _phoneController.text = phoneVal;
+      return null;
+    }
 
-    final cityBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'City',
-        hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.all(20.0),
-      ),
-      validator: (String? value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your city';
-        }
-      },
-      onChanged: (val) {
-        setState(() => city = val);
-      },
-    );
+    void _saveProfileImgUrl(value) {
+      _profileImgFile = value;
+    }
 
-    final howLongBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'How long have you been with OVC?',
-        hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.fromLTRB(15.0, 20.0, 20.0, 30.0),
-      ),
-      validator: (String? value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter the length of time you have been involved';
-        }
-      },
-      onChanged: (val) {
-        setState(() => howLong = val);
-      },
-    );
+    void _saveForm() async {
+      final isValid = _form.currentState!.validate();
 
-    final signupButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(32.0),
-      color: _widgetColor,
-      child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-        onPressed: () async {
-          await _auth
-              .createUserWithEmailAndPassword(
-                  email: widget.email, password: widget.password)
-              .then((_) {
-            User? client = _auth.currentUser;
-            clientSetup(name, phone, city, howLong);
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => ClientTabBarScreen()));
-          });
-        },
-        child: Text(
-          'Sign up',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontFamily: 'BigShouldersDisplay',
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
+      bool isPhoneValid =
+          await PhoneNumberUtil().validate(_phoneController.text, 'US');
+      if (!isPhoneValid) {
+        ErrSnackBar.show(context, "Please enter a valid phone number");
+        return;
+      }
+
+      if (!isValid) {
+        return;
+      }
+
+      _form.currentState!.save();
+
+      await _auth.createUserWithEmailAndPassword(
+          email: widget.email, password: widget.password);
+
+      _clientSetup();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => ClientHomeTabBarScreen()));
+    }
 
     return ListView(
       children: <Widget>[
@@ -161,59 +103,107 @@ class _MoreSignupInfoState extends State<MoreSignupInfo> {
           ),
         ),
         Padding(
+          padding: EdgeInsets.all(20.0),
+          child: ProfileImage('', _saveProfileImgUrl, false),
+        ),
+        Padding(
           padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
-          child: nameBox,
+          child: InputBox(
+            'Your Name',
+            _nameFocusNode,
+            _timeWithOVCFocusNode,
+            nameValidator,
+            _nameController,
+          ),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
-          child: phoneNumberBox,
+          child: InputBox(
+            'How long have you been with OVC?',
+            _timeWithOVCFocusNode,
+            _cityFocusNode,
+            timeWithOVCValidator,
+            _timeWithOVCController,
+          ),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
-          child: cityBox,
+          child: InputBox(
+            'Your City',
+            _cityFocusNode,
+            _phoneFocusNode,
+            cityValidator,
+            _cityController,
+          ),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
-          child: howLongBox,
+          child: InputBox(
+            'Your Phone Number',
+            _phoneFocusNode,
+            null,
+            _phoneValidator,
+            _phoneController,
+          ),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(130.0, 20.0, 130.0, 15.0),
-          child: signupButton,
+          child: LoginSignupButton('Sign Up', _saveForm),
         ),
       ],
     );
   }
 
-  Future<void> clientSetup(
-      String name, String phone, String city, String howLong) async {
-    CollectionReference clients =
-        FirebaseFirestore.instance.collection('Clients');
+  Future<String> uploadImage() async {
+    TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+        .ref()
+        .child("profile")
+        .child(FirebaseAuth.instance.currentUser!.uid +
+            "_" +
+            basename(_profileImgFile!.path))
+        .putFile(_profileImgFile!);
+
+    return taskSnapshot.ref.getDownloadURL();
+  }
+
+  Future<void> _clientSetup() async {
     FirebaseAuth auth = FirebaseAuth.instance;
-    String uid = auth.currentUser!.uid.toString();
-    clients.add({
-      'uid': uid,
-      'name': name,
-      'phone': phone,
-      'city': city,
-      'how long with OVC': howLong
+
+    String formattedPhone =
+        await PhoneNumberUtil().format(_phoneController.text, 'US');
+
+    String imgUrl = _profileImgFile != null ? await uploadImage() : '';
+    FirebaseFirestore.instance
+        .collection('clients')
+        .doc(auth.currentUser!.uid)
+        .set({
+      'name': _nameController.text,
+      'phone': formattedPhone,
+      'city': _cityController.text,
+      'profileImage': imgUrl,
+      'timeWithOVC': _timeWithOVCController.text,
     });
+
     return;
   }
 
   @override
   Widget build(BuildContext context) {
     final moreSignupInfoForm = Container(
-      color: _backgroundColor,
-      child: _buildMoreSignupInfoWidgets(context),
+      color: backgroundColor,
+      child: Form(
+        key: _form,
+        child: _buildMoreSignupInfoWidgets(context),
+      ),
     );
 
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
         iconTheme: IconThemeData(
-          color: _widgetColor,
+          color: widgetColor,
         ),
-        backgroundColor: _backgroundColor,
+        backgroundColor: backgroundColor,
       ),
       body: moreSignupInfoForm,
     );

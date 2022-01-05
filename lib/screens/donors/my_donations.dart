@@ -1,15 +1,14 @@
 // 'My Donations' screen for donor
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:ovcapp/screens/donors/new_donation.dart';
 import 'package:ovcapp/screens/donors/donation.dart';
 import 'package:ovcapp/screens/donors/donor_profile.dart';
 
 class MyDonations extends StatefulWidget {
-  const MyDonations({Key? key, required this.userId}) : super(key: key);
-
-  final String userId;
+  const MyDonations({Key? key}) : super(key: key);
 
   @override
   _MyDonationsState createState() => _MyDonationsState();
@@ -18,6 +17,7 @@ class MyDonations extends StatefulWidget {
 class _MyDonationsState extends State<MyDonations> {
   final List<Donation> donations = [];
   final firestoreInstance = FirebaseFirestore.instance;
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   var donation = new Donation();
 
@@ -33,7 +33,7 @@ class _MyDonationsState extends State<MyDonations> {
               Route route = MaterialPageRoute(
                   builder: (context) => NewDonation(donation: donation));
               donation = await Navigator.push(context, route);
-              donation.userId = widget.userId;
+              donation.userId = userId;
               donation.docId =
                   firestoreInstance.collection("donations").doc().id;
               firestoreInstance
@@ -50,7 +50,7 @@ class _MyDonationsState extends State<MyDonations> {
             // update donor profile
             onPressed: () {
               Route route = MaterialPageRoute(
-                  builder: (context) => DonorProfile(userId: widget.userId));
+                  builder: (context) => DonorProfile(userId: userId));
               Navigator.push(context, route);
             },
             icon: const Icon(Icons.person),
@@ -66,7 +66,7 @@ class _MyDonationsState extends State<MyDonations> {
     return StreamBuilder(
       stream: firestoreInstance
           .collection("donations")
-          .where("userId", isEqualTo: widget.userId)
+          .where("userId", isEqualTo: userId)
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapShot) {
         if (streamSnapShot.hasData) {

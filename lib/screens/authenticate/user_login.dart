@@ -46,10 +46,8 @@ class _UserLoginState extends State<UserLogin> {
           .signInWithEmailAndPassword(email: email, password: password);
       return credential.user!.uid;
     } on FirebaseAuthException catch (e) {
-      print("Failded to log in with email " +
-          email +
-          ' and password ' +
-          password);
+      print(
+          "Failed to log in with email " + email + ' and password ' + password);
       print("Error: " + e.toString());
       return "";
     }
@@ -126,7 +124,7 @@ class _UserLoginState extends State<UserLogin> {
               });
               Navigator.of(context).push(
                   MaterialPageRoute<void>(builder: (BuildContext context) {
-                return MyDonations(userId: userId);
+                return MyDonations();
               }));
             }
           });

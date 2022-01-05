@@ -1,133 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ovcapp/screens/authenticate/client_signup.dart';
-import '../client/tabs.dart';
+import 'package:provider/provider.dart';
 
-final _backgroundColor = Colors.black;
-final _widgetColor = Color(0xFFE0CB8F);
+import '../../../core/providers/authentication.dart';
+import '../authenticate/client_signup.dart';
+import '../client/client_home_tabs.dart';
+import '../donors/my_donations.dart';
+import '../../widgets/auth/passwordBox.dart';
+import '../../widgets/auth/emailBox.dart';
+import '../../widgets/auth/errSnackBar.dart';
+import '../../widgets/auth/loginSignupButton.dart';
+import '../../widgets/auth/textLinkButton.dart';
+import '../../widgets/auth/styleConstants.dart';
 
 class ClientLogin extends StatefulWidget {
-  ClientLogin({Key? key, required this.title}) : super(key: key);
+  ClientLogin({Key? key, required this.role}) : super(key: key);
 
-  final String title;
+  final String role;
   @override
   _ClientLoginState createState() => _ClientLoginState();
 }
 
 class _ClientLoginState extends State<ClientLogin> {
-  final _auth = FirebaseAuth.instance;
+  final _form = GlobalKey<FormState>();
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
 
   String email = '';
   String password = '';
 
-  TextStyle textStyle = TextStyle(fontSize: 20.0, color: Colors.white);
-  TextStyle hintTextStyle = TextStyle(fontSize: 20.0, color: Colors.grey);
+  void _saveForm() async {
+    final isValid = _form.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    _form.currentState!.save();
 
-  OutlineInputBorder focusedField = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5.0),
-    borderSide: BorderSide(
-      color: Colors.grey,
-    ),
-  );
+    AuthenticationState _authState =
+        Provider.of<AuthenticationState>(context, listen: false);
 
-  OutlineInputBorder enabledField = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5.0),
-    borderSide: BorderSide(
-      color: Colors.white10,
-      width: 2.0,
-    ),
-  );
+    try {
+      if (await _authState.loginUser(email, password)) {
+        switch (widget.role) {
+          case 'Client':
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => ClientHomeTabBarScreen()));
+            break;
+
+          case 'Donor':
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute<void>(builder: (context) => MyDonations()));
+            break;
+
+          case 'Volunteer':
+            Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
+                builder: (context) => ClientHomeTabBarScreen()));
+            break;
+        }
+      }
+    } catch (error) {
+      ErrSnackBar.show(context, error as String);
+    }
+  }
+
+  void _onEmailSaved(value) {
+    email = value;
+  }
+
+  void _onPasswordSaved(value) {
+    password = value;
+  }
+
+  void _signUp(context) {
+    _navigateToClientSignup(context);
+  }
 
   Widget _buildClientLoginWidgets(BuildContext context) {
-    final emailBox = TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'Email Address',
-        hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.all(20.0),
-      ),
-      validator: (String? value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your email address';
-        }
-      },
-      onChanged: (val) {
-        setState(() => email = val);
-      },
-    );
-
-    final passwordBox = TextFormField(
-      obscureText: true,
-      style: textStyle,
-      decoration: InputDecoration(
-        focusedBorder: focusedField,
-        enabledBorder: enabledField,
-        hintText: 'Password',
-        hintStyle: hintTextStyle,
-        contentPadding: EdgeInsets.all(20.0),
-      ),
-      validator: (String? value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your password';
-        }
-      },
-      onChanged: (val) {
-        setState(() => password = val);
-      },
-    );
-
-    final loginButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(32.0),
-      color: _widgetColor,
-      child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-        onPressed: () async {
-          await _auth
-              .signInWithEmailAndPassword(email: email, password: password)
-              .then((_) {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => ClientTabBarScreen()));
-          });
-        },
-        child: Text(
-          'Login',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontFamily: 'BigShouldersDisplay',
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-
-    final notHaveAccountTextButton = Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'Do not have an account?',
-            style: TextStyle(
-                fontFamily: 'BarlowSemiCondensed',
-                fontSize: 18.0,
-                color: Colors.white),
-          ),
-          TextButton(
-            onPressed: () => _navigateToClientSignup(context),
-            child: Text(
-              'Sign up',
-              style: TextStyle(
-                  fontSize: 18.0,
-                  fontFamily: 'BarlowSemiCondensed',
-                  color: _widgetColor),
-            ),
-          ),
-        ],
-      ),
-    );
-
     return ListView(
       children: <Widget>[
         Image.asset(
@@ -138,25 +85,25 @@ class _ClientLoginState extends State<ClientLogin> {
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 15.0),
-          child: emailBox,
+          child: EmailBox(_emailFocusNode, _passwordFocusNode, _onEmailSaved),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 15.0),
-          child: passwordBox,
+          child: PasswordBox(_passwordFocusNode, _onPasswordSaved),
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(150.0, 20.0, 150.0, 15.0),
-          child: loginButton,
+          child: LoginSignupButton('Login', _saveForm),
         ),
-        notHaveAccountTextButton,
+        TextLinkButton('Do not have an account?', 'Sign up', _signUp),
       ],
     );
   }
 
   void _navigateToClientSignup(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute<void>(
+    Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
       builder: (BuildContext context) {
-        return ClientSignup(title: 'Client Signup');
+        return ClientSignup(role: widget.role);
       },
     ));
   }
@@ -164,8 +111,11 @@ class _ClientLoginState extends State<ClientLogin> {
   @override
   Widget build(BuildContext context) {
     final loginForm = Container(
-      color: _backgroundColor,
-      child: _buildClientLoginWidgets(context),
+      color: backgroundColor,
+      child: Form(
+        key: _form,
+        child: _buildClientLoginWidgets(context),
+      ),
     );
 
     return Scaffold(

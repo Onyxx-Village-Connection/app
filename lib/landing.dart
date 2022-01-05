@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:ovcapp/screens/authenticate/user_login.dart';
-import 'package:ovcapp/volunteer_sign_up.dart';
 import 'package:ovcapp/screens/authenticate/client_login.dart';
 
 class OnyxxLanding extends StatelessWidget {
@@ -36,7 +33,6 @@ class OnyxxLanding extends StatelessWidget {
       padding: const EdgeInsets.only(left: 75, top: 10, right: 75, bottom: 10),
       child: OutlinedButton(
         onPressed: () {
-          print('$role click');
           _navigateToRole(context, role);
         },
         child: Text(
@@ -59,35 +55,37 @@ class OnyxxLanding extends StatelessWidget {
   }
 
   void _navigateToRole(BuildContext context, String role) {
-    switch (role) {
-      case 'Donor':
-        {
-          Navigator.of(context)
-              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-            // return MyDonations(title: 'Donor');
-            return UserLogin(role: role);
-          }));
-        }
-        break;
-      case 'Volunteer':
-        {
-          Navigator.of(context)
-              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-            return SignUp();
-          }));
-        }
-        break;
-      case 'Client':
-        {
-          Navigator.of(context)
-              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-            return ClientLogin(title: 'Client');
-          }));
-        }
-        break;
-      default:
-        {}
-        break;
-    }
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ClientLogin(role: role)));
+    // switch (role) {
+    //   case 'Donor':
+    //     {
+    //       Navigator.of(context)
+    //           .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+    //         // return MyDonations(title: 'Donor');
+    //         return UserLogin(role: role);
+    //       }));
+    //     }
+    //     break;
+    //   case 'Volunteer':
+    //     {
+    //       Navigator.of(context)
+    //           .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+    //         return SignUp();
+    //       }));
+    //     }
+    //     break;
+    //   case 'Client':
+    //     {
+    //       Navigator.of(context)
+    //           .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+    //         return ClientLogin(role: role);
+    //       }));
+    //     }
+    //     break;
+    //   default:
+    //     {}
+    //     break;
+    // }
   }
 }
