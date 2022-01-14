@@ -1,4 +1,4 @@
-class Volunteer {
+class MapVolunteer {
   String name = 'unknown';
   String itemName = 'unknown';
   String jobType = 'unknown';

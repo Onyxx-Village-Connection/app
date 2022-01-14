@@ -1,9 +1,10 @@
 // model for one donation
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 class Donation {
   String docId = "";
-  String name = "unknown";
+  String name = "";
   double weight = 0.0;
   int numBoxes = 0;
   int numMeals = 0;
@@ -20,10 +21,12 @@ class Donation {
   TimeOfDay pickupToTime = TimeOfDay.now();
   DateTime submitDateTime = DateTime.now();
   String userId = "";
+  File? itemImg;
+  String? itemImgUrl;
 
   Donation()
       : docId = "",
-        name = "unknown",
+        name = "",
         weight = 0.0,
         numBoxes = 0,
         numMeals = 0,
@@ -43,7 +46,7 @@ class Donation {
 
   Donation.fromJson(Map<String, dynamic> json)
       : docId = json['docId'] ?? "",
-        name = json['name'] ?? "unknown",
+        name = json['name'] ?? "",
         weight = (json['weight']?.runtimeType == String)
             ? double.parse(json['weight'])
             : json['weight'].toDouble(),
@@ -72,7 +75,8 @@ class Donation {
             minute: json['pickupToTime'] % 60),
         submitDateTime =
             DateTime.fromMillisecondsSinceEpoch(json['submitDateTime']),
-        userId = json['userId'] ?? "";
+        userId = json['userId'] ?? "",
+        itemImgUrl = json['itemImgUrl'];
 
   Map<String, dynamic> toJson() => {
         'docId': docId,
@@ -93,5 +97,6 @@ class Donation {
         'pickupToTime': pickupToTime.hour * 60 + pickupToTime.minute,
         'submitDateTime': submitDateTime.millisecondsSinceEpoch,
         'userId': userId,
+        'itemImgUrl': itemImgUrl,
       };
 }

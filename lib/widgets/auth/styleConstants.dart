@@ -5,6 +5,7 @@ final Color widgetColor = Color(0xFFE0CB8F);
 
 TextStyle textStyle = TextStyle(fontSize: 20.0, color: Colors.white);
 TextStyle hintTextStyle = TextStyle(fontSize: 20.0, color: Colors.grey);
+TextStyle helperTextStyle = TextStyle(fontSize: 16.0, color: Colors.grey);
 
 OutlineInputBorder focusedField = OutlineInputBorder(
   borderRadius: BorderRadius.circular(5.0),

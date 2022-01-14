@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/widgets/auth/styleConstants.dart';
+import '../../widgets/auth/styleConstants.dart';
 import './client_resources_screen.dart';
 import './client_wishlist_screen.dart';
 import './new_wishlist_item_screen.dart';
 import './client_deliveries_screen.dart';
-import './client_profile_screen.dart';
+import '../authenticate/user_profile_info.dart';
 import '../../assets/ovcicons.dart';
 
 class ClientHomeTabBarScreen extends StatefulWidget {
@@ -45,37 +45,25 @@ class _ClientHomeTabBarScreenState extends State<ClientHomeTabBarScreen> {
     });
   }
 
-// actions: (_tabs[_selectedIndex]['label'] == 'Wishlist')
-  //     ? <Widget>[
-  //         IconButton(
-  //           icon: const Icon(Icons.add),
-  //           tooltip: 'Add a new wishlist item',
-  //           onPressed: () async {
-  //             Route route = MaterialPageRoute(
-  //                 builder: (context) => NewWishlistItemScreen());
-  //             var wishlistItem = await Navigator.push(context, route);
-  //           },
-  //         ),
-  //       ]
-  //     : []),
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(_tabs[_selectedIndex]['label'] as String),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(OVCIcons.profileicon),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ClientProfileScreen()),
-                );
-              },
-            ),
-          ]),
+        automaticallyImplyLeading: false,
+        title: Text(_tabs[_selectedIndex]['label'] as String),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(OVCIcons.profileicon),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserProfileInfo(role: 'Client')),
+              );
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: _tabs[_selectedIndex]['tab'] as Widget,
       ),
@@ -113,10 +101,10 @@ class _ClientHomeTabBarScreenState extends State<ClientHomeTabBarScreen> {
               child: const Icon(Icons.add),
               tooltip: 'Add a new wishlist item',
               backgroundColor: widgetColor,
-              onPressed: () async {
+              onPressed: () {
                 Route route = MaterialPageRoute(
                     builder: (context) => NewWishlistItemScreen());
-                await Navigator.push(context, route);
+                Navigator.push(context, route);
               },
             )
           : null,

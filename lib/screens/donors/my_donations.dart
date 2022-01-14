@@ -2,10 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ovcapp/constants.dart';
+import 'package:ovcapp/widgets/auth/helperFns.dart';
 
-import 'package:ovcapp/screens/donors/new_donation.dart';
-import 'package:ovcapp/screens/donors/donation.dart';
-import 'package:ovcapp/screens/donors/donor_profile.dart';
+import '../authenticate/user_profile_info.dart';
+import '../../assets/ovcicons.dart';
+import './new_donation.dart';
+import './donation.dart';
+import '../../widgets/auth/styleConstants.dart';
 
 class MyDonations extends StatefulWidget {
   const MyDonations({Key? key}) : super(key: key);
@@ -21,48 +25,57 @@ class _MyDonationsState extends State<MyDonations> {
 
   var donation = new Donation();
 
+  void _addDonation() async {
+    Route route = MaterialPageRoute(
+        builder: (context) => NewDonation(donation: donation));
+    donation = await Navigator.push(context, route);
+    donation.userId = userId;
+    donation.docId = firestoreInstance.collection("donations").doc().id;
+    if (donation.itemImg != null) {
+      donation.itemImgUrl =
+          await uploadItemImage(donation.itemImg!, donation.docId);
+    }
+    await firestoreInstance
+        .collection("donations")
+        .doc(donation.docId)
+        .set(donation.toJson());
+    setState(() {
+      donations.add(donation);
+      // clear the donation object
+      donation = new Donation();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('My Donations'),
-        actions: [
+        actions: <Widget>[
           IconButton(
-            // add new donation
-            onPressed: () async {
-              Route route = MaterialPageRoute(
-                  builder: (context) => NewDonation(donation: donation));
-              donation = await Navigator.push(context, route);
-              donation.userId = userId;
-              donation.docId =
-                  firestoreInstance.collection("donations").doc().id;
-              firestoreInstance
-                  .collection("donations")
-                  .doc(donation.docId)
-                  .set(donation.toJson());
-              setState(() {
-                donations.add(donation);
-              });
-            },
-            icon: const Icon(Icons.add),
-          ),
-          IconButton(
-            // update donor profile
+            icon: const Icon(OVCIcons.profileicon),
             onPressed: () {
-              Route route = MaterialPageRoute(
-                  builder: (context) => DonorProfile(userId: userId));
-              Navigator.push(context, route);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserProfileInfo(role: 'Donor')),
+              );
             },
-            icon: const Icon(Icons.person),
-          )
+          ),
         ],
       ),
       body: donationsList(context),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        tooltip: 'Add a new donation',
+        backgroundColor: widgetColor,
+        onPressed: _addDonation,
+      ),
     );
   }
 
   Widget donationsList(BuildContext context) {
-    // var donations = DonationsProvider.of(context).donations;
     return StreamBuilder(
       stream: firestoreInstance
           .collection("donations")
@@ -70,8 +83,6 @@ class _MyDonationsState extends State<MyDonations> {
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapShot) {
         if (streamSnapShot.hasData) {
-          print("At donationsList widget, num of donations: " +
-              streamSnapShot.data!.docs.length.toString());
           return ListView.builder(
             itemCount: streamSnapShot.data!.docs.length,
             itemBuilder: (context, index) {
@@ -79,30 +90,28 @@ class _MyDonationsState extends State<MyDonations> {
                   streamSnapShot.data!.docs[index];
               Donation donation = Donation.fromJson(
                   documentSnapshot.data() as Map<String, dynamic>);
-              return ListTile(
-                leading: Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                ),
-                title: Text(
-                  donation.name,
-                  style: TextStyle(fontSize: 24, color: Colors.yellow),
+              return Card(
+                child: ListTile(
+                  leading: Icon(
+                    Icons.fastfood,
+                    color: Colors.purple,
+                  ),
+                  trailing: Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              NewDonation(donation: donation)),
+                    );
+                  },
+                  title: Text(
+                    donation.name,
+                    style: TextStyle(fontSize: 24, color: widgetColor),
+                  ),
                 ),
               );
             },
-            // return ListTile(
-            //   leading: IconButton(
-            //     onPressed: () {
-            //       print("Before refresh, num of donations: " +
-            //           donations.length.toString());
-            //       setState(() {});
-            //       print("After refresh, num of donations: " +
-            //           donations.length.toString());
-            //     },
-            //     icon: const Icon(Icons.refresh),
-            //   ),
-            //   title: Text('refresh'),
-            // );
           );
         } else {
           return ListTile(

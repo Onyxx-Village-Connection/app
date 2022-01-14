@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ovcapp/widgets/auth/helperFns.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/providers/authentication.dart';
-import '../authenticate/client_signup.dart';
-import '../client/client_home_tabs.dart';
-import '../donors/my_donations.dart';
+import 'ovc_signup.dart';
+
 import '../../widgets/auth/passwordBox.dart';
 import '../../widgets/auth/emailBox.dart';
 import '../../widgets/auth/errSnackBar.dart';
@@ -12,15 +12,15 @@ import '../../widgets/auth/loginSignupButton.dart';
 import '../../widgets/auth/textLinkButton.dart';
 import '../../widgets/auth/styleConstants.dart';
 
-class ClientLogin extends StatefulWidget {
-  ClientLogin({Key? key, required this.role}) : super(key: key);
+class OVCLogin extends StatefulWidget {
+  OVCLogin({Key? key, required this.role}) : super(key: key);
 
   final String role;
   @override
-  _ClientLoginState createState() => _ClientLoginState();
+  _OVCLoginState createState() => _OVCLoginState();
 }
 
-class _ClientLoginState extends State<ClientLogin> {
+class _OVCLoginState extends State<OVCLogin> {
   final _form = GlobalKey<FormState>();
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
@@ -40,22 +40,7 @@ class _ClientLoginState extends State<ClientLogin> {
 
     try {
       if (await _authState.loginUser(email, password)) {
-        switch (widget.role) {
-          case 'Client':
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => ClientHomeTabBarScreen()));
-            break;
-
-          case 'Donor':
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute<void>(builder: (context) => MyDonations()));
-            break;
-
-          case 'Volunteer':
-            Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
-                builder: (context) => ClientHomeTabBarScreen()));
-            break;
-        }
+        pushRoleBasedLandingPage(context, widget.role);
       }
     } catch (error) {
       ErrSnackBar.show(context, error as String);
@@ -71,10 +56,10 @@ class _ClientLoginState extends State<ClientLogin> {
   }
 
   void _signUp(context) {
-    _navigateToClientSignup(context);
+    _navigateToSignup(context);
   }
 
-  Widget _buildClientLoginWidgets(BuildContext context) {
+  Widget _buildLoginWidgets(BuildContext context) {
     return ListView(
       children: <Widget>[
         Image.asset(
@@ -100,12 +85,9 @@ class _ClientLoginState extends State<ClientLogin> {
     );
   }
 
-  void _navigateToClientSignup(BuildContext context) {
-    Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
-      builder: (BuildContext context) {
-        return ClientSignup(role: widget.role);
-      },
-    ));
+  void _navigateToSignup(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => OVCSignup(role: widget.role)));
   }
 
   @override
@@ -114,7 +96,7 @@ class _ClientLoginState extends State<ClientLogin> {
       color: backgroundColor,
       child: Form(
         key: _form,
-        child: _buildClientLoginWidgets(context),
+        child: _buildLoginWidgets(context),
       ),
     );
 

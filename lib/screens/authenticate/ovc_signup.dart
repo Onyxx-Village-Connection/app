@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './client_login.dart';
-import './more_signup_info.dart';
+import 'ovc_login.dart';
+import 'user_profile_info.dart';
 
 import '../../widgets/auth/emailBox.dart';
 import '../../widgets/auth/passwordBox.dart';
@@ -9,15 +9,15 @@ import '../../widgets/auth/loginSignupButton.dart';
 import '../../widgets/auth/textLinkButton.dart';
 import '../../widgets/auth/styleConstants.dart';
 
-class ClientSignup extends StatefulWidget {
-  ClientSignup({Key? key, required this.role}) : super(key: key);
+class OVCSignup extends StatefulWidget {
+  OVCSignup({Key? key, required this.role}) : super(key: key);
 
   final String role;
   @override
-  _ClientSignupState createState() => _ClientSignupState();
+  _OVCSignupState createState() => _OVCSignupState();
 }
 
-class _ClientSignupState extends State<ClientSignup> {
+class _OVCSignupState extends State<OVCSignup> {
   final _form = GlobalKey<FormState>();
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
@@ -25,7 +25,7 @@ class _ClientSignupState extends State<ClientSignup> {
   String email = '';
   String password = '';
 
-  Widget _buildClientSignupWidgets(BuildContext context) {
+  Widget _buildSignupWidgets(BuildContext context) {
     void _saveForm() {
       final isValid = _form.currentState!.validate();
       if (!isValid) {
@@ -45,7 +45,7 @@ class _ClientSignupState extends State<ClientSignup> {
     }
 
     void _login(context) {
-      _navigateToClientLogin(context);
+      _navigateToLogin(context);
     }
 
     return ListView(
@@ -84,21 +84,20 @@ class _ClientSignupState extends State<ClientSignup> {
     );
   }
 
-  void _navigateToClientLogin(BuildContext context) {
+  void _navigateToLogin(BuildContext context) {
     Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
       builder: (BuildContext context) {
-        return ClientLogin(role: widget.role);
+        return OVCLogin(role: widget.role);
       },
     ));
   }
 
   void _navigateToMoreSignupInfoPage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (BuildContext context) {
-        return MoreSignupInfo(
-            title: 'More Signup Info', email: email, password: password);
-      },
-    ));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return UserProfileInfo(
+          email: email, password: password, role: widget.role);
+    }));
   }
 
   @override
@@ -107,7 +106,7 @@ class _ClientSignupState extends State<ClientSignup> {
       color: backgroundColor,
       child: Form(
         key: _form,
-        child: _buildClientSignupWidgets(context),
+        child: _buildSignupWidgets(context),
       ),
     );
 

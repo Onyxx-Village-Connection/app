@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/screens/authenticate/client_login.dart';
+import 'package:ovcapp/screens/authenticate/ovc_login.dart';
 
 class OnyxxLanding extends StatelessWidget {
   const OnyxxLanding({Key? key}) : super(key: key);
@@ -56,36 +56,6 @@ class OnyxxLanding extends StatelessWidget {
 
   void _navigateToRole(BuildContext context, String role) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ClientLogin(role: role)));
-    // switch (role) {
-    //   case 'Donor':
-    //     {
-    //       Navigator.of(context)
-    //           .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-    //         // return MyDonations(title: 'Donor');
-    //         return UserLogin(role: role);
-    //       }));
-    //     }
-    //     break;
-    //   case 'Volunteer':
-    //     {
-    //       Navigator.of(context)
-    //           .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-    //         return SignUp();
-    //       }));
-    //     }
-    //     break;
-    //   case 'Client':
-    //     {
-    //       Navigator.of(context)
-    //           .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-    //         return ClientLogin(role: role);
-    //       }));
-    //     }
-    //     break;
-    //   default:
-    //     {}
-    //     break;
-    // }
+        .push(MaterialPageRoute(builder: (context) => OVCLogin(role: role)));
   }
 }

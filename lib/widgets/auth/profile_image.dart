@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ovcapp/assets/ovcicons.dart';
 
-import '../../widgets/auth/styleConstants.dart';
+import 'styleConstants.dart';
 
 class ProfileImage extends StatefulWidget {
-  String imgUri;
+  String? imgUri;
   final Function saveImgUrl;
   bool isEditing;
 
@@ -80,10 +80,10 @@ class _ProfileImageState extends State<ProfileImage> {
               backgroundColor: widgetColor,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
-                child: this.widget.imgUri.isEmpty
+                child: this.widget.imgUri == null
                     ? Icon(OVCIcons.profileicon)
                     : Image.network(
-                        this.widget.imgUri,
+                        this.widget.imgUri!,
                         width: 100,
                         height: 100,
                         fit: BoxFit.fitHeight,

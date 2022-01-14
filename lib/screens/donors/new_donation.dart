@@ -3,26 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:ovcapp/screens/donors/donation.dart';
-import 'package:ovcapp/screens/donors/donations_provider.dart';
-
-// class NewDonation extends StatelessWidget {
-//   final String title; // title of page
-//   final Donation donation;
-
-//   const NewDonation({Key? key, required this.title, required this.donation})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(this.title),
-//       ),
-//       body: NewDonationForm(),
-//     );
-//   }
-// }
+import './donation.dart';
+import './donations_provider.dart';
+import '../../widgets/auth/inputBox.dart';
+import '../../widgets/auth/helperFns.dart';
 
 // new donation form widget
 class NewDonation extends StatefulWidget {
@@ -50,9 +34,38 @@ class _NewDonationState extends State<NewDonation> {
   final _depthController = TextEditingController();
   final _heightController = TextEditingController();
 
-  // var donation = new Donation();
+  //Image _picture = Image(image: AssetImage('images/placeholder.jpg'));
+  File? _itemImgFile;
 
-  Image _picture = Image(image: AssetImage('images/placeholder.jpg'));
+  @override
+  initState() {
+    super.initState();
+    if (!this.widget.donation.name.isEmpty) {
+      setState(() {
+        _nameController.text = this.widget.donation.name;
+        _weightController.text = this.widget.donation.weight.toString();
+        _numBoxesController.text = this.widget.donation.numBoxes.toString();
+        _numMealsController.text = this.widget.donation.numMeals.toString();
+        _widthController.text = this.widget.donation.width.toString();
+        _heightController.text = this.widget.donation.height.toString();
+        _depthController.text = this.widget.donation.depth.toString();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    _nameController.dispose();
+    _weightController.dispose();
+    _numBoxesController.dispose();
+    _numMealsController.dispose();
+    _widthController.dispose();
+    _heightController.dispose();
+    _depthController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +73,7 @@ class _NewDonationState extends State<NewDonation> {
       appBar: AppBar(
         title: (donation.docId.isEmpty
             ? Text('New Donation')
-            : Text('Update Donation')),
+            : Text('Donation: ${donation.name}')),
       ),
       body: Form(
         key: _formKey,
@@ -74,30 +87,59 @@ class _NewDonationState extends State<NewDonation> {
                 child: SizedBox(
                   width: 200,
                   height: 200,
-                  child: _picture,
+                  child: donation.itemImgUrl != null
+                      ? Image.network(donation.itemImgUrl!)
+                      : _itemImgFile != null
+                          ? Image.file(
+                              File(_itemImgFile!.path),
+                              fit: BoxFit.fitWidth,
+                            )
+                          : Image(image: AssetImage('images/placeholder.jpg')),
                 ),
               ),
-              _newDonationField(_nameController, 'Item name', 'Item name'),
-              _newDonationField(
-                  _weightController, 'Item weight', 'Item weight'),
-              _newDonationField(
-                  _numBoxesController, 'Number of boxes', 'Number of boxes'),
-              _newDonationField(
-                  _numMealsController, 'Number of meals', 'Number of meals'),
-              const Text('Dimension (inch)'),
+              InputBox(
+                hintText: 'Item Name',
+                validatorFn: itemNameValidator,
+                controller: _nameController,
+              ),
+              InputBox(
+                hintText: 'Item weight (in lbs.)',
+                validatorFn: doubleValueValidator,
+                controller: _weightController,
+              ),
+              InputBox(
+                hintText: 'Number of boxes',
+                validatorFn: intValueValidator,
+                controller: _numBoxesController,
+              ),
+              InputBox(
+                hintText: 'Number of meals',
+                validatorFn: intValueValidator,
+                controller: _numMealsController,
+              ),
+              const Text('Dimension (inches)'),
               Row(
                 children: [
                   Expanded(
-                    child:
-                        _newDonationField(_widthController, 'Width', 'Width'),
+                    child: InputBox(
+                      controller: _widthController,
+                      validatorFn: doubleValueValidator,
+                      hintText: 'Width',
+                    ),
                   ),
                   Expanded(
-                    child:
-                        _newDonationField(_depthController, 'Depth', 'Depth'),
+                    child: InputBox(
+                      controller: _depthController,
+                      hintText: 'Depth',
+                      validatorFn: doubleValueValidator,
+                    ),
                   ),
                   Expanded(
-                    child: _newDonationField(
-                        _heightController, 'Height', 'Height', false),
+                    child: InputBox(
+                      controller: _heightController,
+                      hintText: 'Height',
+                      validatorFn: doubleValueValidator,
+                    ),
                   ),
                 ],
               ),
@@ -106,7 +148,12 @@ class _NewDonationState extends State<NewDonation> {
                 children: [
                   Expanded(
                     child: CheckboxListTile(
-                        title: const Text('Dairy'),
+                        title: const Text(
+                          'Dairy',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
                         value: donation.hasDairy,
                         controlAffinity: ListTileControlAffinity.leading,
                         onChanged: (bool? value) {
@@ -118,7 +165,12 @@ class _NewDonationState extends State<NewDonation> {
                   ),
                   Expanded(
                     child: CheckboxListTile(
-                        title: const Text('Nuts'),
+                        title: const Text(
+                          'Nuts',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
                         value: donation.hasNuts,
                         controlAffinity: ListTileControlAffinity.leading,
                         onChanged: (bool? value) {
@@ -130,7 +182,12 @@ class _NewDonationState extends State<NewDonation> {
                   ),
                   Expanded(
                     child: CheckboxListTile(
-                        title: const Text('Eggs'),
+                        title: const Text(
+                          'Eggs',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
                         value: donation.hasEggs,
                         controlAffinity: ListTileControlAffinity.leading,
                         onChanged: (bool? value) {
@@ -147,7 +204,12 @@ class _NewDonationState extends State<NewDonation> {
                 children: [
                   Expanded(
                       child: RadioListTile(
-                          title: const Text('Yes'),
+                          title: const Text(
+                            'Yes',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
                           value: true,
                           groupValue: donation.reqFrige,
                           onChanged: (bool? value) {
@@ -157,7 +219,12 @@ class _NewDonationState extends State<NewDonation> {
                           })),
                   Expanded(
                       child: RadioListTile(
-                          title: const Text('No'),
+                          title: const Text(
+                            'No',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
                           value: false,
                           groupValue: donation.reqFrige,
                           onChanged: (bool? value) {
@@ -172,7 +239,12 @@ class _NewDonationState extends State<NewDonation> {
                 children: [
                   Expanded(
                       child: RadioListTile(
-                          title: const Text('Yes'),
+                          title: const Text(
+                            'Yes',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
                           value: true,
                           groupValue: donation.isGrocery,
                           onChanged: (bool? value) {
@@ -182,7 +254,12 @@ class _NewDonationState extends State<NewDonation> {
                           })),
                   Expanded(
                       child: RadioListTile(
-                          title: const Text('No'),
+                          title: const Text(
+                            'No',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
                           value: false,
                           groupValue: donation.isGrocery,
                           onChanged: (bool? value) {
@@ -194,6 +271,7 @@ class _NewDonationState extends State<NewDonation> {
               ),
               Row(
                 children: [
+                  Padding(padding: EdgeInsets.all(10)),
                   const Text('Pick up Date: '),
                   OutlinedButton(
                     child: Text(DateFormat.yMd().format(donation.pickupDate)),
@@ -215,6 +293,7 @@ class _NewDonationState extends State<NewDonation> {
               ),
               Row(
                 children: [
+                  Padding(padding: EdgeInsets.all(10)),
                   const Text('Pick up Time: '),
                   OutlinedButton(
                     child: Text(donation.pickupFromTime.format(context)),
@@ -262,36 +341,15 @@ class _NewDonationState extends State<NewDonation> {
     );
   }
 
-  Widget _newDonationField(
-      TextEditingController controller, String label, String hint,
-      [bool nextFocus = true]) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: hint,
-          border: OutlineInputBorder(),
-        ),
-        onEditingComplete: () => nextFocus
-            ? FocusScope.of(context).nextFocus()
-            : FocusScope.of(context).unfocus(),
-        validator: (text) => (text != null && text.isEmpty) ? hint : null,
-      ),
-    );
-  }
-
   void _takePicture() async {
-    XFile? picFile = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 50);
+    XFile? picFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+      preferredCameraDevice: CameraDevice.rear,
+    );
     if (picFile != null) {
-      setState(() {
-        _picture = Image.file(
-          File(picFile.path),
-          fit: BoxFit.fitWidth,
-        );
-      });
+      _itemImgFile = File(picFile.path);
+      setState(() {});
     }
   }
 
@@ -309,14 +367,10 @@ class _NewDonationState extends State<NewDonation> {
     donation.width = double.parse(_widthController.text);
     donation.depth = double.parse(_depthController.text);
     donation.height = double.parse(_heightController.text);
+    donation.itemImg = _itemImgFile;
 
     var donations = DonationsProvider.of(context);
-    print("Before adding new donation, num of donations: " +
-        donations.length().toString());
-    print("Add new donation: " + donation.name);
     donations.add(donation);
-    print("After adding new donation, num of donations: " +
-        donations.length().toString());
 
     // show pop up
     showDialog(
