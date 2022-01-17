@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ovcapp/volunteerlog/Pending.dart';
-//import 'package:ovcapp/volunteer_pickup.dart';
 import 'package:ovcapp/volunteerlog/deliveries/deliveries.dart';
 import 'package:ovcapp/themes.dart';
 import 'package:ovcapp/volunteerlog/loghours/loghours.dart';
@@ -55,20 +53,21 @@ class _VolunteerLogState extends State<VolunteerLog> {
           );
         }
         Iterable<QueryDocumentSnapshot<Object?>> orders = snapshot.data!.docs.reversed;
+        int totalHrs = 0;
         for (var order in orders) {
-          if(order.id == widget.volunteer.name && VolunteerLog.counter == 0)
+          if(order.id == widget.volunteer.name )//&& VolunteerLog.counter == 0
             {
               VolunteerLog.updateHrs(order.get('totalHours'));
               VolunteerLog.counter++;
+              totalHrs = order.get('totalHours');
             }
         }
-
-        return body(context);
+        return body(context, totalHrs);
       },
     );
 
   }
-  Column body(BuildContext context){
+  Column body(BuildContext context, int hours, ){
     return Column(
       children: [
         Container(
@@ -133,7 +132,8 @@ class _VolunteerLogState extends State<VolunteerLog> {
                         side: BorderSide(color: Color(0xFFE0CB8F), width: 2)), ),
                       padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),),
                     child: ListBody(children: [
-                      Text(widget.volunteer.getHours().toString() + hourOrHours(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white)),],//_LogHoursState._total.toString()
+                      Text(hours.toString() + hourOrHours(hours), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white)),],//_LogHoursState._total.toString()
+                          //widget.volunteer.getHours().toString()
                     ),
                   )
               ),
@@ -144,12 +144,12 @@ class _VolunteerLogState extends State<VolunteerLog> {
     );
   }
 
-  String hourOrHours() {
+  String hourOrHours(int hours) {
     String returning = "";
-    if(LogHours.getTotal() == 1){
+    if(hours == 1){
       returning = " hour";
     }
-    if(LogHours.getTotal() != 1){
+    if(hours != 1){
       returning = " hours";
     }
     return returning;
@@ -183,9 +183,10 @@ class _VolunteerLogState extends State<VolunteerLog> {
 List<Pending> thePends = Volunteer.allPendingPickups;
 listItems(BuildContext context, String type, Volunteer volunteer){
   Volunteer.sortVolunteerPickups();
+  Volunteer.sortVolunteerDeliveries();
   Widget returning = new Container();
   List<Pickups> listPickups = Volunteer.returnVolunteersPickups(volunteer);
-  List<Deliveries> listDeliver = Deliveries.deliveries;
+  List<Deliveries> listDeliver = Volunteer.returnVolunteersDeliveries(volunteer);//Deliveries.deliveries;
   thePends = <Pending>[];
   for(int i=0; i<Volunteer.allPendingPickups.length; i++){
     if(Volunteer.allPendingPickups.elementAt(i).user == volunteer.name){
@@ -273,26 +274,7 @@ listItems(BuildContext context, String type, Volunteer volunteer){
         ],
       );
     }
-    if(listDeliver.length >= 3)
-    {
-      returning = ListBody(
-        children: [
-          organize(context, 1, "car", "delivery", volunteer),
-          organize(context, 2, "car", "delivery", volunteer),
-          organize(context, 3, "car", "delivery", volunteer),
-        ],
-      );
-    }
-    if(listDeliver.length == 2)
-    {
-      returning = ListBody(
-        children: [
-          organize(context, 1, "cart", "delivery", volunteer),
-          organize(context, 2, "cart", "delivery", volunteer),
-        ],
-      );
-    }
-    if(listDeliver.length == 1)
+    if(listDeliver.length >= 1)
     {
       returning = ListBody(
         children: [
@@ -330,7 +312,7 @@ Widget organize(BuildContext context, int number, String which, String widg, Vol
                     padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),),
                   child: ListBody(children: [
                     Text(Volunteer.returnVolunteersPickups(volunteer).elementAt(Volunteer.returnVolunteersPickups(volunteer).length-number).getName(), style: TextStyle(fontSize: 18, color: CustomTheme.getLight() ? Colors.black : Colors.white,)),
-                    Text("Picked up on "+Volunteer.returnVolunteersPickups(volunteer).elementAt(Volunteer.returnVolunteersPickups(volunteer).length-number).getDate(), style: TextStyle(fontSize: 13, color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)))
+                    Text("Picked up on "+Volunteer.returnVolunteersPickups(volunteer).elementAt(Volunteer.returnVolunteersPickups(volunteer).length-number).getDate().substring(0, 5), style: TextStyle(fontSize: 13, color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)))
                   ], ),
                 )),
           ),
@@ -381,7 +363,7 @@ class NamesDates extends StatelessWidget{
       returning = IndividualPickup(num: num, volunteer: volunteer,);
     }
     if(whichWidget == "delivery"){
-      returning = IndividualDelivery(num: num, volunteer: volunteer,);
+      returning = IndividualDelivery(num: num, volunteer: volunteer,);//
     }
     return returning;
   }
