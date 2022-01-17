@@ -66,6 +66,7 @@ class AllPickupsStream extends StatelessWidget {
             ),
           );
         }
+        counter = 0;
         final orders = snapshot.data!.docs.reversed;
         List<AllPickupList> orderList = [];
         for (var order in orders) {
@@ -73,7 +74,7 @@ class AllPickupsStream extends StatelessWidget {
           final date = order.get('pickupOn');
           final user = order.get('pickupBy');
 
-          Pickups newObj = Pickups(Food(name, "donerName", "address", 0, false, 0), date, volunteer);
+          Pickups newObj = Pickups(Food(name, user, "", 0, false, 0, 0, false, false, false, false, 0, 0, 0), date, volunteer);
           final orderIndividuals = AllPickupList(
             index: counter,
             volunteer: volunteer,
@@ -84,11 +85,12 @@ class AllPickupsStream extends StatelessWidget {
           {
             orderList.add(orderIndividuals);
             Volunteer.volunteerPickups.add(newObj);
+            counter++;
           }
           /*else{
             Volunteer.allPendingPickups.add(Pending(name, date, user));
           }*/
-          counter++;
+
           orderList.sort((b, a) => a.two.compareTo(b.two));
           Volunteer.sortVolunteerPickups();
         }
