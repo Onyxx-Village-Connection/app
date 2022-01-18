@@ -179,7 +179,7 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
       {
         DateTime now = new DateTime.now();
         Log today = new Log(now.toString(), _starter, widget.volunteer);
-        print(widget.volunteer.getName() + " logged " + _starter.toString() + " "+ "hours" + " volunteering on " + today.getFormalDate() + " @ " + Log.getPST(today));
+        print(widget.volunteer.getName() + " logged " + _starter.toString() + " "+ "hours" + " volunteering on " + today.getFormalDate() + " @ " + Log.getPST(today.getDate()));
         print(hours.toString());
       }
       _starter = 0;
@@ -291,7 +291,7 @@ class _LogHoursState extends State<LogHours> with SingleTickerProviderStateMixin
             Container(
               padding: EdgeInsets.fromLTRB(85.0, 0.0, 0.0, 0.0),
               child: Text(
-                  'Total: $_total ' + "hours" + ".",
+                  'Total: $_total ' + hourOrHours() + ".",
                   style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 21)
               ),
             ),
@@ -415,8 +415,8 @@ class Log{
     return date;
   }
 
-  static String getPST(Log log){
-    String mutable = log.getDate();
+  static String getPST(String mutable){
+    //String mutable = log.getDate();
     String time = mutable.substring(11, 16);
     String returning = "";
     if(time.substring(0, 2) == "00")
@@ -596,69 +596,6 @@ class _AllEntriesState extends State<AllEntries> {
         ],
       ),
     );
-      /*Scaffold(
-      backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-      appBar: AppBar(
-        backgroundColor: Color(0xFFE0CB8F),
-        title: const Text('Log Entries', style: TextStyle(color: Colors.black, fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 0.0),
-                  child: Text(
-                    "Total: ",
-                    style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 25, color: Color(0xFFE0CB8F)),//
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 0.0),
-                  child: Text(
-                    _LogHoursState._total.toString() + hourOrHours(),
-                    style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 25),//, color: Color(0xFFE0CB8F)
-                  ),
-                ),
-              ],
-            ),
-            SingleChildScrollView(
-              child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.volunteer.getVolunteerLog(widget.volunteer).length,
-                  reverse: true,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index){
-                    return Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Card(
-                        shadowColor: Color(0xFFE0CB8F),
-                        child: ListTile(
-                          onTap: () {Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => EditHoursEntry(log: widget.volunteer.getVolunteerLog(widget.volunteer).elementAt(index), volunteer: widget.volunteer,)),);},
-                          title: Text(widget.volunteer.getVolunteerLog(widget.volunteer).elementAt(index).toString() + " @ " + Log.getPST(widget.volunteer.getVolunteerLog(widget.volunteer).elementAt(index)), style: TextStyle(fontSize: 21, fontFamily: "BarlowSemiCondensed"),),
-                          subtitle: Text("Edit Hours", style: TextStyle(color: CustomTheme.getLight() ? Colors.grey : Color(0xFFE0CB8F)),),
-                          tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-                          leading: Icon(
-                            Icons.account_balance_wallet_rounded,
-                            color: Color(0xFFE0CB8F),
-                            size: 33,
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-              ),
-            ),
-          ],
-        ),
-      ),
-    );*/
   }
 }
 
@@ -794,163 +731,3 @@ class AllHoursList extends StatelessWidget {
     );
   }
 }
-
-/*
-class EditHoursEntry extends StatefulWidget {
-  const EditHoursEntry({Key? key, required this.log, required this.idx, required this.volunteer}) : super(key: key);
-  final Log log;
-  final Volunteer volunteer;
-  final int idx;
-  @override
-  _EditHoursEntryState createState() => _EditHoursEntryState();
-}
-
-class _EditHoursEntryState extends State<EditHoursEntry> {
-  int _starter = 0;
-  int _total = 0;
-  int totalDupe = 0;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _total = widget.log.getHours();
-    totalDupe = widget.log.getHours();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  _incrementStarter() {
-    setState(() {
-      totalDupe++;
-      _starter++;
-    });
-
-  }
-
-  String hourOrHours() {
-    String returning = "";
-    if(_total == 1){
-      returning = "hour.";
-    }
-    if(_total != 1){
-      returning = "hours.";
-    }
-    return returning;
-  }
-
-  _decrementStarter() {
-    setState(() {
-      if(totalDupe > 0)
-      {
-        totalDupe--;
-        _starter--;
-      }
-    });
-
-  }
-
-  _incrementTotal() async{
-    DateTime now = new DateTime.now();
-    //await _LogHoursState.hours.add({'user':widget.volunteer.getName(), 'hoursEntered':_total, 'totalHours':totalDupe, 'editedHours':totalDupe-_total}).then((value) => print("Hours added"))
-    await _LogHoursState.hours.doc(FirebaseAuth.instance.currentUser!.email).set({'user':widget.volunteer.getName(), 'hoursEntered':_total, 'totalHours':_LogHoursState._total + _starter, 'editedHours':totalDupe-_total}).then((value) => print("Hours added"));//__BodyState
-    await _LogHoursState.entries.doc(use.toString()+indexAsAString(widget.idx)).set({'user':widget.volunteer.getName(), 'hoursEntered':_total, 'totalHours':_LogHoursState._total + _starter, 'editedHours':totalDupe-_total, 'date':now.toLocal().toString()});
-    if(widget.idx>index){
-      await _LogHoursState.entries.doc(use.toString()+indexAsAString(index)).set({'user':widget.volunteer.getName(), 'hoursEntered':keepTrack.elementAt(keepTrack.length-1).one, 'totalHours':_LogHoursState._total + _starter, 'editedHours': 0, 'date':now.toLocal().toString()});//keepTrack.elementAt(keepTrack.length-1).date
-    }
-    setState(() {
-      print(widget.volunteer.getName() + " edited their logged " + _total.toString() + " "+hourOrHours() + " to " + (totalDupe).toString() + " "+hourOrHours() + " for " + widget.log.getFormalDate() + " @ " + Log.getPST(widget.log));
-      _total = totalDupe;
-      widget.log.setHours(_total);
-      //_Body.setTotal(__BodyState._total + _starter);//
-      _LogHoursState._total += _starter;//__BodyState
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
-      appBar: AppBar(
-        backgroundColor: CustomTheme.getLight() ? Color(0xFFE0CB8F) : Colors.black,
-        title: const Text('Edit Hours', style: TextStyle(color: Colors.black, fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
-      body: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                child: Text(
-                    'Edit your volunteer hours on ' + widget.log.getFormalDate() + ",", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 23, fontFamily: "BarlowSemiCondensed")
-                ),
-              ),
-              Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30.0),
-                  child: Text("entered at " + Log.getPST(widget.log),style: TextStyle(fontWeight: FontWeight.w600, fontSize: 23, fontFamily: "BarlowSemiCondensed") )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FloatingActionButton(
-                    backgroundColor: Color(0xFFE0CB8F),
-                    onPressed: _decrementStarter,
-                    tooltip: 'Decrement',
-                    child: Icon(Icons.arrow_drop_down, size: 40,),//Icons.
-                  ),
-                  Text(
-                      '  ',
-                      style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 60)
-                  ),
-                  Container(
-                    //padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: CustomTheme.getLight() ? Colors.black : Colors.white,),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(15.0) //
-                      ),
-                    ),
-                    child: Text(
-                        '  $totalDupe  ',
-                        style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 70)
-                    ),
-                  ),
-                  Text(
-                      '  ',
-                      style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 60)
-                  ),
-                  FloatingActionButton(
-                    backgroundColor: Color(0xFFE0CB8F),
-                    onPressed: _incrementStarter,
-                    tooltip: 'Increment',
-                    child: Icon(Icons.arrow_drop_up, size: 40,),
-                  ),
-                ],
-              ),
-              Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-                  child: TextButton(onPressed: _incrementTotal, child: Text("Enter", style: TextStyle(fontSize: 32,
-                      fontFamily: "BarlowSemiCondensed",
-                      color: Color(0xFFE0CB8F)),))),
-
-              Container(
-                child: Text(
-                    'Total: $_total ' + hourOrHours(),
-                    style: TextStyle(fontFamily: "BarlowSemiCondensed", fontSize: 23)
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-*/
-

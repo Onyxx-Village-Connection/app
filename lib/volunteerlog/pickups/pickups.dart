@@ -2,7 +2,7 @@ import 'package:ovcapp/volunteerlog/food/food.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 
 class Pickups {
-  Food item = new Food("name", "donerName", "address", 0.0, false, 0);
+  Food item = new Food("name", "donerName", "", 0, false, 0, 0, false, false, false, false, 0, 0, 0);
   String date = "3/15";
   String dateInt = "";
   Volunteer volunteer = new Volunteer("", "", "");

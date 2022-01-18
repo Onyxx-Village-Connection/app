@@ -70,8 +70,8 @@ class Volunteer{
     return volunteerDeliveries;
   }
 
-  sortVolunteerDeliveries(){
-    volunteerDeliveries.sort((a, b) => a.getDateInt().compareTo(b.getDateInt()));
+  static sortVolunteerDeliveries(){
+    volunteerDeliveries.sort((a, b) => a.getDate().compareTo(b.getDate()));
   }
 
   static sortVolunteerPickups(){
@@ -86,6 +86,16 @@ class Volunteer{
       }
     }
     return listPickups;
+  }
+
+  static returnVolunteersDeliveries(Volunteer volunteer){
+    List<Deliveries> listDeliveries = <Deliveries>[];
+    for(int i=0; i<volunteer.getVolunteerDeliveries().length; i++){
+      if(volunteer.getVolunteerDeliveries().elementAt(i).volunteer == volunteer){
+        listDeliveries.add(volunteer.getVolunteerDeliveries().elementAt(i));
+      }
+    }
+    return listDeliveries;
   }
 
   getVolunteerLog(Volunteer volunteerObj){
@@ -112,7 +122,7 @@ class Volunteer{
     return hours;
   }
 
-  addPickup(Pickups pickup){
+  /*addPickup(Pickups pickup){
     int counter=0;
     for(int i=0; i<volunteerPickups.length; i++){
       if(volunteerPickups[i].item == pickup.item && volunteerPickups[i].date == pickup.date){
@@ -120,12 +130,12 @@ class Volunteer{
       }
     }
     if(counter == 0){
-      //volunteerPickups.add(pickup);
+      volunteerPickups.add(pickup);
     }
-  }
+  }*/
 
   addDelivery(Deliveries deliveries){
-    //volunteerDeliveries.add(deliveries);
+   // volunteerDeliveries.add(deliveries);
     int counter=0;
     for(int i=0; i<volunteerDeliveries.length; i++){
       if(volunteerDeliveries[i].item == deliveries.item && volunteerDeliveries[i].date == deliveries.date){
@@ -146,7 +156,13 @@ class Volunteer{
   }
 
   getThreeLogEntries(Volunteer volunteerObj){
-    return threeLogEntries;
+    List<Log> threeLog = <Log>[];
+    for(int i=0; i<threeLogEntries.length; i++){
+      if(threeLogEntries[i].volunteer == volunteerObj){
+        threeLog.add(threeLogEntries[i]);
+      }
+    }
+    return threeLog;
   }
 
   addHours(Log log){

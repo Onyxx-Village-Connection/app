@@ -3,7 +3,7 @@ import 'package:ovcapp/volunteerlog/food/food.dart';
 import 'package:ovcapp/volunteerlog/volunteer/volunteer.dart';
 
 class Deliveries {
-    Food item = new Food("name", "donerName", "address", 0.0, false, 0);
+    Food item = new Food("name", "donerName", "address", 0, false, 0, 0, false, false, false, false, 0, 0, 0);
     String date = "Delivered on 3/15";
     int dateInt = 0;
     Volunteer volunteer = new Volunteer("name", "email", "phone");
@@ -13,17 +13,17 @@ class Deliveries {
       this.item = item;
       this.date = date;
       this.volunteer = volunteer;
-      String month = getDate().toString().substring(0, 2);
+      /*String month = getDate().toString().substring(0, 4);
       int mo = int.parse(month);
       String days = getDate().toString().substring(3, 5);
       int day = int.parse(days);
-      String year = getDate().toString().substring(6);
+      String year = getDate().toString().substring(6, 9);
       int yr = int.parse(year);
-      dateInt = mo + day + yr;
+      dateInt = mo + day + yr;*/
       //deliveries.add(this);
-      volunteer.addDelivery(this);
+      //volunteer.addDelivery(this);
       organizeByDate();
-      volunteer.sortVolunteerDeliveries();
+      Volunteer.sortVolunteerDeliveries();
     }
 
     getName(){

@@ -84,6 +84,9 @@ class _IndividualPickupState extends State<IndividualPickup> {
           organize(" Doner name: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getDonerName()),
           organize(" Pickup address: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getAddress()),
           organize(" # of boxes: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getNumOfBoxes().toString()),
+          organize(' # of meals: ', widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getNumOfMeals().toString()),
+          organize(' Dimensions: ', widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getDimensions().toString()),
+          organize(' Contains allergens: ', widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getAllergens().toString()),
           organize(" Weight of donation: ", widget.volunteer.getVolunteerPickups().elementAt(widget.volunteer.getVolunteerPickups().length-widget.num).getItem().getWeight().toString() + " lbs"),
           organize(" Requires Refrigeration: ", trueOrFalse()),
           Container(
