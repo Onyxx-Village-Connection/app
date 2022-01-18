@@ -1,6 +1,7 @@
 // 'Donor Profile' screen
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -88,7 +89,7 @@ class _DonorProfileState extends State<DonorProfile> {
               _donorProfileField(
                   _addressController, 'Donor address', 'Donor address'),
               _donorProfileField(
-                  _phoneController, 'Donor phone number', 'Donor phone number'),
+                  _phoneController, 'Donor phone number', '###-###-###'),
               _donorProfileField(
                   _emailController, 'Donor email', 'Donor email'),
               SizedBox(height: 20),
@@ -111,6 +112,18 @@ class _DonorProfileState extends State<DonorProfile> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextFormField(
+        keyboardType: label.contains("phone")
+            ? TextInputType.phone
+            : label.contains("addr")
+                ? TextInputType.streetAddress
+                : label.contains("email")
+                    ? TextInputType.emailAddress
+                    : TextInputType.text,
+        inputFormatters: <TextInputFormatter>[
+          label.contains("phone")
+              ? FilteringTextInputFormatter.allow(RegExp(r'[\(\)0-9-.]+'))
+              : FilteringTextInputFormatter.allow(RegExp(r'[\w\W]+'))
+        ],
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
