@@ -11,7 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 final _firestore = FirebaseFirestore.instance;
 int counter = 0;
 
-class AllPickup extends StatefulWidget {
+class AllPickup extends StatefulWidget{
   AllPickup({Key? key, required this.volunteer}) : super(key: key);
   final Volunteer volunteer;
   @override
@@ -20,25 +20,19 @@ class AllPickup extends StatefulWidget {
 
 class _AllPickupState extends State<AllPickup> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return Scaffold(
       backgroundColor: CustomTheme.getLight() ? Colors.white : Colors.black,
       appBar: AppBar(
         backgroundColor: Color(0xFFE0CB8F),
-        title: const Text('My Past Pickups',
-            style: TextStyle(
-                color: Colors.black,
-                fontFamily: "BigShouldersDisplay",
-                fontWeight: FontWeight.w500,
-                fontSize: 25)),
+        title: const Text('My Past Pickups', style: TextStyle(color: Colors.black, fontFamily: "BigShouldersDisplay", fontWeight: FontWeight.w500, fontSize: 25)),
         centerTitle: true,
         elevation: 0.0,
       ),
       body: Column(
         children: [
-          AllPickupsStream(
-            volunteer: widget.volunteer,
-          ),
+          AllPickupsStream(volunteer: widget.volunteer,),
         ],
       ),
     );
@@ -65,14 +59,14 @@ class AllPickupsStream extends StatelessWidget {
                 children: [
                   CircularProgressIndicator(
                     backgroundColor: Color(0xFFE0CB8F),
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Color(0xFFE0CB8F)),
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE0CB8F)),
                   ),
                 ],
               ),
             ),
           );
         }
+        counter = 0;
         final orders = snapshot.data!.docs.reversed;
         List<AllPickupList> orderList = [];
         for (var order in orders) {
@@ -80,24 +74,25 @@ class AllPickupsStream extends StatelessWidget {
           final date = order.get('pickupOn');
           final user = order.get('pickupBy');
 
-          Pickups newObj = Pickups(
-              Food(name, "donerName", "address", 0, false, 0), date, volunteer);
+          Pickups newObj = Pickups(Food(name, user, "", 0, false, 0, 0, false, false, false, false, 0, 0, 0), date, volunteer);
           final orderIndividuals = AllPickupList(
             index: counter,
             volunteer: volunteer,
             one: name,
             two: date,
           );
-          if (user == volunteer.email) {
+          if(user == volunteer.email)
+          {
             orderList.add(orderIndividuals);
             Volunteer.volunteerPickups.add(newObj);
+            counter++;
           }
           /*else{
             Volunteer.allPendingPickups.add(Pending(name, date, user));
           }*/
-          counter++;
+
           orderList.sort((b, a) => a.two.compareTo(b.two));
-          //Volunteer.sortVolunteerPickups();
+          Volunteer.sortVolunteerPickups();
         }
         return Expanded(
           child: ListView(
@@ -112,6 +107,7 @@ class AllPickupsStream extends StatelessWidget {
     );
   }
 }
+
 
 class AllPickupList extends StatelessWidget {
   AllPickupList({
@@ -133,26 +129,11 @@ class AllPickupList extends StatelessWidget {
       child: Card(
         shadowColor: Color(0xFFE0CB8F),
         child: ListTile(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NamesDates().whichWidg(
-                      volunteer.getVolunteerPickups().length - index,
-                      "pick",
-                      volunteer)),
-            );
-          },
-          title: Text(
-            one,
-            style: TextStyle(fontSize: 21, fontFamily: "BarlowSemiCondensed"),
-          ),
-          subtitle: Text(
-            "Picked up on " + two,
-            style: TextStyle(
-                color:
-                    CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)),
-          ),
+          onTap: () {Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NamesDates().whichWidg(volunteer.getVolunteerPickups().length-index, "pick", volunteer)),);},
+          title: Text(one, style: TextStyle(fontSize: 21, fontFamily: "BarlowSemiCondensed"),),
+          subtitle: Text("Picked up on "+two, style: TextStyle(color: CustomTheme.getLight() ? Colors.black : Color(0xFFE0CB8F)),),
           tileColor: CustomTheme.getLight() ? Colors.white : Colors.black,
           leading: Icon(
             OVCIcons.pickupicon,
