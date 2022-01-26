@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ovcapp/widgets/auth/helperFns.dart';
 import 'package:provider/provider.dart';
 
 import './landing.dart';
 import './core/providers/authentication.dart';
-import './screens/client/client_home_tabs.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,11 +39,17 @@ class Authenticate extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserModels?>(context);
     if (user == null) {
-      print('User not logged in!');
       return OnyxxLanding();
     } else {
-      print('User is logged in!');
-      return ClientHomeTabBarScreen();
+      return FutureBuilder(
+          future: getUserRole(user.uid),
+          builder: (context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.hasData) {
+              return getLandingPage(snapshot.data!);
+            } else {
+              return CircularProgressIndicator();
+            }
+          });
     }
   }
 }

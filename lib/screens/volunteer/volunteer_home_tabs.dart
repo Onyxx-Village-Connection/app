@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/auth/styleConstants.dart';
 import '../../volunteerlog/volunteerlog.dart';
 import '../../volunteer_pickup.dart';
 import '../../volunteerlog/volunteer/volunteer.dart';

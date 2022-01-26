@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
@@ -102,20 +103,35 @@ Future<String?> uploadProfileImage(File profileImgFile) async {
 }
 
 void pushRoleBasedLandingPage(BuildContext context, String role) {
+  Widget landingPage = getLandingPage(role);
+
+  Navigator.of(context)
+      .pushReplacement(MaterialPageRoute(builder: (context) => landingPage));
+}
+
+Widget getLandingPage(String role) {
   switch (role) {
     case 'Client':
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => ClientHomeTabBarScreen()));
-      break;
+      return ClientHomeTabBarScreen();
 
     case 'Donor':
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute<void>(builder: (context) => MyDonations()));
-      break;
+      return MyDonations();
 
     case 'Volunteer':
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => VolunteerHomeTabBarScreen()));
-      break;
+      return VolunteerHomeTabBarScreen();
+
+    default:
+      return Text('Unknown User Role');
   }
+}
+
+Future<String> getUserRole(String uid) async {
+  var userDoc =
+      await FirebaseFirestore.instance.collection("users").doc(uid).get();
+  return userDoc['role'][0];
+}
+
+Future<Widget> getRoleBasedLandingPage(String uid) async {
+  String userRole = await getUserRole(uid);
+  return getLandingPage(userRole);
 }

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ovcapp/constants.dart';
 import 'package:ovcapp/widgets/auth/helperFns.dart';
 
 import '../authenticate/user_profile_info.dart';

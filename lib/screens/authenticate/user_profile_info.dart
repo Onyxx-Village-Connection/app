@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:phone_number/phone_number.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/auth/inputBox.dart';
 import '../../widgets/auth/styleConstants.dart';
@@ -15,6 +16,7 @@ import '../../core/models/donor_model.dart';
 import '../../core/models/client_model.dart';
 import '../../core/models/volunteer_model.dart';
 import '../../widgets/auth/profile_image.dart';
+import '../../../core/providers/authentication.dart';
 
 class UserProfileInfo extends StatefulWidget {
   String? password, email;
@@ -142,8 +144,32 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
     _phoneController.dispose();
     _addressController.dispose();
     _timeWithOVCController.dispose();
+    _zipController.dispose();
 
     super.dispose();
+  }
+
+  Future<void> _setUserInfo() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    String formattedPhone =
+        await PhoneNumberUtil().format(_phoneController.text, 'US');
+
+    var userData = {
+      'name': _nameController.text,
+      'phone': formattedPhone,
+      'profileImage': _uploadedImgUrl,
+      'role': [widget.role],
+    };
+
+    if (authUser == null) {
+      users.doc(auth.currentUser!.uid).set(userData);
+    } else {
+      await users.doc(authUser!.uid).update(userData);
+    }
+    return;
   }
 
   Future<void> _setDonorInfo() async {
@@ -225,6 +251,8 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
       _uploadedImgUrl = await uploadProfileImage(_uploadedImgFile!);
     }
 
+    _setUserInfo();
+
     switch (this.widget.role) {
       case 'Donor':
         _setDonorInfo();
@@ -241,12 +269,17 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
   }
 
   void _signupUser() async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: widget.email!, password: widget.password!);
+    AuthenticationState _authState =
+        Provider.of<AuthenticationState>(context, listen: false);
 
-    _updateUserInfo();
-
-    pushRoleBasedLandingPage(context, widget.role);
+    try {
+      if (await _authState.signUpUser(widget.email!, widget.password!)) {
+        _updateUserInfo();
+        pushRoleBasedLandingPage(context, widget.role);
+      }
+    } catch (error) {
+      ErrSnackBar.show(context, error as String);
+    }
   }
 
   void _updateUser() async {

@@ -9,20 +9,6 @@ class UserModels {
 }
 
 class AuthenticationState with ChangeNotifier {
-  String _uid = '';
-  String _email = '';
-
-  String get getUid => _uid;
-  String get getEmail => _email;
-
-  // FirebaseAuth auth;
-  // User user;
-
-// AuthenticationState() {
-//   auth = FirebaseAuth.instance;
-//   setupAuthListener();
-// }
-
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   UserModels? _userFromFirebaseUser(User? user) {
@@ -45,25 +31,22 @@ class AuthenticationState with ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       if (userCredential.user != null) {
-        _uid = userCredential.user!.uid;
-        _email = userCredential.user!.email as String;
         return retval = true;
       }
-    } catch (e) {
-      print(e);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "email-already-in-use":
+          throw ("This email address is already associated with another account");
+        case "invalid-email":
+          throw ("Please enter a valid email address");
+        case "weak-password":
+          throw ("Please use a strong password");
+        case "operation-not-allowed":
+          throw ("This operation is not supported");
+      }
     }
 
     return retval;
-  }
-
-  setupAuthListener() {
-    _auth.authStateChanges().listen((user) {
-      print('Is User Signed in: ${user != null} as ${user?.uid}');
-      //this.user = user;
-      if (user != null) {
-        // do something
-      }
-    });
   }
 
   Future<bool> loginUser(String email, String password) async {
@@ -74,8 +57,6 @@ class AuthenticationState with ChangeNotifier {
           email: email, password: password);
 
       if (userCredential.user != null) {
-        _uid = userCredential.user!.uid;
-        _email = userCredential.user!.email as String;
         return retval = true;
       }
     } on FirebaseAuthException catch (e) {
