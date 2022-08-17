@@ -1,4 +1,5 @@
 // model for one donation
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -19,10 +20,12 @@ class Donation {
   DateTime pickupDate = DateTime.now();
   TimeOfDay pickupFromTime = TimeOfDay.now();
   TimeOfDay pickupToTime = TimeOfDay.now();
-  DateTime submitDateTime = DateTime.now();
-  String userId = "";
+  var createdAt;
+  String donorId = "";
   File? itemImg;
   String? itemImgUrl;
+  String? pickupVolunteerId;
+  Timestamp? pickupCompletedAt;
 
   Donation()
       : docId = "",
@@ -41,8 +44,7 @@ class Donation {
         pickupDate = DateTime.now(),
         pickupFromTime = TimeOfDay.now(),
         pickupToTime = TimeOfDay.now(),
-        submitDateTime = DateTime.now(),
-        userId = "";
+        donorId = "";
 
   Donation.fromJson(Map<String, dynamic> json)
       : docId = json['docId'] ?? "",
@@ -73,10 +75,11 @@ class Donation {
         pickupToTime = TimeOfDay(
             hour: json['pickupToTime'] ~/ 60,
             minute: json['pickupToTime'] % 60),
-        submitDateTime =
-            DateTime.fromMillisecondsSinceEpoch(json['submitDateTime']),
-        userId = json['userId'] ?? "",
-        itemImgUrl = json['itemImgUrl'];
+        createdAt = json['createdAt'],
+        donorId = json['donorId'] ?? "",
+        itemImgUrl = json['itemImgUrl'],
+        pickupCompletedAt = json['pickupCompletedAt'],
+        pickupVolunteerId = json['pickupVolunteerId'];
 
   Map<String, dynamic> toJson() => {
         'docId': docId,
@@ -95,8 +98,10 @@ class Donation {
         'pickupDate': pickupDate.millisecondsSinceEpoch,
         'pickupFromTime': pickupFromTime.hour * 60 + pickupFromTime.minute,
         'pickupToTime': pickupToTime.hour * 60 + pickupToTime.minute,
-        'submitDateTime': submitDateTime.millisecondsSinceEpoch,
-        'userId': userId,
+        'createdAt': FieldValue.serverTimestamp(),
+        'donorId': donorId,
         'itemImgUrl': itemImgUrl,
+        'pickupVolunteerId': pickupVolunteerId,
+        'pickupCompletedAt': pickupCompletedAt,
       };
 }

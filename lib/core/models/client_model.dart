@@ -6,8 +6,8 @@ class ClientModel {
   String? profileImage;
   String phone;
   String city;
-  String timeWithOVC;
-  var timeStamp;
+  double timeWithOVC;
+  var createdAt;
 
   ClientModel({
     required this.uid,
@@ -16,7 +16,7 @@ class ClientModel {
     required this.phone,
     required this.city,
     required this.timeWithOVC,
-    required this.timeStamp,
+    required this.createdAt,
   });
 
   // data from server parsing
@@ -28,7 +28,7 @@ class ClientModel {
       city: map['city'],
       phone: map['phone'],
       timeWithOVC: map['timeWithOVC'],
-      timeStamp: map['timeStamp'],
+      createdAt: map['createdAt'],
     );
   }
 
@@ -41,7 +41,7 @@ class ClientModel {
       'phone': phone,
       'city': city,
       'timeWithOVC': timeWithOVC,
-      'timeStamp': FieldValue.serverTimestamp(),
+      'createdAt': uid.isEmpty ? FieldValue.serverTimestamp() : createdAt,
     };
   }
 }

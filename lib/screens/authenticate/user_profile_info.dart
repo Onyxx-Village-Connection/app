@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:phone_number/phone_number.dart';
-import 'package:provider/provider.dart';
+import 'package:checkbox_grouped/checkbox_grouped.dart';
 
 import '../../widgets/auth/inputBox.dart';
 import '../../widgets/auth/styleConstants.dart';
@@ -16,7 +16,8 @@ import '../../core/models/donor_model.dart';
 import '../../core/models/client_model.dart';
 import '../../core/models/volunteer_model.dart';
 import '../../widgets/auth/profile_image.dart';
-import '../../../core/providers/authentication.dart';
+
+enum TimeWithOVCUnits { years, months }
 
 class UserProfileInfo extends StatefulWidget {
   String? password, email;
@@ -39,12 +40,58 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
   String? _imageUrl;
   String? _uploadedImgUrl;
   File? _uploadedImgFile;
+  TimeWithOVCUnits _timeWithOVCUnits = TimeWithOVCUnits.years;
+
+  List<String> _languages = [
+    'Arabic',
+    'Chinese',
+    'English',
+    'French',
+    'Japanese',
+    'Portuguese',
+    'Russian',
+    'Spanish',
+    'Other',
+  ];
+
+  List<String> _tasks = [
+    'Meal Preparation',
+    'Food Pick Up',
+    'Food Delivery',
+  ];
+
+  List<String> _taskDescriptions = [
+    'Monday – Thursday, 11am – 2pm\nResponsibilities: Package food for distribution',
+    'Responsibilities: Pick up donated food from partners',
+    'Monday – Thursday, 2pm – 5pm\nResponsibilities: Distribute pre-made dinners to the community – requires driving license/car',
+  ];
+
+  List<String> _days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+  ];
+
+  GroupController _languagesController =
+      GroupController(isMultipleSelection: true);
+  GroupController _tasksController = GroupController(isMultipleSelection: true);
+  GroupController _availabilityController =
+      GroupController(isMultipleSelection: true);
   TextEditingController _nameController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _zipController = TextEditingController();
+
+  TextEditingController _name2Controller = TextEditingController();
+  TextEditingController _city2Controller = TextEditingController();
+  TextEditingController _phone2Controller = TextEditingController();
+  TextEditingController _address2Controller = TextEditingController();
+  TextEditingController _zip2Controller = TextEditingController();
+
   TextEditingController _timeWithOVCController = TextEditingController();
+  TextEditingController _volunteerStmtController = TextEditingController();
 
   final _nameFocusNode = FocusNode();
   final _cityFocusNode = FocusNode();
@@ -53,9 +100,15 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
   final _zipFocusNode = FocusNode();
   final _addressFocusNode = FocusNode();
 
-  late DonorModel _currentDonor;
-  late ClientModel _currentClient;
-  late VolunteerModel _currentVolunteer;
+  final _name2FocusNode = FocusNode();
+  final _city2FocusNode = FocusNode();
+  final _phone2FocusNode = FocusNode();
+  final _zip2FocusNode = FocusNode();
+  final _address2FocusNode = FocusNode();
+
+  DonorModel? _currentDonor;
+  ClientModel? _currentClient;
+  VolunteerModel? _currentVolunteer;
 
   final authUser = FirebaseAuth.instance.currentUser;
 
@@ -67,11 +120,13 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
         .then((value) {
       _currentVolunteer = VolunteerModel.fromMap(value.data(), authUser!.uid);
 
-      setState(() {
-        _nameController.text = _currentVolunteer.name;
-        _phoneController.text = _currentVolunteer.phone;
-        _imageUrl = _currentVolunteer.profileImage;
-      });
+      if (_currentVolunteer != null) {
+        setState(() {
+          _nameController.text = _currentVolunteer!.name;
+          _phoneController.text = _currentVolunteer!.phone;
+          _imageUrl = _currentVolunteer!.profileImage;
+        });
+      }
     });
   }
 
@@ -83,13 +138,16 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
         .then((value) {
       _currentClient = ClientModel.fromMap(value.data(), authUser!.uid);
 
-      setState(() {
-        _nameController.text = _currentClient.name;
-        _phoneController.text = _currentClient.phone;
-        _cityController.text = _currentClient.city;
-        _timeWithOVCController.text = _currentClient.timeWithOVC;
-        _imageUrl = _currentClient.profileImage;
-      });
+      if (_currentClient != null) {
+        setState(() {
+          _nameController.text = _currentClient!.name;
+          _phoneController.text = _currentClient!.phone;
+          _cityController.text = _currentClient!.city;
+          _timeWithOVCController.text =
+              getTimeWithOVC(_currentClient!.timeWithOVC);
+          _imageUrl = _currentClient!.profileImage;
+        });
+      }
     });
   }
 
@@ -101,14 +159,23 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
         .then((value) {
       _currentDonor = DonorModel.fromMap(value.data(), authUser!.uid);
 
-      setState(() {
-        _nameController.text = _currentDonor.name;
-        _phoneController.text = _currentDonor.phone;
-        _cityController.text = _currentDonor.city;
-        _addressController.text = _currentDonor.address;
-        _zipController.text = _currentDonor.zip;
-        _imageUrl = _currentDonor.profileImage;
-      });
+      if (_currentDonor != null) {
+        setState(() {
+          _nameController.text = _currentDonor!.orgName;
+          _phoneController.text = _currentDonor!.corpPhone;
+          _cityController.text = _currentDonor!.corpCity;
+          _addressController.text = _currentDonor!.corpAddress;
+          _zipController.text = _currentDonor!.corpZip;
+
+          _name2Controller.text = _currentDonor!.contactName;
+          _phone2Controller.text = _currentDonor!.contactPhone;
+          _city2Controller.text = _currentDonor!.pickupCity;
+          _address2Controller.text = _currentDonor!.pickupAddress;
+          _zip2Controller.text = _currentDonor!.pickupZip;
+
+          _imageUrl = _currentDonor!.profileImage;
+        });
+      }
     });
   }
 
@@ -146,6 +213,13 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
     _timeWithOVCController.dispose();
     _zipController.dispose();
 
+    _name2Controller.dispose();
+    _city2Controller.dispose();
+    _phone2Controller.dispose();
+    _address2Controller.dispose();
+    _zip2Controller.dispose();
+    _volunteerStmtController.dispose();
+
     super.dispose();
   }
 
@@ -181,21 +255,49 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
     String formattedPhone =
         await PhoneNumberUtil().format(_phoneController.text, 'US');
 
-    var donorData = {
-      'name': _nameController.text,
-      'phone': formattedPhone,
-      'city': _cityController.text,
-      'address': _addressController.text,
-      'zip': _zipController.text,
-      'profileImage': _uploadedImgUrl,
-    };
+    String formatted2Phone =
+        await PhoneNumberUtil().format(_phone2Controller.text, 'US');
+
+    var newDonor = DonorModel(
+      uid: authUser == null ? '' : auth.currentUser!.uid,
+      orgName: _nameController.text,
+      corpPhone: formattedPhone,
+      corpCity: _cityController.text,
+      corpAddress: _addressController.text,
+      corpZip: _zipController.text,
+      contactName: _name2Controller.text,
+      contactPhone: formatted2Phone,
+      pickupCity: _city2Controller.text,
+      pickupAddress: _address2Controller.text,
+      pickupZip: _zip2Controller.text,
+      profileImage: _uploadedImgUrl,
+      createdAt: _currentDonor != null ? _currentDonor!.createdAt : null,
+    );
 
     if (authUser == null) {
-      donors.doc(auth.currentUser!.uid).set(donorData);
+      donors.doc(auth.currentUser!.uid).set(newDonor.toMap());
     } else {
-      await donors.doc(authUser!.uid).update(donorData);
+      await donors.doc(authUser!.uid).update(newDonor.toMap());
     }
     return;
+  }
+
+  String getTimeWithOVC(double timeInMonths) {
+    if (timeInMonths >= 12) {
+      _timeWithOVCUnits = TimeWithOVCUnits.years;
+      return (timeInMonths / 12).toString();
+    } else {
+      _timeWithOVCUnits = TimeWithOVCUnits.months;
+      return timeInMonths.toString();
+    }
+  }
+
+  double getTimeInMonths(String duration) {
+    var timeEntered = double.parse(duration);
+    if (_timeWithOVCUnits == TimeWithOVCUnits.years) {
+      return timeEntered * 12;
+    } else
+      return timeEntered;
   }
 
   Future<void> _setClientInfo() async {
@@ -207,18 +309,20 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
     String formattedPhone =
         await PhoneNumberUtil().format(_phoneController.text, 'US');
 
-    var clientData = {
-      'name': _nameController.text,
-      'phone': formattedPhone,
-      'city': _cityController.text,
-      'timeWithOVC': _timeWithOVCController.text,
-      'profileImage': _uploadedImgUrl,
-    };
+    var newClient = ClientModel(
+      uid: authUser == null ? '' : auth.currentUser!.uid,
+      name: _nameController.text,
+      phone: formattedPhone,
+      city: _cityController.text,
+      timeWithOVC: getTimeInMonths(_timeWithOVCController.text),
+      profileImage: _uploadedImgUrl,
+      createdAt: _currentClient != null ? _currentClient!.createdAt : null,
+    );
 
     if (authUser == null) {
-      clients.doc(auth.currentUser!.uid).set(clientData);
+      clients.doc(auth.currentUser!.uid).set(newClient.toMap());
     } else {
-      await clients.doc(authUser!.uid).update(clientData);
+      await clients.doc(authUser!.uid).update(newClient.toMap());
     }
     return;
   }
@@ -232,16 +336,32 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
     String formattedPhone =
         await PhoneNumberUtil().format(_phoneController.text, 'US');
 
-    var volunteerData = {
-      'name': _nameController.text,
-      'phone': formattedPhone,
-      'profileImage': _uploadedImgUrl,
-    };
+    var langList = [];
+    _languagesController.selectedItem
+        .forEach((item) => langList.add(_languages[item]));
+    var taskList = [];
+    _tasksController.selectedItem.forEach((item) => taskList.add(_tasks[item]));
+    var availabilityList = [];
+    _availabilityController.selectedItem
+        .forEach((item) => availabilityList.add(_days[item]));
+
+    var newVolunteer = VolunteerModel(
+      uid: authUser == null ? '' : auth.currentUser!.uid,
+      name: _nameController.text,
+      phone: formattedPhone,
+      profileImage: _uploadedImgUrl,
+      languages: langList.toString(),
+      tasks: taskList.toString(),
+      availability: availabilityList.toString(),
+      volunteerStmt: _volunteerStmtController.text,
+      createdAt:
+          _currentVolunteer != null ? _currentVolunteer!.createdAt : null,
+    );
 
     if (authUser == null) {
-      volunteers.doc(auth.currentUser!.uid).set(volunteerData);
+      volunteers.doc(auth.currentUser!.uid).set(newVolunteer.toMap());
     } else {
-      await volunteers.doc(authUser!.uid).update(volunteerData);
+      await volunteers.doc(authUser!.uid).update(newVolunteer.toMap());
     }
     return;
   }
@@ -269,11 +389,8 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
   }
 
   void _signupUser() async {
-    AuthenticationState _authState =
-        Provider.of<AuthenticationState>(context, listen: false);
-
     try {
-      if (await _authState.signUpUser(widget.email!, widget.password!)) {
+      if (await signUpUser(widget.email!, widget.password!)) {
         _updateUserInfo();
         pushRoleBasedLandingPage(context, widget.role);
       }
@@ -301,6 +418,18 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
     if (!isValid) {
       return;
     }
+
+    // Check that volunteer widgets were set properly
+    if (this.widget.role == 'Volunteer') {
+      if (_tasksController.selectedItem.length == 0 ||
+          _availabilityController.selectedItem.length == 0 ||
+          _languagesController.selectedItem.length == 0) {
+        ErrSnackBar.show(context,
+            "Please specify your languages, interest area and availability");
+        return;
+      }
+    }
+
     _form.currentState!.save();
 
     if (_isNewSignup()) {
@@ -344,6 +473,300 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
     }
   }
 
+  Widget _nameBox({second = false}) {
+    return InputBox(
+      hintText: 'Name',
+      focusNode: second ? _name2FocusNode : _nameFocusNode,
+      nextFocusNode: second ? _phone2FocusNode : _phoneFocusNode,
+      validatorFn: nameValidator,
+      controller: second ? _name2Controller : _nameController,
+      enabled: _isNewSignup() || _isEditing,
+    );
+  }
+
+  Widget _phoneBox({second = false}) {
+    return InputBox(
+      hintText: 'Phone Number',
+      focusNode: second ? _phone2FocusNode : _phoneFocusNode,
+      nextFocusNode: this.widget.role == 'Donor'
+          ? second
+              ? _address2FocusNode
+              : _addressFocusNode
+          : second
+              ? _city2FocusNode
+              : _cityFocusNode,
+      validatorFn: _phoneValidator,
+      controller: second ? _phone2Controller : _phoneController,
+      enabled: _isNewSignup() || _isEditing,
+    );
+  }
+
+  Widget _addressBox({second = false}) {
+    return InputBox(
+      hintText: 'Street Address',
+      focusNode: second ? _address2FocusNode : _addressFocusNode,
+      nextFocusNode: second ? _city2FocusNode : _cityFocusNode,
+      validatorFn: addressValidator,
+      controller: second ? _address2Controller : _addressController,
+      enabled: _isNewSignup() || _isEditing,
+    );
+  }
+
+  Widget _cityBox({second = false}) {
+    return InputBox(
+      hintText: 'City',
+      focusNode: second ? _city2FocusNode : _cityFocusNode,
+      nextFocusNode: this.widget.role == 'Donor'
+          ? second
+              ? _zip2FocusNode
+              : _zipFocusNode
+          : _timeWithOVCFocusNode,
+      validatorFn: cityValidator,
+      controller: second ? _city2Controller : _cityController,
+      enabled: _isNewSignup() || _isEditing,
+    );
+  }
+
+  Widget _zipBox({second = false}) {
+    return InputBox(
+      hintText: 'Zip Code',
+      focusNode: second ? _zip2FocusNode : _zipFocusNode,
+      validatorFn: zipValidator,
+      controller: second ? _zip2Controller : _zipController,
+      enabled: _isNewSignup() || _isEditing,
+    );
+  }
+
+  Widget _timeWithOVCBox() {
+    return Column(
+      children: [
+        InputBox(
+          hintText: 'How long have you been with OVC?',
+          focusNode: _timeWithOVCFocusNode,
+          validatorFn: doubleValueValidator,
+          controller: _timeWithOVCController,
+          enabled: _isNewSignup() || _isEditing,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: RadioListTile<TimeWithOVCUnits>(
+                  title: const Text(
+                    'Years',
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                  value: TimeWithOVCUnits.years,
+                  groupValue: _timeWithOVCUnits,
+                  onChanged: (TimeWithOVCUnits? value) {
+                    setState(() {
+                      _timeWithOVCUnits = TimeWithOVCUnits.years;
+                    });
+                  }),
+            ),
+            Expanded(
+                child: RadioListTile<TimeWithOVCUnits>(
+                    title: const Text(
+                      'Months',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    value: TimeWithOVCUnits.months,
+                    groupValue: _timeWithOVCUnits,
+                    onChanged: (TimeWithOVCUnits? value) {
+                      setState(() {
+                        _timeWithOVCUnits = TimeWithOVCUnits.months;
+                      });
+                    })),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _languagesSpokenGroup() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Languages Spoken:',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 18,
+            ),
+          ),
+          SimpleGroupedChips<int>(
+            controller: _languagesController,
+            values: List.generate(_languages.length, (index) => index),
+            itemTitle: _languages,
+            backgroundColorItem: Colors.black26,
+            isScrolling: false,
+            chipGroupStyle: ChipGroupStyle.minimize(
+              backgroundColorItem: Color(0xFFE0CB8F),
+              itemTitleStyle: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+            onItemSelected: (values) {
+              print(values);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _tasksGroup() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'How would you like to help?',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 18,
+            ),
+          ),
+          SimpleGroupedCheckbox<int>(
+            controller: _tasksController,
+            itemsTitle: _tasks,
+            itemsSubTitle: _taskDescriptions,
+            values: List.generate(_tasks.length, (index) => index),
+            groupStyle: GroupStyle(
+                activeColor: Color(0xFFE0CB8F),
+                itemTitleStyle: TextStyle(fontSize: 14)),
+            checkFirstElement: false,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _availability() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'What days are you available?',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 18,
+            ),
+          ),
+          SimpleGroupedChips<int>(
+            controller: _availabilityController,
+            values: List.generate(_days.length, (index) => index),
+            itemTitle: _days,
+            backgroundColorItem: Colors.black26,
+            isScrolling: false,
+            chipGroupStyle: ChipGroupStyle.minimize(
+              backgroundColorItem: Color(0xFFE0CB8F),
+              itemTitleStyle: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+            onItemSelected: (values) {
+              print(values);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _volunteerStmt() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Why would you like to volunteer with us?',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 18,
+            ),
+          ),
+          TextField(
+            controller: _volunteerStmtController,
+            maxLines: null,
+            minLines: 1,
+            keyboardType: TextInputType.multiline,
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _donorWidgets() {
+    return [
+      _addressBox(),
+      _cityBox(),
+      _zipBox(),
+      Divider(),
+      Text(
+        'Contact Person Information:',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+      _nameBox(second: true),
+      _phoneBox(second: true),
+      Text(
+        'Donations Pickup Address:',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+      _addressBox(second: true),
+      _cityBox(second: true),
+      _zipBox(second: true),
+    ];
+  }
+
+  List<Widget> _clientWidgets() {
+    return [
+      _cityBox(),
+      _timeWithOVCBox(),
+    ];
+  }
+
+  List<Widget> _volunteerWidgets() {
+    if (_currentVolunteer != null)
+      return [];
+    else
+      return [
+        _languagesSpokenGroup(),
+        _tasksGroup(),
+        _availability(),
+        _volunteerStmt(),
+      ];
+  }
+
+  Widget _showEditingButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: LoginSignupButton('Update', _saveForm),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: LoginSignupButton('Cancel', () {
+            setState(() {
+              _isEditing = false;
+            });
+          }),
+        ),
+      ],
+    );
+  }
+
   Widget _buildProfileInfoWidgets(BuildContext context) {
     return ListView(
       children: <Widget>[
@@ -362,83 +785,28 @@ class _UserProfileInfoState extends State<UserProfileInfo> {
           child: ProfileImage(
               _imageUrl, _saveProfileImgUrl, _isNewSignup() || _isEditing),
         ),
-        InputBox(
-          hintText: 'Your Name',
-          focusNode: _nameFocusNode,
-          nextFocusNode: _phoneFocusNode,
-          validatorFn: nameValidator,
-          controller: _nameController,
-          enabled: _isNewSignup() || _isEditing,
-        ),
-        InputBox(
-          hintText: 'Your Phone Number',
-          focusNode: _phoneFocusNode,
-          nextFocusNode:
-              this.widget.role == 'Donor' ? _addressFocusNode : _cityFocusNode,
-          validatorFn: _phoneValidator,
-          controller: _phoneController,
-          //showHelperText: !_isNewSignup(),
-          enabled: _isNewSignup() || _isEditing,
-        ),
-        this.widget.role == 'Donor'
-            ? InputBox(
-                hintText: 'Your Street Address',
-                focusNode: _addressFocusNode,
-                nextFocusNode: _cityFocusNode,
-                validatorFn: addressValidator,
-                controller: _addressController,
-                enabled: _isNewSignup() || _isEditing,
-              )
-            : SizedBox.shrink(),
-        this.widget.role == 'Donor' || this.widget.role == 'Client'
-            ? InputBox(
-                hintText: 'Your City',
-                focusNode: _cityFocusNode,
-                nextFocusNode: this.widget.role == 'Donor'
-                    ? _zipFocusNode
-                    : _timeWithOVCFocusNode,
-                validatorFn: cityValidator,
-                controller: _cityController,
-                enabled: _isNewSignup() || _isEditing,
-              )
-            : SizedBox.shrink(),
-        this.widget.role == 'Donor'
-            ? InputBox(
-                hintText: 'Your Zip Code',
-                focusNode: _zipFocusNode,
-                validatorFn: zipValidator,
-                controller: _zipController,
-                enabled: _isNewSignup() || _isEditing,
-              )
-            : SizedBox.shrink(),
-        this.widget.role == 'Client'
-            ? InputBox(
-                hintText: 'How long have you been with OVC?',
-                focusNode: _timeWithOVCFocusNode,
-                validatorFn: timeWithOVCValidator,
-                controller: _timeWithOVCController,
-                enabled: _isNewSignup() || _isEditing,
-              )
-            : SizedBox.shrink(),
-        _isEditing
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: LoginSignupButton('Update', _saveForm),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: LoginSignupButton('Cancel', () {
-                      setState(() {
-                        _isEditing = false;
-                      });
-                    }),
-                  ),
-                ],
-              )
-            : Container(),
+        !_isNewSignup()
+            ? Center(
+                child: Text('${FirebaseAuth.instance.currentUser!.email}',
+                    style: textStyle))
+            : Text(''),
+        if (this.widget.role == 'Donor')
+          Text(
+            'Corporation/Organization Info:',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        _nameBox(),
+        _phoneBox(),
+        if (this.widget.role == 'Donor')
+          ..._donorWidgets()
+        else if (this.widget.role == 'Client')
+          ..._clientWidgets()
+        else if (this.widget.role == 'Volunteer')
+          ..._volunteerWidgets(),
+        _isEditing ? _showEditingButtons() : Container(),
         _showButtons(),
       ],
     );

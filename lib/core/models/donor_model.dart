@@ -2,36 +2,51 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DonorModel {
   String uid;
-  String name;
+  String orgName;
   String? profileImage;
-  String phone;
-  String city;
-  String zip;
-  String address;
-  var timeStamp;
+  String corpPhone;
+  String corpCity;
+  String corpZip;
+  String corpAddress;
+  String contactName;
+  String contactPhone;
+  String pickupCity;
+  String pickupZip;
+  String pickupAddress;
+  var createdAt;
 
   DonorModel({
     required this.uid,
-    required this.name,
+    required this.orgName,
     required this.profileImage,
-    required this.phone,
-    required this.address,
-    required this.city,
-    required this.zip,
-    required this.timeStamp,
+    required this.corpPhone,
+    required this.corpAddress,
+    required this.corpCity,
+    required this.corpZip,
+    required this.contactName,
+    required this.contactPhone,
+    required this.pickupAddress,
+    required this.pickupCity,
+    required this.pickupZip,
+    this.createdAt,
   });
 
   // data from server parsing
   factory DonorModel.fromMap(map, String uid) {
     return DonorModel(
       uid: uid,
-      name: map['name'],
+      orgName: map['orgName'],
       profileImage: map['profileImage'],
-      address: map['address'],
-      city: map['city'],
-      zip: map['zip'],
-      phone: map['phone'],
-      timeStamp: map['timeStamp'],
+      corpAddress: map['corpAddress'],
+      corpCity: map['corpCity'],
+      corpZip: map['corpZip'],
+      corpPhone: map['corpPhone'],
+      contactName: map['contactName'],
+      pickupAddress: map['pickupAddress'],
+      pickupCity: map['pickupCity'],
+      pickupZip: map['pickupZip'],
+      contactPhone: map['contactPhone'],
+      createdAt: map['createdAt'],
     );
   }
 
@@ -39,13 +54,18 @@ class DonorModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
+      'orgName': orgName,
       'profileImage': profileImage,
-      'phone': phone,
-      'address': address,
-      'city': city,
-      'zip': zip,
-      'timeStamp': FieldValue.serverTimestamp(),
+      'corpPhone': corpPhone,
+      'corpAddress': corpAddress,
+      'corpCity': corpCity,
+      'corpZip': corpZip,
+      'contactName': contactName,
+      'contactPhone': contactPhone,
+      'pickupAddress': pickupAddress,
+      'pickupCity': pickupCity,
+      'pickupZip': pickupZip,
+      'createdAt': uid.isEmpty ? FieldValue.serverTimestamp() : createdAt,
     };
   }
 }

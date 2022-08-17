@@ -28,7 +28,7 @@ class _MyDonationsState extends State<MyDonations> {
     Route route = MaterialPageRoute(
         builder: (context) => NewDonation(donation: donation));
     donation = await Navigator.push(context, route);
-    donation.userId = userId;
+    donation.donorId = userId;
     donation.docId = firestoreInstance.collection("donations").doc().id;
     if (donation.itemImg != null) {
       donation.itemImgUrl =
@@ -78,7 +78,7 @@ class _MyDonationsState extends State<MyDonations> {
     return StreamBuilder(
       stream: firestoreInstance
           .collection("donations")
-          .where("userId", isEqualTo: userId)
+          .where("donorId", isEqualTo: userId)
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapShot) {
         if (streamSnapShot.hasData) {

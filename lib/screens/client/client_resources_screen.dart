@@ -9,7 +9,7 @@ class ClientResourcesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('Client Resources')
+            .collection('clientResources')
             .snapshots(),
         builder: (ctx, AsyncSnapshot<QuerySnapshot> resourcesSnapshot) {
           if (resourcesSnapshot.hasError) {

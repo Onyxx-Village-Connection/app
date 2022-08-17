@@ -8,11 +8,11 @@ class OnyxxLanding extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: new Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(left: 10, top: 30, right: 10, bottom: 100),
+            padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
             child: Image.asset(
               "lib/assets/onyxx.jpg",
               width: 300,

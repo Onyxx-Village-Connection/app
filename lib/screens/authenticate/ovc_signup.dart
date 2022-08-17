@@ -61,7 +61,7 @@ class _OVCSignupState extends State<OVCSignup> {
           child: Text(
             'OVC serves its clients facing food insecurity by distributing food and making them aware of other helpful resources',
             textAlign: TextAlign.center,
-            style: textStyle.copyWith(height: 2.0),
+            style: textStyle.copyWith(height: 1.5),
             overflow: TextOverflow.ellipsis,
             softWrap: true,
             maxLines: 8,

@@ -1,10 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ovcapp/widgets/auth/helperFns.dart';
-import 'package:provider/provider.dart';
-
+import './widgets/auth/helperFns.dart';
 import './landing.dart';
-import './core/providers/authentication.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,21 +13,11 @@ Future<void> main() async {
 class OnyxxApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AuthenticationState>(
-            create: (_) => AuthenticationState()),
-        StreamProvider<UserModels?>.value(
-          initialData: null,
-          value: AuthenticationState().user,
-        )
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Onyxx Village Connection',
-        theme: ThemeData.dark(),
-        home: Authenticate(),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Onyxx Village Connection',
+      theme: ThemeData.dark(),
+      home: Authenticate(),
     );
   }
 }
@@ -37,7 +25,7 @@ class OnyxxApp extends StatelessWidget {
 class Authenticate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModels?>(context);
+    final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return OnyxxLanding();
     } else {

@@ -1,9 +1,5 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ovcapp/screens/map/map_screen.dart';
 
 class GeolocatorService {
   final Geolocator geo = Geolocator();

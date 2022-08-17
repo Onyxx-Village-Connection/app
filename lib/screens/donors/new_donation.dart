@@ -1,14 +1,13 @@
 // 'New Donation' screen for donor
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+
 import './donation.dart';
 import './donations_provider.dart';
 import '../../widgets/auth/inputBox.dart';
 import '../../widgets/auth/helperFns.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ovcapp/volunteerlog/loghours/loghours.dart';
 
 // new donation form widget
 class NewDonation extends StatefulWidget {
@@ -391,41 +390,6 @@ class _NewDonationState extends State<NewDonation> {
     donation.depth = double.parse(_depthController.text);
     donation.height = double.parse(_heightController.text);
     donation.itemImg = _itemImgFile;
-
-    fixedDate(String date) {
-      return date.substring(5, 7) +
-          "-" +
-          date.substring(8, 10) +
-          "-" +
-          date.substring(0, 4) +
-          " @ " +
-          Log.getPST(date);
-    }
-
-    DateTime now = new DateTime.now();
-
-    CollectionReference pend =
-        FirebaseFirestore.instance.collection("Volunteer");
-    pend
-        .doc("Data")
-        .collection("Delivery Data")
-        .doc(_nameController.text + " " + fixedDate(now.toLocal().toString()))
-        .set({
-      'donationName': _nameController.text,
-      'pickupDate': fixedDate(now.toLocal().toString()),
-      'address': '',
-      'reqFrige': donation.reqFrige,
-      'numOfBoxes': int.parse(_numBoxesController.text),
-      'weight': double.parse(_weightController.text),
-      'width': double.parse(_widthController.text),
-      'height': double.parse(_heightController.text),
-      'depth': double.parse(_depthController.text),
-      'numMeals': int.parse(_numMealsController.text),
-      'hasDairy': donation.hasDairy,
-      'hasNuts': donation.hasNuts,
-      'hasEggs': donation.hasEggs,
-      'isGrocery': donation.isGrocery
-    }).then((value) => print("Delivery added"));
 
     var donations = DonationsProvider.of(context);
     donations.add(donation);

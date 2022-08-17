@@ -5,6 +5,9 @@ class ClientDeliveriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Deliveries');
+    return Center(
+      child: Text('We deliver Monday thru Friday from 2-6pm',
+          style: TextStyle(fontSize: 16)),
+    );
   }
 }

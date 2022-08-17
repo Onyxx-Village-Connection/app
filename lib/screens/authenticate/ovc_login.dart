@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ovcapp/widgets/auth/helperFns.dart';
-import 'package:provider/provider.dart';
-
-import '../../../core/providers/authentication.dart';
+import '../../widgets/auth/helperFns.dart';
 import 'ovc_signup.dart';
 
 import '../../widgets/auth/passwordBox.dart';
@@ -35,11 +32,8 @@ class _OVCLoginState extends State<OVCLogin> {
     }
     _form.currentState!.save();
 
-    AuthenticationState _authState =
-        Provider.of<AuthenticationState>(context, listen: false);
-
     try {
-      if (await _authState.loginUser(email, password)) {
+      if (await loginUser(email, password)) {
         pushRoleBasedLandingPage(context, widget.role);
       }
     } catch (error) {

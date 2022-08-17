@@ -46,13 +46,6 @@ String? cityValidator(value) {
   return null;
 }
 
-String? timeWithOVCValidator(value) {
-  if (value == null || value.isEmpty || value.length < 2) {
-    return 'Please enter how long you have been with OVC';
-  }
-  return null;
-}
-
 String? doubleValueValidator(value) {
   if (value == null || double.tryParse(value) == null) {
     return 'Please enter a numeric/decimal value';
@@ -131,7 +124,65 @@ Future<String> getUserRole(String uid) async {
   return userDoc['role'][0];
 }
 
+Future<bool> isAdmin(String uid) async {
+  var userDoc =
+      await FirebaseFirestore.instance.collection("users").doc(uid).get();
+
+  return userDoc['role'].contains('Admin');
+}
+
 Future<Widget> getRoleBasedLandingPage(String uid) async {
   String userRole = await getUserRole(uid);
   return getLandingPage(userRole);
+}
+
+Future<bool> signUpUser(String email, String password) async {
+  bool retval = false;
+
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    if (userCredential.user != null) {
+      return retval = true;
+    }
+  } on FirebaseAuthException catch (e) {
+    switch (e.code) {
+      case "email-already-in-use":
+        throw ("This email address is already associated with another account");
+      case "invalid-email":
+        throw ("Please enter a valid email address");
+      case "weak-password":
+        throw ("Please use a strong password");
+      case "operation-not-allowed":
+        throw ("This operation is not supported");
+    }
+  }
+
+  return retval;
+}
+
+Future<bool> loginUser(String email, String password) async {
+  bool retval = false;
+
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    if (userCredential.user != null) {
+      return retval = true;
+    }
+  } on FirebaseAuthException catch (e) {
+    switch (e.code) {
+      case "invalid-email":
+      case "wrong-password":
+      case "user-not-found":
+        throw ("Incorrect email address or password.");
+
+      case "user-disabled":
+        throw ("This account is disabled");
+    }
+  }
+
+  return retval;
 }
